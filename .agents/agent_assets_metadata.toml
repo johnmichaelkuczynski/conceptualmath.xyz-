@@ -12,3 +12,39 @@ id = "zpoa4kJaFwLQ67_UaLoks"
 uri = "file://BLUEPRINT.md"
 type = "text"
 title = "QuantReason — App Blueprint"
+
+[[outputs]]
+id = "2QwVDfuWcNoq4Nqa3iFAD"
+uri = "file://artifacts/qr-course-demo/public/audio/vo_s1.mp3"
+type = "audio"
+title = "vo_s1"
+
+[[outputs]]
+id = "SZdQZaO98yUl2MQYF_L_C"
+uri = "file://artifacts/qr-course-demo/public/audio/vo_s2.mp3"
+type = "audio"
+title = "vo_s2"
+
+[[outputs]]
+id = "91bl3cEUVtE322cII2GeM"
+uri = "file://artifacts/qr-course-demo/public/audio/vo_s3.mp3"
+type = "audio"
+title = "vo_s3"
+
+[[outputs]]
+id = "uZyyaJBhQNwlQSC1aHWA_"
+uri = "file://artifacts/qr-course-demo/public/audio/vo_s4.mp3"
+type = "audio"
+title = "vo_s4"
+
+[[outputs]]
+id = "ZEalqp7zMbMJc5v1jXq6v"
+uri = "file://artifacts/qr-course-demo/public/audio/vo_s5.mp3"
+type = "audio"
+title = "vo_s5"
+
+[[outputs]]
+id = "FPwCf0RU5uuZToRqaPVxj"
+uri = "file://artifacts/qr-course-demo/public/audio/vo_s6.mp3"
+type = "audio"
+title = "vo_s6"

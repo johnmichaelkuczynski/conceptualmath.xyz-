@@ -44,7 +44,7 @@ So the number in **expanded form** is
 
 $$4072 = 4 \\times 1000 + 0 \\times 100 + 7 \\times 10 + 2 \\times 1.$$
 
-Each place is worth ten times the place to its right. That single rule — place value is the quiet engine behind every calculation you will ever do — is what lets us add, subtract, multiply, and divide by working one column at a time.
+Each place is worth ten times the place to its right. That single rule — place value is the quiet engine that drives every calculation you will ever do — is what lets us add, subtract, multiply, and divide by working one column at a time.
 
 ## Reading and comparing
 
@@ -1013,7 +1013,7 @@ You now hold a connected toolkit, not a pile of tricks. This final lecture shows
 
 $$\\frac{3}{4} = \\frac{x}{10} \\;\\Rightarrow\\; 4x = 30 \\;\\Rightarrow\\; x = 7.5 \\text{ cups}.$$
 
-Now layer on a percent: *flour is on sale at $20\\%$ off $\\$5$ for a $5$-cup bag.* You need $2$ bags ($10$ cups $\\ge 7.5$), each costing $0.80 \\times 5 = 4$ dollars, so $2 \\times 4 = 8$ dollars. One everyday question, four tools.
+Now layer on a percent: *flour is on sale at $20\\%$ off $\\$5$ for a $5$-cup bag.* You need $2$ bags ($10$ cups $\\ge 7.5$), each costing $0.80 \\times \\$5 = \\$4$, so $2 \\times \\$4 = \\$8$. One everyday question, four tools.
 
 ## The arc
 
@@ -1624,7 +1624,7 @@ const CONTENT_REVISION = "2026-06-06.developmental-math.r1";
 // the database holds the *current* revision of the content (not just a set of
 // matching slugs). Bump whenever the seed content is overhauled.
 const REVISION_SENTINEL_SLUG = "whole-numbers-place-value";
-const REVISION_SENTINEL_PHRASE = "place value is the quiet engine";
+const REVISION_SENTINEL_PHRASE = "place value is the quiet engine that drives every calculation";
 
 export async function seedIfEmpty(): Promise<void> {
   const existing = await db.execute(sql`select count(*)::int as n from topics`);
