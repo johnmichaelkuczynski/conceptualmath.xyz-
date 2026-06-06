@@ -74,8 +74,9 @@ function ResultCard({ title, result }: { title: string; result: RunResult | null
 
 type AuditResult = {
   ok: boolean;
-  generatedAt: string;
-  summary: {
+  generatedAt?: string;
+  error?: string;
+  summary?: {
     lecturesChecked: number;
     problemsChecked: number;
     lecturesWithIssues: number;
@@ -102,6 +103,18 @@ type AuditResult = {
 
 function AuditResultCard({ result }: { result: AuditResult | null }) {
   if (!result) return null;
+  if (!result.summary) {
+    return (
+      <div className="border border-border rounded-lg bg-card">
+        <div className="px-5 py-3 border-b border-border font-serif text-lg">
+          Content audit results
+        </div>
+        <div className="px-5 py-3 text-sm text-red-700 font-mono break-words">
+          Audit failed: {result.error ?? "unknown error"}
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="border border-border rounded-lg bg-card">
       <div className="px-5 py-3 border-b border-border flex items-center justify-between flex-wrap gap-2">
