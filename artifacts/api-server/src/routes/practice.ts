@@ -155,7 +155,7 @@ router.post("/practice/sessions/:sessionId/next", async (req, res): Promise<void
       correctAnswer: string;
       explanation: string;
     }>(
-      `You generate a single quantitative-reasoning practice problem for a college freshman. The problem MUST be on the topic "${topic.title}" and at difficulty "${difficultyLabel}" (${difficulty.toFixed(
+      `You generate a single developmental-mathematics practice problem for a developmental-math student. The problem MUST be on the topic "${topic.title}" and at difficulty "${difficultyLabel}" (${difficulty.toFixed(
         1,
       )}/5). Use $...$ for inline LaTeX where helpful. The answer must be a short string (a number, fraction, expression, or short word) — never multi-paragraph. Respond as strict JSON: {"prompt": string, "correctAnswer": string, "explanation": string}. Avoid these recent prompts: ${JSON.stringify(
         lastProblems.map((p) => p.prompt),

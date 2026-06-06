@@ -1,0 +1,1 @@
+- [Course seed needs schema first](qr-course-seed-boot.md) — api-server boot seed fails on empty DB; run `pnpm --filter @workspace/db run push` then restart.

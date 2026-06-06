@@ -18,24 +18,24 @@ const router: IRouter = Router();
 
 const WEEK_TITLES: Record<number, { title: string; summary: string }> = {
   1: {
-    title: "Week 1 — The number systems",
+    title: "Week 1 — Whole numbers, integers, and operations",
     summary:
-      "Counting, integers, rationals, the √2 scandal, the reals and completeness, complex numbers as rotations, zero and negatives, bases and place value, countable vs. uncountable infinity.",
+      "Place value, addition and subtraction, multiplication and division, factors, multiples and primes, negative numbers and the number line, order of operations, and problem-solving strategies.",
   },
   2: {
-    title: "Week 2 — Operations and structures",
+    title: "Week 2 — Fractions, decimals, percents, and ratios",
     summary:
-      "What an operation is; commutativity, associativity, distributivity; groups, rings, fields; vector spaces; functions; equivalence and isomorphism; modular arithmetic.",
+      "Understanding fractions, adding, subtracting, multiplying and dividing fractions, decimals and place value, converting between fractions, decimals and percents, and ratios, rates, and proportions.",
   },
   3: {
-    title: "Week 3 — The continuum: calculus, geometry, topology",
+    title: "Week 3 — Percents, measurement, and beginning algebra",
     summary:
-      "Limits, continuity, derivatives, integrals, the Fundamental Theorem of Calculus, sequences and Zeno, non-Euclidean geometry, topology and curvature.",
+      "Percent applications, units and conversion, variables and expressions, simplifying and evaluating expressions, solving one- and multi-step equations, and translating words into equations.",
   },
   4: {
-    title: "Week 4 — Foundations: logic, proof, undecidability",
+    title: "Week 4 — Graphing, exponents, polynomials, and geometry",
     summary:
-      "Propositional and predicate logic, proof, induction, Russell's paradox, independence results, Gödel's theorems, probability foundations, the halting problem.",
+      "The coordinate plane, graphing linear equations, slope and intercepts, exponents and powers, polynomials, perimeter, area and volume, reading tables, charts and graphs, and a capstone synthesis.",
   },
 };
 
@@ -124,7 +124,7 @@ router.get("/course/overview", async (_req, res) => {
 
   res.json(
     GetCourseOverviewResponse.parse({
-      title: "Teach Yourself Conceptual Mathematics",
+      title: "Teach Yourself Developmental Mathematics",
       weeks,
       totals: { assignmentsCompleted, assignmentsTotal, practiceCount },
     }),

@@ -63,8 +63,8 @@ export function Scene2({ setCursorPos, setIsClicking }: { setCursorPos: (pos: {x
     >
       {/* Left Pane: Lecture Content */}
       <div className="w-1/2 h-full border-r border-border p-12 overflow-hidden flex flex-col relative">
-        <div className="text-xs font-bold tracking-widest text-muted-foreground mb-4">WEEK 1 — THE NUMBER SYSTEMS</div>
-        <h1 className="text-3xl font-serif text-primary mb-8">1.1 Counting, the integers, and the number line</h1>
+        <div className="text-xs font-bold tracking-widest text-muted-foreground mb-4">WEEK 1 — WHOLE NUMBERS AND OPERATIONS</div>
+        <h1 className="text-3xl font-serif text-primary mb-8">1.1 Whole numbers and place value</h1>
         
         <div className="flex bg-muted/50 rounded-lg p-1 w-fit mb-10 border border-border">
           <div className={`px-4 py-1.5 rounded-md text-sm font-medium transition-colors ${phase < 1 ? 'bg-white shadow-sm text-primary' : 'text-muted-foreground'}`}>Short</div>
@@ -73,12 +73,12 @@ export function Scene2({ setCursorPos, setIsClicking }: { setCursorPos: (pos: {x
         </div>
 
         <div className="prose prose-sm max-w-none text-foreground/80 space-y-6">
-          <h2 className="font-serif text-2xl text-primary">What is a number?</h2>
+          <h2 className="font-serif text-2xl text-primary">What is place value?</h2>
           <p>
-            We start with the simplest objects in mathematics and the hardest question you can ask of them: what <em>is</em> a number? Before any equation, derivative, or proof, there is just counting — one apple, two apples, three.
+            We start with the most familiar objects in mathematics and the quiet idea that makes them work: what gives a digit its value? Before any fraction, equation, or proof, there is just counting — and the clever way we write what we count.
           </p>
           <p>
-            The natural numbers ℕ = {'{1, 2, 3, …}'} are what you use to count. Extend them with zero and the negatives and you get the integers ℤ. Picture them as evenly-spaced ticks on an infinite line.
+            We write every whole number with just ten digits, 0 through 9. The reason ten symbols are enough is <em>place value</em>: a digit's value depends on where it sits. In 4072, the 4 means 4 × 1000.
           </p>
           
           <AnimatePresence>
@@ -90,10 +90,10 @@ export function Scene2({ setCursorPos, setIsClicking }: { setCursorPos: (pos: {x
                 className="space-y-6"
               >
                 <p>
-                  The picture of integers as ticks on a line — popularised by John Wallis in the 17th century — is so familiar it hides a conceptual leap. Negative numbers were once dismissed as "absurd" or "fictitious." Calling them <em>points on a line</em>, rather than just bookkeeping for debts, is what made them feel real.
+                  For most of history people wrote numbers <em>without</em> place value. Roman numerals spell out MMXXIV for 2024 — there is no column to carry in, so multiplication was a job for specialists with an abacus.
                 </p>
                 <p>
-                  In symbols, the integers are ℤ = {'{…, -3, -2, -1, 0, 1, 2, 3, …}'} and the positive integers are ℤ₊ = {'{n ∈ ℤ : n &gt; 0}'} = ℕ. You will write set-builder statements like this on every homework — being precise about <em>which</em> set you mean is half of mathematics.
+                  In expanded form, 4072 = 4 × 1000 + 0 × 100 + 7 × 10 + 2 × 1. Each place is worth ten times the place to its right — that single rule is the engine behind every calculation you will ever do.
                 </p>
               </motion.div>
             )}
@@ -120,13 +120,13 @@ export function Scene2({ setCursorPos, setIsClicking }: { setCursorPos: (pos: {x
               >
                 <div className="mb-4 text-xs font-semibold text-muted-foreground uppercase tracking-widest">Starter questions for this section</div>
                 <div className="flex flex-wrap gap-2 mb-6">
-                  <div className="px-3 py-1.5 rounded-full border border-border text-sm text-primary bg-muted/30">Why is zero "a number" but ∞ isn't?</div>
-                  <div className="px-3 py-1.5 rounded-full border border-border text-sm text-primary bg-muted/30">What's the difference between ℕ and ℤ?</div>
-                  <div className="px-3 py-1.5 rounded-full border border-border text-sm text-primary bg-muted/30">Why are the rationals countable but the reals are not?</div>
+                  <div className="px-3 py-1.5 rounded-full border border-border text-sm text-primary bg-muted/30">Why does each place mean ten times the one to its right?</div>
+                  <div className="px-3 py-1.5 rounded-full border border-border text-sm text-primary bg-muted/30">What does the 0 in 4072 actually do?</div>
+                  <div className="px-3 py-1.5 rounded-full border border-border text-sm text-primary bg-muted/30">Why was place value such a big deal historically?</div>
                 </div>
                 <div className="w-full h-24 border border-border rounded-lg bg-muted/20 p-3 text-muted-foreground text-sm flex items-end shadow-inner">
                   <div className="w-full flex justify-between">
-                    <span>Ask a question about counting and the number line...</span>
+                    <span>Ask a question about place value...</span>
                     <div className="w-8 h-8 rounded bg-primary text-white flex items-center justify-center cursor-pointer opacity-50">↑</div>
                   </div>
                 </div>
@@ -157,7 +157,7 @@ export function Scene2({ setCursorPos, setIsClicking }: { setCursorPos: (pos: {x
                     className="p-6 border border-border rounded-xl shadow-sm bg-white"
                   >
                     <p className="text-foreground font-medium mb-6">
-                      Write the set of positive integers in set-builder notation, as a subset of ℤ.
+                      Write the prime factorization of 12 using exponents.
                     </p>
                     <div className="w-full h-12 border border-border rounded-md bg-muted/10 mb-4 px-3 flex items-center text-muted-foreground">Type your answer...</div>
                     <div className="px-4 py-2 bg-primary text-white rounded-md text-sm font-medium w-fit ml-auto">Submit</div>

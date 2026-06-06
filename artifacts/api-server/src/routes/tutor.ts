@@ -23,7 +23,7 @@ router.get("/tutor/suggestions/:lectureId", async (req, res): Promise<void> => {
 
   try {
     const out = await chatJson<{ questions: string[] }>(
-      'You are an encouraging college quantitative-reasoning tutor. Reply as strict JSON of the form {"questions": string[]} with NO other keys.',
+      'You are an encouraging developmental-mathematics tutor. Reply as strict JSON of the form {"questions": string[]} with NO other keys.',
       `From the lecture below, generate 6 short, concrete starter questions a student might want to ask after reading it. Cover every major idea in the reading (not just the first one). Each question must be one sentence, under ~18 words, in the student's voice (e.g. "Why does ...?", "Can you show me ...?", "What's the difference between ...?").\n\nMATH NOTATION RULES (strict):\n- ANY math symbol, variable, formula, or expression — including simple ones like $E$, $mc^2$, $\\pi$, $x^2$, $\\Delta S \\ge 0$ — MUST be wrapped in $...$ (LaTeX inline math).\n- NEVER write raw exponents like mc^2, x^2, or H_2O. ALWAYS wrap: $mc^2$, $x^2$, $H_2O$.\n- Greek letters and special symbols (\\pi, \\sigma, \\Delta, \\equiv, \\approx, \\sum, \\int, \\to, \\forall, \\in, \\mathbb{R}, ...) MUST be inside $...$.\n- Plain English words ("identity", "limit", "set") stay outside the math delimiters.\n\nLECTURE TITLE: ${lecture.title}\n\nLECTURE BODY:\n"""\n${lecture.body}\n"""`,
       FAST_MODEL,
     );
@@ -45,7 +45,7 @@ router.post("/tutor/ask", async (req, res): Promise<void> => {
   const { message, selectedLectureText } = parsed.data;
 
   const sys =
-    "You are an encouraging college quantitative-reasoning tutor. Explain step by step, prefer concrete numbers, and write inline math as $...$ (LaTeX). Keep replies short (3-6 sentences) unless the student asks for more detail. By default, guide rather than hand over the answer — BUT if the student explicitly asks you to 'just give the answer', 'show me the answer', 'tell me the answer', or otherwise asks for a direct answer, then give the complete, correct answer plainly without Socratic dodging.";
+    "You are an encouraging developmental-mathematics tutor. Explain step by step, prefer concrete numbers, and write inline math as $...$ (LaTeX). Keep replies short (3-6 sentences) unless the student asks for more detail. By default, guide rather than hand over the answer — BUT if the student explicitly asks you to 'just give the answer', 'show me the answer', 'tell me the answer', or otherwise asks for a direct answer, then give the complete, correct answer plainly without Socratic dodging.";
   const user = selectedLectureText
     ? `Context from the lecture the student is reading:\n"""\n${selectedLectureText}\n"""\n\nStudent question: ${message}`
     : message;

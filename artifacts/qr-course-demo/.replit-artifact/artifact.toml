@@ -1,6 +1,6 @@
 kind = "video"
 previewPath = "/qr-course-demo/"
-title = "Conceptual Mathematics Demo Video"
+title = "Developmental Mathematics Demo Video"
 version = "1.0.0"
 id = "artifacts/qr-course-demo"
 router = "path"

@@ -19,1279 +19,1005 @@ type SeedTopic = {
 
 const TOPICS: SeedTopic[] = [
   // ───────────────────────────────────────────────────────────────
-  // Week 1 — The number systems
+  // Unit 1 — Whole numbers, integers, and operations
   // ───────────────────────────────────────────────────────────────
   {
-    slug: "counting-integers-numberline",
-    title: "Counting, the integers, and the number line",
+    slug: "whole-numbers-place-value",
+    title: "Whole numbers and place value",
     weekNumber: 1,
-    blurb: "From tally marks to a continuous line of integers.",
-    lectureTitle: "1.1 Counting, the integers, and the number line",
-    body: `# Counting, the integers, and the number line
+    blurb: "How position gives a digit its value.",
+    lectureTitle: "1.1 Whole numbers and place value",
+    body: `# Whole numbers and place value
 
-Mathematics begins with *counting*. The natural numbers $\\mathbb{N} = \\{1, 2, 3, \\ldots\\}$ — or $\\{0, 1, 2, \\ldots\\}$, depending on the author — are the answer to "how many?" They are discrete, ordered, and unbounded above.
+The **whole numbers** are $0, 1, 2, 3, \\ldots$ — the numbers we use to count. We write them with just ten symbols, the digits $0$ through $9$. The reason ten symbols are enough to write *any* whole number, no matter how large, is **place value**.
 
-Extending counting in the opposite direction gives the **integers** $\\mathbb{Z} = \\{\\ldots, -2, -1, 0, 1, 2, \\ldots\\}$. The letter $\\mathbb{Z}$ comes from German *Zahlen* ("numbers"). What makes $\\mathbb{Z}$ a genuine *extension* of $\\mathbb{N}$ is that subtraction is now always defined: $3 - 5 = -2$ has no answer in $\\mathbb{N}$, but it does in $\\mathbb{Z}$.
+## What place value means
+
+In our base-ten system, a digit's value depends on *where* it sits. In the number $4{,}072$:
+
+- the $4$ is in the **thousands** place, so it means $4 \\times 1000$,
+- the $0$ is in the **hundreds** place ($0 \\times 100$),
+- the $7$ is in the **tens** place ($7 \\times 10$),
+- the $2$ is in the **ones** place ($2 \\times 1$).
+
+So the number in **expanded form** is
+
+$$4072 = 4 \\times 1000 + 0 \\times 100 + 7 \\times 10 + 2 \\times 1.$$
+
+Each place is worth ten times the place to its right. That single rule — place value is the quiet engine behind every calculation you will ever do — is what lets us add, subtract, multiply, and divide by working one column at a time.
+
+## Reading and comparing
+
+Because larger places sit to the left, comparing whole numbers is just comparing digits from the left: $4072 > 3999$ even though $3999$ has bigger-looking digits, because the thousands place decides first.
+
+## A historical example
+
+For most of history, people wrote numbers *without* place value. Roman numerals spell out $\\text{MMXXIV}$ for $2024$ — there is no "place," so there is no column to carry in, and multiplication was a job for specialists with an abacus. The Hindu–Arabic place-value system, carried to Europe by Fibonacci's *Liber Abaci* in $1202$, replaced all of that with ten digits and a symbol for "nothing here," $0$. It is hard to overstate how much arithmetic that one idea unlocked.`,
+  },
+  {
+    slug: "addition-subtraction",
+    title: "Addition and subtraction",
+    weekNumber: 1,
+    blurb: "Combining and taking away, and why they undo each other.",
+    lectureTitle: "1.2 Addition and subtraction",
+    body: `# Addition and subtraction
+
+**Addition** combines quantities; **subtraction** takes one quantity away from another. They are the two most basic operations, and they are **inverse** operations: each one undoes the other.
+
+## Carrying and borrowing
+
+Place value is what makes column addition work. When a column adds to more than $9$, we **carry** the extra into the next place:
+
+$$27 + 48: \\quad 7 + 8 = 15 \\;\\Rightarrow\\; \\text{write } 5, \\text{ carry } 1; \\quad 1 + 2 + 4 = 7 \\;\\Rightarrow\\; 75.$$
+
+Subtraction reverses this: when a column is too small, we **borrow** ten from the place to the left.
+
+## Inverse operations
+
+Addition and subtraction are tied together by a single fact:
+
+$$\\text{if } a + b = c, \\quad \\text{then } c - b = a \\ \\text{ and } \\ c - a = b.$$
+
+So $8 + 5 = 13$ immediately gives you the two subtraction facts $13 - 5 = 8$ and $13 - 8 = 5$. This is why "checking your subtraction by adding back" always works — you are using the inverse.
+
+## Properties worth naming
+
+- **Commutative:** $a + b = b + a$. Order does not matter for addition (it *does* for subtraction: $7 - 3 \\neq 3 - 7$).
+- **Associative:** $(a + b) + c = a + (b + c)$. Grouping does not matter.
+- **Identity:** $a + 0 = a$. Adding zero changes nothing.
+
+## A real example
+
+A cashier making change is doing subtraction by *counting up* — using the inverse. For a 7-dollar item paid with a 20, instead of computing $20 - 7$ directly, they count $7 \\to 10 \\to 20$, handing over $3$ then $10$, which is $13$ in change. They found $20 - 7 = 13$ by solving $7 + \\square = 20$. The inverse relationship turns a hard subtraction into an easy addition.`,
+  },
+  {
+    slug: "multiplication-division",
+    title: "Multiplication and division",
+    weekNumber: 1,
+    blurb: "Repeated addition, sharing, and their inverse link.",
+    lectureTitle: "1.3 Multiplication and division",
+    body: `# Multiplication and division
+
+**Multiplication** is repeated addition of equal groups; **division** splits a total into equal groups. Like addition and subtraction, they are **inverse** operations.
+
+## Multiplication as equal groups
+
+$7 \\times 6$ means "seven groups of six":
+
+$$7 \\times 6 = 6 + 6 + 6 + 6 + 6 + 6 + 6 = 42.$$
+
+It also counts a rectangle of dots $7$ rows by $6$ columns — which is why $7 \\times 6 = 6 \\times 7$. Multiplication is **commutative**.
+
+## Division as the inverse
+
+$$\\text{if } a \\times b = c, \\quad \\text{then } c \\div b = a \\ \\text{ and } \\ c \\div a = b.$$
+
+So $7 \\times 6 = 42$ gives $42 \\div 6 = 7$ and $42 \\div 7 = 6$. Division asks "how many groups?" or "how big is each group?"
+
+## Remainders and dividing by zero
+
+Not every division comes out even: $17 \\div 5 = 3 \\text{ remainder } 2$, because $5 \\times 3 + 2 = 17$. And division by zero is **undefined**: $6 \\div 0$ would have to be a number that gives $6$ when multiplied by $0$, but everything times $0$ is $0$. There is no such number.
+
+## Properties worth naming
+
+- **Commutative:** $a \\times b = b \\times a$.
+- **Associative:** $(a \\times b) \\times c = a \\times (b \\times c)$.
+- **Identity:** $a \\times 1 = a$.
+- **Distributive:** $a \\times (b + c) = a \\times b + a \\times c$ — the bridge between multiplication and addition.
+
+## A real example
+
+Tiling a floor is division in disguise. A wall $42$ inches wide takes $42 \\div 6 = 7$ tiles that are $6$ inches each — but only because $7 \\times 6 = 42$ comes out even. When it does not, the remainder is the gap you have to cut a tile to fill. Builders live in the world of "quotient and remainder."`,
+  },
+  {
+    slug: "factors-multiples-primes",
+    title: "Factors, multiples, and primes",
+    weekNumber: 1,
+    blurb: "The building blocks of whole numbers.",
+    lectureTitle: "1.4 Factors, multiples, and primes",
+    body: `# Factors, multiples, and primes
+
+A **factor** of a number divides it evenly; a **multiple** is what you get by multiplying. $6$ is a factor of $24$ because $24 \\div 6 = 4$ with no remainder, and $24$ is a multiple of $6$.
+
+## Primes: the atoms of arithmetic
+
+A **prime number** has exactly two factors: $1$ and itself. The first few are $2, 3, 5, 7, 11, 13, \\ldots$ A number with more than two factors is **composite**. (Note $1$ is neither — it has only one factor.)
+
+The **Fundamental Theorem of Arithmetic** says every whole number bigger than $1$ is a product of primes in exactly one way (apart from order). For example:
+
+$$60 = 2 \\times 2 \\times 3 \\times 5 = 2^2 \\times 3 \\times 5.$$
+
+This **prime factorization** is a number's fingerprint.
+
+## GCF and LCM
+
+From prime factorizations you read off two useful numbers:
+
+- the **greatest common factor (GCF)** — the largest number dividing both, found from shared prime factors;
+- the **least common multiple (LCM)** — the smallest number both divide into.
+
+For $12 = 2^2 \\times 3$ and $18 = 2 \\times 3^2$: $\\gcd(12,18) = 2 \\times 3 = 6$ and $\\operatorname{lcm}(12,18) = 2^2 \\times 3^2 = 36$. We will need the LCM the moment we add fractions.
+
+## A real example
+
+Internet security rests on primes. The RSA system that protects online payments multiplies two enormous prime numbers — each hundreds of digits long — to make a public key. Anyone can multiply them; *nobody* can factor the product back apart in a reasonable time. The one-way difficulty of un-mixing a prime factorization is, quite literally, what keeps your credit-card number safe.`,
+  },
+  {
+    slug: "negative-numbers-number-line",
+    title: "Negative numbers and the number line",
+    weekNumber: 1,
+    blurb: "Extending counting below zero.",
+    lectureTitle: "1.5 Negative numbers and the number line",
+    body: `# Negative numbers and the number line
+
+The whole numbers stop at $0$, but the world does not: temperatures drop below freezing, accounts go into debt, elevators go below ground. The **integers** extend the whole numbers in the other direction:
+
+$$\\mathbb{Z} = \\{\\ldots, -3, -2, -1, 0, 1, 2, 3, \\ldots\\}.$$
 
 ## The number line
 
-Around 1600, John Wallis popularized the picture of integers as evenly-spaced points on a horizontal **line** stretching to infinity in both directions. The visual is so familiar we forget it is a *modeling choice*: we are asserting that numbers, which began life as counts of distinct objects, can be identified with positions on a continuum.
+Draw a horizontal line, mark $0$, put the positives to the right and the negatives to the left, evenly spaced. Now every integer has a **place**. Bigger means farther right, so $-5 < -2$: negative five is *to the left of* negative two, hence smaller, even though "$5$" looks bigger than "$2$."
 
-That single picture quietly unifies arithmetic with geometry. Addition becomes translation; negation becomes reflection through $0$; ordering ($<$, $>$) becomes "left of, right of." Every later number system — the rationals, the reals, the complex numbers — is built by adding more points to (or stacking more lines onto) this single mental object.
+## Absolute value
+
+The **absolute value** $|x|$ is the distance from $0$, ignoring direction:
+
+$$|{-5}| = 5, \\qquad |5| = 5, \\qquad |0| = 0.$$
+
+Distance is never negative.
+
+## Signed arithmetic
+
+- Adding a negative moves left: $3 + (-5) = -2$.
+- Subtracting is adding the opposite: $4 - 7 = 4 + (-7) = -3$.
+- Two negatives multiplied give a positive: $(-3)\\times(-4) = 12$; a negative times a positive is negative: $(-3)\\times 4 = -12$.
 
 ## A historical example
 
-Negative numbers were rejected as absurd in Europe until the 17th century — Cardano (1545) called them *numeri ficti*, "fictitious numbers." What changed minds was *bookkeeping*: a debt of seven coins is structurally a $-7$, and treating it as a number lets you add receipts and debts in one column. The number line absorbed the negatives by giving them a home: a *place* to stand, on the left of zero.`,
+Negative numbers were distrusted for centuries — the Italian mathematician Cardano called them *numeri ficti*, "fictitious numbers," as late as $1545$. What finally made them ordinary was **bookkeeping**: a debt of seven coins behaves exactly like $-7$, and putting credits and debts in one signed column lets a merchant total the books in a single sweep. The number line gave the negatives a home, and accounting gave them a job.`,
   },
   {
-    slug: "rationals-ratios",
-    title: "Rational numbers and ratios",
+    slug: "order-of-operations",
+    title: "Order of operations",
     weekNumber: 1,
-    blurb: "Numbers as ratios of integers; why $\\mathbb{Q}$ is dense.",
-    lectureTitle: "1.2 Rational numbers and ratios",
-    body: `# Rational numbers and ratios
+    blurb: "The agreed-upon order that makes expressions unambiguous.",
+    lectureTitle: "1.6 Order of operations",
+    body: `# Order of operations
 
-A **rational number** is a ratio $p/q$ of integers with $q \\neq 0$. The set of all such ratios, with two representations identified when they cross-multiply equal, is
+What is $2 + 3 \\times 4$? If you add first you get $20$; if you multiply first you get $14$. To stop one expression from having two answers, mathematicians agreed on a fixed **order of operations**.
 
-$$\\mathbb{Q} = \\{\\,p/q : p, q \\in \\mathbb{Z},\\ q \\neq 0\\,\\}.$$
+## The order
 
-The point of this construction is to make *division* always work — exactly as the integers existed to make subtraction always work.
+1. **Parentheses** (and other grouping symbols) first — innermost out.
+2. **Exponents** next.
+3. **Multiplication and division**, left to right.
+4. **Addition and subtraction**, left to right.
 
-## Density
+A common memory aid is **PEMDAS**. The catch most students miss: multiplication and division share *one* step done left to right, and so do addition and subtraction. So $8 \\div 4 \\times 2 = 2 \\times 2 = 4$, not $8 \\div 8 = 1$.
 
-Between any two rationals, no matter how close, there is another rational: take their average. Iterate, and you discover that the rationals are **dense** on the number line — there are no "gaps" between them as far as any finite measurement could ever detect.
+## Worked examples
 
-This is so counterintuitive that for centuries mathematicians assumed the rationals already filled the line. They do not — but you cannot tell from the inside.
+$$2 + 3 \\times 4 = 2 + 12 = 14.$$
 
-## A scientific example
+$$2 + 3 \\times 4^2 = 2 + 3 \\times 16 = 2 + 48 = 50.$$
 
-Every measurement humans actually make is rational. A digital scale reading "$1.732\\,\\text{kg}$" is asserting $1732/1000$. The speed of light in SI units, $c = 299{,}792{,}458\\,\\text{m/s}$, is an *exact* integer by definition since 1983 — and therefore rational.
+$$5 \\times (2 + 3)^2 = 5 \\times 5^2 = 5 \\times 25 = 125.$$
 
-## Ratios vs. fractions
+Parentheses override everything — they are how you *force* a different order.
 
-The word *ratio* in $\\mathbb{Q}$ matters. Pythagoras taught that the harmony of a musical interval is a ratio of small integers: the octave is $2{:}1$, the perfect fifth $3{:}2$, the perfect fourth $4{:}3$. Greek mathematics for two centuries was essentially the study of *ratios of magnitudes*, on the implicit assumption that any two magnitudes had one. The next lecture is the story of how that assumption broke.`,
+## A real example
+
+Spreadsheets and calculators bake this order in. Type \`=2+3*4\` into any spreadsheet and it returns $14$, not $20$, because the software follows the exact same convention. Programmers rely on it constantly — and when they need a different grouping, they add parentheses, just as you do on paper. The order of operations is not arbitrary fussiness; it is the shared grammar that lets a formula mean the same thing to every person and every machine that reads it.`,
   },
   {
-    slug: "irrationals-sqrt2",
-    title: "Irrational numbers and the $\\sqrt 2$ scandal",
+    slug: "word-problems-strategies",
+    title: "Word problems and problem-solving strategies",
     weekNumber: 1,
-    blurb: "The diagonal of the unit square is not a ratio.",
-    lectureTitle: "1.3 Irrational numbers and the $\\sqrt 2$ scandal",
-    body: `# Irrational numbers and the $\\sqrt 2$ scandal
+    blurb: "Turning a story into arithmetic you can do.",
+    lectureTitle: "1.7 Word problems and problem-solving strategies",
+    body: `# Word problems and problem-solving strategies
 
-The Pythagoreans believed every length was a ratio of two integers — that is, every length was rational. The unit square killed that belief.
+The hardest part of a word problem is usually not the arithmetic — it is deciding *which* arithmetic. A reliable strategy turns a paragraph into an expression you can evaluate.
 
-## The diagonal
+## A four-step plan
 
-By the Pythagorean theorem, the diagonal of a square of side $1$ has length $d$ with $d^2 = 1^2 + 1^2 = 2$, so $d = \\sqrt 2$. The Pythagoreans tried to write $\\sqrt 2 = p/q$ and discovered they could not.
+1. **Understand.** What is being asked? What is the single quantity you want?
+2. **Plan.** What is given, and which operation connects the givens to the answer? Watch for signal words: "total / altogether" suggests addition, "left / fewer" subtraction, "each / per / of" multiplication, "shared / split" division.
+3. **Solve.** Write the expression and compute it, respecting the order of operations.
+4. **Check.** Is the answer reasonable? Does it have the right units? Estimate to catch big mistakes.
 
-## The proof by contradiction
+## Worked example
 
-Suppose $\\sqrt 2 = p/q$ in lowest terms. Then $p^2 = 2 q^2$, so $p^2$ is even, so $p$ is even, so $p = 2k$. Substituting: $4k^2 = 2q^2$, i.e. $q^2 = 2k^2$, so $q$ is even too. But then $p$ and $q$ share a factor of $2$ — contradicting "lowest terms." Therefore no such $p/q$ exists. $\\sqrt 2 \\notin \\mathbb{Q}$.
+*A shirt costs 18 dollars and you buy 3. How much do you spend?* "Each" and equal groups signal multiplication:
 
-This is one of the oldest theorems in mathematics and one of the cleanest examples of *proof by contradiction*, a technique we will revisit in week 4.
+$$3 \\times 18 = 54 \\ \\text{dollars}.$$
 
-## A scandal, not just a result
+Check by estimating: $3 \\times 20 = 60$, and $54$ is a little under that — reasonable.
 
-Legend says Hippasus of Metapontum, who first proved this, was thrown overboard by his fellow Pythagoreans for revealing the result. Whether or not the drowning happened, the cultural shock was real: the entire Pythagorean cosmology — "all is number" meaning "all is ratio of integers" — collapsed. A new kind of number was needed.
+## Translating into expressions
 
-## The bigger picture
+Often the win is writing the calculation, not just the number. *"You deposit 40 dollars and withdraw 55."* As signed numbers:
 
-$\\sqrt 2$, $\\pi$, $e$, $\\log_2 3$, and almost every number you can write down are irrational. The irrationals are not a few exotic exceptions sprinkled into $\\mathbb{Q}$; they are, in a precise sense we will quantify in 1.8, the *overwhelming majority* of the real numbers.`,
+$$40 + (-55) = -15,$$
+
+an account 15 dollars overdrawn. Naming the operation is half the battle.
+
+## A real example
+
+NASA lost the $\\$125$ million Mars Climate Orbiter in $1999$ because two teams skipped step 4. One used metric units (newtons), the other imperial (pound-force), and nobody checked that the numbers meant the same thing. The arithmetic was fine; the *setup* was wrong. Estimating and checking units is not busywork — it is the step that catches the errors that matter most.`,
   },
-  {
-    slug: "reals-completeness",
-    title: "Real numbers and completeness",
-    weekNumber: 1,
-    blurb: "Filling in the gaps: $\\mathbb{R}$ has no holes.",
-    lectureTitle: "1.4 Real numbers and completeness",
-    body: `# Real numbers and completeness
-
-The rationals are dense but full of holes — $\\sqrt 2$, $\\pi$, and uncountably many others are missing. The **real numbers** $\\mathbb{R}$ are the result of filling in *every* such hole.
-
-## What "complete" means
-
-A number system is **complete** if every "convergent-looking" sequence actually converges to something *inside the system*. Two precise versions of this idea:
-
-- **Least Upper Bound axiom.** Every nonempty subset of $\\mathbb{R}$ with an upper bound has a least upper bound (a supremum) in $\\mathbb{R}$.
-- **Cauchy completeness.** Every sequence whose terms get arbitrarily close to each other converges to a real limit.
-
-In $\\mathbb{Q}$ both properties *fail*. The sequence $1, 1.4, 1.41, 1.414, 1.4142, \\ldots$ of decimal approximations to $\\sqrt 2$ is a Cauchy sequence of rationals with no rational limit. In $\\mathbb{R}$ its limit is $\\sqrt 2$, which is, by construction, *in* $\\mathbb{R}$.
-
-## How $\\mathbb{R}$ is built
-
-Two classical constructions:
-
-1. **Dedekind cuts** (1872). A real number is a partition of $\\mathbb{Q}$ into a "lower" and "upper" set with no greatest element below. $\\sqrt 2$ is the cut $\\{q \\in \\mathbb{Q} : q^2 < 2\\}\\,|\\,\\{q \\in \\mathbb{Q} : q^2 > 2\\}$.
-2. **Cauchy sequences** (Cantor, 1872). A real number is an equivalence class of Cauchy sequences of rationals.
-
-Both constructions yield the same field $\\mathbb{R}$, up to isomorphism.
-
-## A scientific example
-
-In physics, the *continuum* hypothesis — that space and time are modeled by $\\mathbb{R}$, not $\\mathbb{Q}$ — is what lets us write down differential equations. The reals' completeness is exactly what guarantees that, e.g., Newton's $F = ma$ has solutions; in the rationals alone, most ODEs would have no solution to converge to.`,
-  },
-  {
-    slug: "complex-rotations",
-    title: "Imaginary and complex numbers as rotations",
-    weekNumber: 1,
-    blurb: "$i$ is not mysterious — it's a $90°$ turn.",
-    lectureTitle: "1.5 Imaginary and complex numbers as rotations",
-    body: `# Imaginary and complex numbers as rotations
-
-A **complex number** has the form $z = a + bi$ with $a, b \\in \\mathbb{R}$ and $i$ defined by $i^2 = -1$. The set of all such numbers is $\\mathbb{C}$.
-
-## The leap
-
-Cardano (1545) used $\\sqrt{-1}$ as a *bookkeeping device* in solving cubic equations — the imaginary parts cancelled at the end, leaving real roots. For two centuries $\\sqrt{-1}$ remained, in Euler's words, "neither nothing, nor greater than nothing, nor less than nothing." The mystery was: *what is it the number of?*
-
-## The Argand picture
-
-Caspar Wessel (1799) and Jean-Robert Argand (1806) independently noticed that complex numbers live not on a *line* but on a *plane*: identify $a + bi$ with the point $(a, b)$. Real numbers occupy the horizontal axis. The number $i$ sits at $(0, 1)$.
-
-In this picture, **multiplication by $i$ is rotation by $90°$**. Multiplying by $i$ twice rotates by $180°$, which is multiplication by $-1$ — and that is precisely the equation $i^2 = -1$. The imaginary unit is not a mystery; it is the quarter-turn.
-
-More generally, multiplying by $e^{i\\theta} = \\cos\\theta + i\\sin\\theta$ rotates the plane by angle $\\theta$. This is **Euler's formula**, and the special case $e^{i\\pi} + 1 = 0$ packages five fundamental constants in seven symbols.
-
-## A scientific example
-
-Alternating current in electrical engineering is described by complex *impedances*: a resistor contributes a real number, a capacitor or inductor contributes an imaginary number. The phase shift between voltage and current is literally an angle in the complex plane. Without $i$, you would write coupled trigonometric differential equations; with $i$, you write algebra.`,
-  },
-  {
-    slug: "zero-negatives-leaps",
-    title: "Zero, negatives, and other conceptual leaps",
-    weekNumber: 1,
-    blurb: "How long it took to accept the numbers we now take for granted.",
-    lectureTitle: "1.6 Zero, negatives, and other conceptual leaps",
-    body: `# Zero, negatives, and other conceptual leaps
-
-The set $\\{0, 1, -3, \\sqrt 2, \\pi, i\\}$ contains nothing exotic to a modern eye. To the mathematicians who lived through the introduction of each of these ideas, every entry was scandalous.
-
-## Zero
-
-Most early number systems had no $0$. The Babylonians, Greeks, and Romans counted with words for "nothing" but no *numeral* for it — Roman numerals have no zero. Indian mathematicians (Brahmagupta, c. 628 CE) wrote down the first formal arithmetic rules for $0$: $a + 0 = a$, $a \\cdot 0 = 0$, and the still-debated $a / 0$. The numeral itself, *śūnya* ("emptiness"), travelled west via Arabic mathematicians and reached Europe through Fibonacci's *Liber Abaci* (1202). Even then, several Italian cities banned zero into the 1300s on the grounds that it made accounting forgery easier.
-
-## Negatives
-
-Diophantus (3rd c. CE) called the equation $4x + 20 = 4$ "absurd" because its solution would have to be negative. Descartes (1637) called negative roots of polynomial equations *fausses racines*, "false roots." Acceptance only came when negatives modelled something — debt, direction, signed measurement — that could not be wished away.
-
-## Irrationals, transcendentals, $i$
-
-Each new kind of number arrived as a forced response to an equation the previous system could not solve:
-
-- $x + 1 = 0$ forces $\\mathbb{Z}$.
-- $2x = 1$ forces $\\mathbb{Q}$.
-- $x^2 = 2$ forces $\\mathbb{R}$ (or at least the algebraic reals).
-- $x^2 + 1 = 0$ forces $\\mathbb{C}$.
-
-## The lesson
-
-A *conceptual leap* in mathematics is almost always the recognition that an object the previous generation called "impossible" is in fact useful, consistent, and indispensable. The reluctance is cultural, not logical.`,
-  },
-  {
-    slug: "bases-place-value",
-    title: "Bases, place value, and representation",
-    weekNumber: 1,
-    blurb: "A number is one thing; its written form is another.",
-    lectureTitle: "1.7 Bases, place value, and representation",
-    body: `# Bases, place value, and representation
-
-The number *seventeen* is a single concept. Its written representations include:
-
-- $17$ in base $10$
-- $10001$ in base $2$
-- $11$ in base $16$ (often written $0x11$)
-- XVII in Roman numerals
-- 一十七 in Chinese.
-
-The number is invariant; the *numeral* changes with the convention.
-
-## Place value
-
-In a positional system of base $b$, the string $d_k d_{k-1} \\ldots d_1 d_0$ means
-
-$$d_k b^k + d_{k-1} b^{k-1} + \\cdots + d_1 b + d_0,$$
-
-with each digit $d_i$ in $\\{0, 1, \\ldots, b-1\\}$. The *position* of a digit determines what power of $b$ it contributes. This is the deep insight that the Romans lacked: in Roman numerals, $X$ always means ten, no matter where it sits.
-
-Place value lets you do arithmetic algorithmically: add column by column, carry when a column overflows. Try long-division in Roman numerals — you can't, which is why the Roman world used an abacus.
-
-## Why base 10?
-
-There is no mathematical reason for base 10. We use it because humans have ten fingers. The Babylonians used base 60 — you still find it in time ($60$ seconds, $60$ minutes) and angles ($360°$). The Maya used base 20. Modern computers use base 2.
-
-## A scientific example
-
-Floating-point arithmetic in a computer represents a real number as $\\pm m \\cdot 2^{e}$, with the *mantissa* $m$ and *exponent* $e$ both stored in binary. The number $0.1$ has a finite decimal representation but an *infinite* binary one — which is why "0.1 + 0.2" is not exactly "0.3" in JavaScript. The mathematical number is fine; its representation in base $2$ rounds.
-
-## A philosophical aside
-
-Once you separate a number from its representation, you can ask: which properties of a number are intrinsic, and which are artifacts of how we wrote it? "Is 7 a prime?" is intrinsic. "Does the decimal expansion of 7 contain the digit 3?" is representational.`,
-  },
-  {
-    slug: "countable-uncountable",
-    title: "Countable vs. uncountable infinity",
-    weekNumber: 1,
-    blurb: "There are more reals than rationals — strictly more.",
-    lectureTitle: "1.8 Countable vs. uncountable infinity",
-    body: `# Countable vs. uncountable infinity
-
-For finite sets, "same size" means "same count." For infinite sets, Cantor (1874) showed that "same size" must mean **same cardinality**: there is a one-to-one correspondence (a bijection) between them.
-
-## Countable
-
-A set is **countable** if it can be put in bijection with $\\mathbb{N}$. Astonishingly:
-
-- $\\mathbb{Z}$ is countable: list $0, 1, -1, 2, -2, 3, -3, \\ldots$
-- $\\mathbb{N} \\times \\mathbb{N}$ is countable: walk diagonals $(0,0), (1,0), (0,1), (2,0), (1,1), (0,2), \\ldots$
-- $\\mathbb{Q}$ is countable: a rational $p/q$ is a pair of integers, so apply the previous result.
-
-So all three of $\\mathbb{N}$, $\\mathbb{Z}$, $\\mathbb{Q}$ have the *same* infinite size. Cantor called this size $\\aleph_0$ ("aleph-null").
-
-## Uncountable
-
-Cantor's **diagonal argument** shows $\\mathbb{R}$ is **not** countable. Suppose, for contradiction, you had a list $r_1, r_2, r_3, \\ldots$ of every real number in $[0,1]$. Write each $r_n$ as a decimal:
-
-$$r_1 = 0.d_{11} d_{12} d_{13} \\ldots$$
-$$r_2 = 0.d_{21} d_{22} d_{23} \\ldots$$
-$$\\vdots$$
-
-Now construct a new number $x = 0.e_1 e_2 e_3 \\ldots$ where $e_n$ is *different* from $d_{nn}$ (say, $e_n = 5$ if $d_{nn} \\neq 5$, else $e_n = 6$). By construction, $x$ differs from $r_n$ in the $n$th decimal place, so $x$ is not on the list — yet $x \\in [0,1]$. Contradiction. There is no such list.
-
-The cardinality of $\\mathbb{R}$ is strictly greater than $\\aleph_0$; it is usually written $\\mathfrak{c}$ or $2^{\\aleph_0}$.
-
-## What this means
-
-There are infinitely many sizes of infinity. The rationals are sparse compared to the reals in a precise sense: if you "pick a random real," the probability you get a rational is exactly $0$. Most numbers — almost all of them — are irrational, in fact *transcendental*, and we cannot write them down.
-
-This week we have climbed from counting to a hierarchy of infinities. Next week we ask: what are we *doing* to these numbers when we add, multiply, and group them?`,
-  },
-
   // ───────────────────────────────────────────────────────────────
-  // Week 2 — Operations and structures
+  // Unit 2 — Fractions, decimals, percents, and ratios
   // ───────────────────────────────────────────────────────────────
   {
-    slug: "what-is-operation",
-    title: "What an operation is",
+    slug: "understanding-fractions",
+    title: "Understanding fractions",
     weekNumber: 2,
-    blurb: "An operation is a function that combines elements of a set.",
-    lectureTitle: "2.1 What an operation is",
-    body: `# What an operation is
+    blurb: "Parts of a whole, and equivalent forms.",
+    lectureTitle: "2.1 Understanding fractions",
+    body: `# Understanding fractions
 
-We have spent week 1 collecting numbers. Now we ask: what is happening when we *combine* them?
+A **fraction** $\\dfrac{a}{b}$ describes a part of a whole. The bottom number, the **denominator** $b$, says how many equal pieces the whole is cut into; the top number, the **numerator** $a$, says how many of those pieces you have. In $\\dfrac{3}{4}$, the whole is cut into $4$ equal parts and you take $3$.
 
-## The formal definition
+## Equivalent fractions
 
-A **binary operation** on a set $S$ is a function
+Cutting each piece into more pieces does not change the amount:
 
-$$* : S \\times S \\to S$$
+$$\\frac{3}{4} = \\frac{3 \\times 3}{4 \\times 3} = \\frac{9}{12}.$$
 
-that takes two elements of $S$ and returns one element of $S$. Addition on $\\mathbb{R}$ is one ($+ : \\mathbb{R} \\times \\mathbb{R} \\to \\mathbb{R}$). So is multiplication. So is concatenation of strings, union of sets, composition of functions.
+Multiplying numerator and denominator by the same nonzero number gives an **equivalent fraction**. Running it backwards is **simplifying** (reducing): divide both by their common factor.
 
-The deep word in that definition is the codomain: the result is required to be *in $S$*. This is called **closure**, and it is not automatic.
+$$\\frac{12}{18} = \\frac{12 \\div 6}{18 \\div 6} = \\frac{2}{3}.$$
 
-## Closure: not automatic
+A fraction is in **lowest terms** when numerator and denominator share no common factor but $1$.
 
-- Subtraction is a binary operation on $\\mathbb{Z}$ but **not** on $\\mathbb{N}$ — $3 - 5 = -2 \\notin \\mathbb{N}$.
-- Division is a binary operation on $\\mathbb{Q}^{\\times} = \\mathbb{Q}\\setminus\\{0\\}$ but **not** on $\\mathbb{Q}$ — you cannot divide by $0$.
-- The cross product is a binary operation on $\\mathbb{R}^3$ but does not generalize as a binary operation to $\\mathbb{R}^n$ for arbitrary $n$.
+## Types and comparison
 
-The history of week 1 — the introduction of negatives, fractions, irrationals, complex numbers — is, retold structurally, the story of *enlarging the set so that the operation has closure*.
+- A **proper** fraction is less than $1$ (numerator smaller): $\\frac{3}{4}$.
+- An **improper** fraction is $1$ or more: $\\frac{7}{4}$.
+- A **mixed number** writes that as a whole part plus a fraction: $\\frac{7}{4} = 1\\frac{3}{4}$.
 
-## Unary and $n$-ary
+To compare fractions, give them a common denominator and compare numerators.
 
-Beyond binary, you also have:
+## A real example
 
-- **Unary** operations: negation $x \\mapsto -x$, square root $x \\mapsto \\sqrt x$.
-- **$n$-ary** operations: e.g. the determinant of an $n \\times n$ matrix.
-- **Nullary** operations (constants): the identity element $0$ of addition, the identity element $1$ of multiplication.
-
-## A scientific example
-
-In quantum mechanics, the operation $[A, B] = AB - BA$ on linear operators is a binary operation called the **commutator**. It is *not* closed under all combinations — its very failure of niceness encodes the uncertainty principle. The operation has been chosen because its violations of nice structure tell you something physical.`,
+Music is written in fractions. A whole note lasts a whole measure; a half note is $\\frac{1}{2}$ of it, a quarter note $\\frac{1}{4}$, an eighth note $\\frac{1}{8}$. A measure in $\\frac{4}{4}$ time is "full" exactly when the note values add to $1$ — for instance $\\frac{1}{4} + \\frac{1}{4} + \\frac{1}{2} = 1$. Every musician reading a score is checking that fractions add up to a whole.`,
   },
   {
-    slug: "commutative-associative-distributive",
-    title: "Commutativity, associativity, distributivity",
+    slug: "adding-subtracting-fractions",
+    title: "Adding and subtracting fractions",
     weekNumber: 2,
-    blurb: "Three structural laws — and what happens when they fail.",
-    lectureTitle: "2.2 Commutativity, associativity, distributivity",
-    body: `# Commutativity, associativity, distributivity
+    blurb: "Why you need a common denominator.",
+    lectureTitle: "2.2 Adding and subtracting fractions",
+    body: `# Adding and subtracting fractions
 
-Once we have an operation $*$ on a set $S$, three properties dominate the discussion.
+You can only add pieces that are the **same size**. That is the whole story behind the common-denominator rule.
 
-## Commutativity
+## Same denominator: easy
 
-$$a * b = b * a \\quad \\text{for all } a, b \\in S.$$
+When the denominators already match, just add (or subtract) the numerators and keep the denominator:
 
-Order doesn't matter. Addition and multiplication of real numbers are commutative. Subtraction is **not** — $3 - 5 \\neq 5 - 3$. Function composition is usually **not** — $\\sin(\\cos x) \\neq \\cos(\\sin x)$ in general. Matrix multiplication is **not** — and this failure is the whole content of quantum mechanics' non-commuting observables.
+$$\\frac{2}{7} + \\frac{3}{7} = \\frac{5}{7}.$$
 
-## Associativity
+## Different denominators: find a common one
 
-$$(a * b) * c = a * (b * c) \\quad \\text{for all } a, b, c \\in S.$$
+$\\frac{1}{2}$ and $\\frac{1}{3}$ are different-sized pieces, so first rewrite both with a common denominator — the **least common multiple** of $2$ and $3$, which is $6$:
 
-Grouping doesn't matter. Without associativity you cannot write $a*b*c$ unambiguously; you would have to specify which pair to combine first. Addition, multiplication, function composition, and matrix multiplication are all associative. Subtraction and the cross product are **not** — $(1-2)-3 = -4 \\neq 2 = 1 - (2-3)$, and $(\\vec a \\times \\vec b) \\times \\vec c \\neq \\vec a \\times (\\vec b \\times \\vec c)$ in general.
+$$\\frac{1}{2} = \\frac{3}{6}, \\qquad \\frac{1}{3} = \\frac{2}{6}, \\qquad \\frac{3}{6} + \\frac{2}{6} = \\frac{5}{6}.$$
 
-## Distributivity
+Subtraction works the same way:
 
-With two operations $*$ and $\\circ$ on the same set, $*$ **distributes over** $\\circ$ if
+$$\\frac{3}{4} - \\frac{1}{6} = \\frac{9}{12} - \\frac{2}{12} = \\frac{7}{12}.$$
 
-$$a * (b \\circ c) = (a * b) \\circ (a * c).$$
+Always simplify the result to lowest terms.
 
-Multiplication distributes over addition: $a(b + c) = ab + ac$. Addition does **not** distribute over multiplication: $a + (bc) \\neq (a + b)(a + c)$ in general.
+## Mixed numbers
 
-## Why these three?
+Add the whole parts and the fraction parts separately, or convert to improper fractions first:
 
-These three laws are not arbitrary — they are exactly the laws that make algebraic *manipulation* work. Solving $2x + 3 = 11$ silently uses every one of them. Without commutativity of addition, the order of the terms would matter. Without associativity, $2x + 3$ would be ambiguous. Without distributivity, you could not factor or expand.
+$$2\\tfrac{1}{2} + 1\\tfrac{1}{3} = 2 + 1 + \\tfrac{3}{6} + \\tfrac{2}{6} = 3\\tfrac{5}{6}.$$
 
-Modern abstract algebra is the systematic study of *which combinations of these laws hold*, and *what consequences each combination has*. The next four lectures are tour stops on that map.`,
+## A real example
+
+A recipe says $\\frac{3}{4}$ cup of flour and you have already added $\\frac{1}{3}$ cup. How much is left to add? You cannot subtract until the pieces match: $\\frac{3}{4} - \\frac{1}{3} = \\frac{9}{12} - \\frac{4}{12} = \\frac{5}{12}$ cup. Cooks who "eyeball it" are estimating this subtraction; bakers, where ratios are unforgiving, actually compute it.`,
   },
   {
-    slug: "groups-symmetry",
-    title: "Groups and symmetry",
+    slug: "multiplying-dividing-fractions",
+    title: "Multiplying and dividing fractions",
     weekNumber: 2,
-    blurb: "A group is a set with an invertible, associative operation.",
-    lectureTitle: "2.3 Groups and symmetry",
-    body: `# Groups and symmetry
+    blurb: "Multiply across; divide by flipping.",
+    lectureTitle: "2.3 Multiplying and dividing fractions",
+    body: `# Multiplying and dividing fractions
 
-A **group** is a set $G$ together with a binary operation $* : G \\times G \\to G$ satisfying four axioms:
+Multiplying and dividing fractions is, surprisingly, *easier* than adding them — no common denominator needed.
 
-1. **Closure.** For all $a, b \\in G$, $a * b \\in G$.
-2. **Associativity.** $(a*b)*c = a*(b*c)$ for all $a, b, c$.
-3. **Identity.** There exists $e \\in G$ with $e*a = a*e = a$ for all $a$.
-4. **Inverses.** For every $a \\in G$ there exists $a^{-1} \\in G$ with $a*a^{-1} = a^{-1}*a = e$.
+## Multiplication: straight across
 
-If, in addition, $a*b = b*a$ for all $a,b$, the group is **abelian**.
+Multiply numerators together and denominators together:
 
-## Examples
+$$\\frac{2}{3} \\times \\frac{4}{5} = \\frac{2 \\times 4}{3 \\times 5} = \\frac{8}{15}.$$
 
-- $(\\mathbb{Z}, +)$, $(\\mathbb{Q}, +)$, $(\\mathbb{R}, +)$, $(\\mathbb{C}, +)$ — abelian groups under addition; identity $0$.
-- $(\\mathbb{Q}^{\\times}, \\cdot)$, $(\\mathbb{R}^{\\times}, \\cdot)$ — abelian groups under multiplication (after removing $0$); identity $1$.
-- $S_n$, the **symmetric group** — permutations of $n$ objects under composition. Non-abelian for $n \\ge 3$.
-- The set of rotations of an equilateral triangle (identity, $120°$, $240°$) under composition.
+It helps to cancel common factors first:
 
-## Groups are symmetries
+$$\\frac{3}{4} \\times \\frac{2}{9} = \\frac{3 \\times 2}{4 \\times 9} = \\frac{6}{36} = \\frac{1}{6}.$$
 
-The headline theorem (Cayley, 1854): every group is isomorphic to a group of permutations. A more useful way to say it: a group is *the set of symmetries of something*.
+"$\\frac{2}{3}$ of $\\frac{4}{5}$" means exactly $\\frac{2}{3} \\times \\frac{4}{5}$ — the word **of** signals multiplication.
 
-- The symmetries of a square form a group of order $8$ (the dihedral group $D_4$): four rotations $\\times$ two flips.
-- The symmetries of a circle form an *infinite* group: every rotation by every real angle.
-- The symmetries of an equation are a group, called its Galois group, and they decide whether the equation is solvable by radicals (Galois, 1832).
+## The reciprocal
 
-This single insight — that *symmetry is a group* — pervades modern mathematics and physics. Noether's theorem (1918) says every continuous symmetry of a physical system gives a conserved quantity: time-translation symmetry $\\Rightarrow$ conservation of energy; rotational symmetry $\\Rightarrow$ conservation of angular momentum.
+The **reciprocal** of a fraction flips it: the reciprocal of $\\frac{4}{5}$ is $\\frac{5}{4}$. A number times its reciprocal is $1$: $\\frac{4}{5} \\times \\frac{5}{4} = 1$.
 
-## A scientific example
+## Division: multiply by the reciprocal
 
-The set of $3 \\times 3$ rotation matrices $SO(3)$ is the group of rotations of physical space. It is non-abelian: rotating $90°$ about the $x$-axis then $90°$ about the $y$-axis is a different physical rotation than doing them in the opposite order. Try it with a book — that non-commutativity is a real fact about the geometry of 3D space.`,
+To divide, flip the second fraction and multiply:
+
+$$\\frac{2}{3} \\div \\frac{4}{5} = \\frac{2}{3} \\times \\frac{5}{4} = \\frac{10}{12} = \\frac{5}{6}.$$
+
+This works because dividing by $\\frac{4}{5}$ asks "how many $\\frac{4}{5}$-sized pieces fit?" — and that is the same as scaling up by its reciprocal.
+
+## A real example
+
+A $\\frac{3}{4}$-meter ribbon is cut into pieces $\\frac{1}{8}$ meter long. How many pieces? This is division: $\\frac{3}{4} \\div \\frac{1}{8} = \\frac{3}{4} \\times \\frac{8}{1} = \\frac{24}{4} = 6$ pieces. Dividing by a fraction smaller than $1$ gives *more* pieces — which is exactly why "divide by a half" feels backwards until you see it as "how many halves fit."`,
   },
   {
-    slug: "rings-fields",
-    title: "Rings and fields",
+    slug: "decimals-place-value",
+    title: "Decimals and place value",
     weekNumber: 2,
-    blurb: "Two operations playing well together: addition and multiplication.",
-    lectureTitle: "2.4 Rings and fields",
-    body: `# Rings and fields
+    blurb: "Place value continued to the right of the point.",
+    lectureTitle: "2.4 Decimals and place value",
+    body: `# Decimals and place value
 
-A group has one operation. The familiar number systems have two — and the way the two interact is what gives arithmetic its power.
+A **decimal** extends place value past the ones place. Just as each place to the left is ten times bigger, each place to the right of the decimal point is ten times *smaller*.
 
-## Ring
+## The places after the point
 
-A **ring** $R$ is a set with two operations, traditionally $+$ and $\\cdot$, such that:
+In $3.142$:
 
-- $(R, +)$ is an abelian group with identity $0$.
-- $(R, \\cdot)$ is associative and has an identity $1$ (in a **ring with unity**).
-- Multiplication distributes over addition: $a(b+c) = ab + ac$ and $(b+c)a = ba + ca$.
+- $1$ is in the **tenths** place ($\\frac{1}{10}$),
+- $4$ is in the **hundredths** place ($\\frac{4}{100}$),
+- $2$ is in the **thousandths** place ($\\frac{2}{1000}$).
 
-Note: multiplication is not required to be commutative, and elements are not required to have multiplicative inverses.
+So a decimal is just a fraction with a power-of-ten denominator:
 
-## Examples of rings
+$$0.07 = \\frac{7}{100}, \\qquad 0.25 = \\frac{25}{100} = \\frac{1}{4}.$$
 
-- $\\mathbb{Z}$, $\\mathbb{Q}$, $\\mathbb{R}$, $\\mathbb{C}$ — all commutative rings with unity.
-- $M_n(\\mathbb{R})$, the $n \\times n$ real matrices — a **noncommutative** ring under matrix addition and multiplication.
-- $\\mathbb{R}[x]$, polynomials in $x$ with real coefficients — a commutative ring.
-- $\\mathbb{Z}/n\\mathbb{Z}$, the integers modulo $n$ — see lecture 2.8.
+## Comparing and rounding
 
-## Field
+Compare decimals place by place from the left, lining up the points: $0.4 > 0.39$ because $4$ tenths beats $3$ tenths. To **round** to a place, look at the next digit: $5$ or more rounds up. So $3.142$ rounds to $3.14$ (to hundredths).
 
-A **field** $F$ is a commutative ring in which every nonzero element has a multiplicative inverse. Equivalently: $(F\\setminus\\{0\\}, \\cdot)$ is an abelian group.
+## Arithmetic
 
-- $\\mathbb{Q}$, $\\mathbb{R}$, $\\mathbb{C}$ are fields.
-- $\\mathbb{Z}$ is **not** a field: $2$ has no integer inverse.
-- $\\mathbb{Z}/p\\mathbb{Z}$ is a field exactly when $p$ is prime.
+- **Add/subtract:** line up the decimal points, then add column by column.
+- **Multiply:** multiply as whole numbers, then place the point so the answer has as many decimal places as the two factors combined: $0.2 \\times 0.3 = 0.06$.
+- **Divide:** move both points right until the divisor is a whole number, then divide.
 
-## Why these axioms?
+## A real example
 
-A field is precisely the abstract setting in which the entire toolkit of high-school algebra — solving linear equations, dividing both sides, manipulating fractions — works. Once you know "these axioms hold," you get all the theorems for free, whether the field is $\\mathbb{R}$ or the integers mod $7$ or the rational functions over $\\mathbb{C}$.
-
-## A scientific example
-
-The finite field $\\mathbb{F}_{2^8}$ with $256$ elements is the arithmetic backbone of the AES encryption standard that protects most of the world's internet traffic. The S-box of AES is, definitionally, multiplicative inversion in this field followed by an affine map. Every secure HTTPS connection you make is computing in a 256-element field on your behalf.`,
+Money is decimals to the hundredths — dollars and cents. A price of $\\$1.99$ is $1$ dollar and $\\frac{99}{100}$ of a dollar. Stores price things at $.99$ because of how we read place value left to right: $\\$1.99$ registers as "one-something," not "two." That marketing trick works *because* place value tells us the leading digit matters most.`,
   },
   {
-    slug: "vector-spaces",
-    title: "Vector spaces and linear combination",
+    slug: "converting-fractions-decimals-percents",
+    title: "Converting fractions, decimals, and percents",
     weekNumber: 2,
-    blurb: "Adding arrows and scaling them — the universal language of linear math.",
-    lectureTitle: "2.5 Vector spaces and linear combination",
-    body: `# Vector spaces and linear combination
+    blurb: "Three notations for the same number.",
+    lectureTitle: "2.5 Converting fractions, decimals, and percents",
+    body: `# Converting fractions, decimals, and percents
 
-A **vector space** $V$ over a field $F$ is a set whose elements (**vectors**) can be added to each other and scaled by elements of $F$ (**scalars**), subject to a short list of axioms:
+Fractions, decimals, and percents are three ways of writing the same idea: a part of a whole. Being able to switch between them fluently is one of the most useful skills in everyday math.
 
-- $(V, +)$ is an abelian group.
-- For all $\\alpha, \\beta \\in F$ and $v, w \\in V$:
-  - $\\alpha(v + w) = \\alpha v + \\alpha w$
-  - $(\\alpha + \\beta) v = \\alpha v + \\beta v$
-  - $(\\alpha \\beta) v = \\alpha(\\beta v)$
-  - $1 \\cdot v = v$.
+## Percent means "per hundred"
 
-## Examples
+A **percent** is a fraction with denominator $100$: $\\;7\\% = \\dfrac{7}{100} = 0.07$.
 
-- $\\mathbb{R}^n$, ordered $n$-tuples of real numbers, with componentwise addition and scalar multiplication. The prototype example.
-- The set of all polynomials with real coefficients, $\\mathbb{R}[x]$, under polynomial addition and scaling.
-- The set of all continuous functions $f : [0,1] \\to \\mathbb{R}$, under pointwise addition.
-- The set of solutions to a linear homogeneous differential equation.
+## The conversion rules
 
-The same axioms apply to all of these — and so the same theorems do.
+- **Fraction → decimal:** divide top by bottom. $\\frac{3}{5} = 3 \\div 5 = 0.6$.
+- **Decimal → percent:** multiply by $100$ (move the point two places right). $0.6 = 60\\%$.
+- **Percent → decimal:** divide by $100$ (move the point two places left). $60\\% = 0.6$.
+- **Decimal → fraction:** read the place value, then simplify. $0.6 = \\frac{6}{10} = \\frac{3}{5}$.
 
-## Linear combinations, span, basis
+Put together: $\\;\\dfrac{3}{5} = 0.6 = 60\\%$. Same number, three costumes.
 
-A **linear combination** of vectors $v_1, \\ldots, v_k$ is an expression
+## Some worth memorizing
 
-$$\\alpha_1 v_1 + \\alpha_2 v_2 + \\cdots + \\alpha_k v_k, \\quad \\alpha_i \\in F.$$
+$$\\tfrac{1}{2} = 0.5 = 50\\%, \\quad \\tfrac{1}{4} = 0.25 = 25\\%, \\quad \\tfrac{3}{4} = 0.75 = 75\\%, \\quad \\tfrac{1}{3} = 0.\\overline{3} \\approx 33.3\\%.$$
 
-The set of all linear combinations of a fixed list is its **span**. A list is **linearly independent** if no vector in it is a linear combination of the others. A **basis** is a linearly independent list whose span is all of $V$. The number of vectors in any basis is the **dimension** of $V$.
+## A real example
 
-## Why this matters
-
-Most of physics, signal processing, machine learning, and computer graphics is the systematic exploitation of vector-space structure. Fourier analysis says: the space of "nice" functions has a basis of sines and cosines, so any signal is a linear combination of pure tones. Principal component analysis says: high-dimensional data can usually be approximated in a low-dimensional subspace.
-
-## A scientific example
-
-A quantum state of a spin-$\\tfrac{1}{2}$ particle is a unit vector in the complex vector space $\\mathbb{C}^2$. The basis $\\{|{\\uparrow}\\rangle, |{\\downarrow}\\rangle\\}$ is "spin up" and "spin down" along a chosen axis. Every other state — including the "superposition" states that drive every paradox of quantum mechanics — is a linear combination $\\alpha|{\\uparrow}\\rangle + \\beta|{\\downarrow}\\rangle$. The famous mystery is entirely the linearity.`,
+A "$25\\%$ off" sign, a coupon for "$\\frac{1}{4}$ off," and a discount of "$0.25$ times the price" are *identical* deals — they just speak three dialects. Shoppers who can convert on the fly spot that instantly and compare offers ("$\\frac{1}{3}$ off" vs. "$30\\%$ off") without reaching for a calculator. Fluency between the forms is real-world arithmetic power.`,
   },
   {
-    slug: "functions-mappings",
-    title: "Functions as mappings",
+    slug: "ratios-rates-proportions",
+    title: "Ratios, rates, and proportions",
     weekNumber: 2,
-    blurb: "A function is a rule that sends every input to exactly one output.",
-    lectureTitle: "2.6 Functions as mappings",
-    body: `# Functions as mappings
+    blurb: "Comparing quantities and scaling them up.",
+    lectureTitle: "2.6 Ratios, rates, and proportions",
+    body: `# Ratios, rates, and proportions
 
-A **function** $f : A \\to B$ is a rule that assigns to *every* element $a$ of the **domain** $A$ exactly one element $f(a)$ of the **codomain** $B$.
+A **ratio** compares two quantities. A **rate** is a ratio of quantities with different units. A **proportion** sets two ratios equal — and solving proportions is one of the most widely used techniques in all of applied math.
 
-The set $f(A) = \\{f(a) : a \\in A\\} \\subseteq B$ is the **image** (or range). The codomain $B$ is the place where outputs are *allowed* to live; the image is the subset they actually hit.
+## Ratios
 
-## Three classifications
+The ratio of $12$ to $18$ can be written $12 : 18$ or $\\frac{12}{18}$, and like any fraction it simplifies: $\\frac{12}{18} = \\frac{2}{3}$, i.e. $2 : 3$.
 
-- **Injective** (one-to-one): different inputs give different outputs. $f(a_1) = f(a_2) \\Rightarrow a_1 = a_2$.
-- **Surjective** (onto): every element of the codomain is hit. $f(A) = B$.
-- **Bijective**: both. Bijections are precisely the functions that have a two-sided inverse $f^{-1} : B \\to A$.
+## Rates and unit rates
 
-A bijection $f : A \\to B$ is, in essence, a *renaming* of $A$'s elements as $B$'s elements. Two sets have the same cardinality (1.8) iff there is a bijection between them.
+A **rate** pairs different units: $120$ miles in $2$ hours. A **unit rate** scales it to "per one":
 
-## Composition
+$$\\frac{120 \\text{ mi}}{2 \\text{ hr}} = 60 \\text{ mi/hr}.$$
 
-Functions compose: if $f : A \\to B$ and $g : B \\to C$, then $g \\circ f : A \\to C$ is the function $a \\mapsto g(f(a))$. Composition is **associative** but generally **not** commutative.
+Unit rates ($60$ mph, $\\$3.50$ per pound, $25$ miles per gallon) are what make different offers comparable.
 
-The set of bijections of a fixed set $X$ to itself, under composition, is a group — the symmetric group $S_X$. This is the bridge from "function" back to "group."
+## Proportions and cross-multiplication
 
-## Functions vs. formulas
+A **proportion** is an equation of two ratios. To solve for an unknown, **cross-multiply**:
 
-A function is *not* a formula. A formula is one way to *describe* a function. The function $f : \\mathbb{R} \\to \\mathbb{R}$, $f(x) = x^2$ can equally well be described as $f(x) = |x|^2$, $f(x) = x \\cdot x$, or by a table or by a graph. They are all the same function: same domain, same codomain, same input-to-output rule.
+$$\\frac{3}{4} = \\frac{x}{20} \\;\\Rightarrow\\; 4x = 3 \\times 20 = 60 \\;\\Rightarrow\\; x = 15.$$
 
-## A scientific example
+## A real example
 
-Crystallography classifies crystals by their **symmetry group** — the group of geometric transformations $f : \\mathbb{R}^3 \\to \\mathbb{R}^3$ that map the crystal to itself. There are exactly $230$ such groups in 3D (the *crystallographic space groups*), determined a century ago, and every real crystal falls into exactly one of them.`,
+Maps run entirely on proportions. A scale of "$1$ inch $= 50$ miles" means every map distance and real distance form the same ratio. If two cities are $3.5$ inches apart, solve $\\frac{1}{50} = \\frac{3.5}{x}$ to get $x = 175$ miles. The same setup scales recipes, mixes paint, converts currency, and dilutes medicine — proportional reasoning is arithmetic's workhorse.`,
   },
-  {
-    slug: "relations-equivalence-iso",
-    title: "Relations, equivalence classes, and isomorphism",
-    weekNumber: 2,
-    blurb: "Sameness, refined: when do two different things count as the same?",
-    lectureTitle: "2.7 Relations, equivalence classes, and isomorphism",
-    body: `# Relations, equivalence classes, and isomorphism
-
-A **relation** on a set $S$ is a subset $R \\subseteq S \\times S$. We write $a \\sim b$ for $(a, b) \\in R$. An **equivalence relation** is one satisfying three properties:
-
-1. **Reflexive.** $a \\sim a$ for all $a$.
-2. **Symmetric.** $a \\sim b \\Rightarrow b \\sim a$.
-3. **Transitive.** $a \\sim b$ and $b \\sim c \\Rightarrow a \\sim c$.
-
-## Equivalence classes
-
-Given an equivalence relation $\\sim$ on $S$, the **equivalence class** of $a$ is
-
-$$[a] = \\{x \\in S : x \\sim a\\}.$$
-
-The classes form a **partition** of $S$: every element is in exactly one class, and the classes don't overlap. Conversely, every partition of $S$ defines an equivalence relation.
-
-## Examples
-
-- "Has the same birthday as" on the set of all humans. The classes have at most $366$ elements each.
-- $a \\sim b$ iff $a - b \\in \\mathbb{Z}$, on $\\mathbb{R}$. Each class is the set of reals with a given fractional part. The quotient set is the circle $\\mathbb{R}/\\mathbb{Z}$.
-- $a \\sim b$ iff $a - b$ is divisible by $5$, on $\\mathbb{Z}$. The classes are $\\{[0], [1], [2], [3], [4]\\}$ — the integers mod $5$ (lecture 2.8).
-
-Every time mathematicians say "consider $X$ up to $\\sim$," they are forming a quotient set by an equivalence relation.
-
-## Isomorphism: the deepest equivalence
-
-Two algebraic objects — two groups, two rings, two vector spaces — are **isomorphic** when there is a bijection between them that preserves the operations. Symbolically, $G \\cong H$.
-
-Isomorphism says: $G$ and $H$ are "the same object, with different names for the elements." Every property expressible in the language of the structure transfers across an isomorphism.
-
-## A scientific example
-
-The group $(\\mathbb{R}, +)$ and the group $(\\mathbb{R}_{>0}, \\cdot)$ are isomorphic: the bijection $x \\mapsto e^x$ sends $a + b$ to $e^{a+b} = e^a \\cdot e^b$. This isomorphism is exactly what makes the **logarithm** useful: it lets you convert a hard multiplication problem into an easier addition problem (the principle behind slide rules and log tables).`,
-  },
-  {
-    slug: "modular-arithmetic",
-    title: "Modular arithmetic",
-    weekNumber: 2,
-    blurb: "Clock arithmetic, and the basis of modern cryptography.",
-    lectureTitle: "2.8 Modular arithmetic",
-    body: `# Modular arithmetic
-
-Fix a positive integer $n$, called the **modulus**. Define an equivalence relation on $\\mathbb{Z}$ by
-
-$$a \\equiv b \\pmod n \\iff n \\mid (a - b).$$
-
-The equivalence classes are $[0], [1], \\ldots, [n-1]$. The set of classes is denoted $\\mathbb{Z}/n\\mathbb{Z}$ or $\\mathbb{Z}_n$.
-
-The miracle is that addition and multiplication on $\\mathbb{Z}$ **descend** to operations on $\\mathbb{Z}/n\\mathbb{Z}$: $[a] + [b] = [a+b]$ and $[a] \\cdot [b] = [ab]$, with the answer independent of which representative you chose. So $\\mathbb{Z}/n\\mathbb{Z}$ is itself a ring (lecture 2.4) — a finite one, with $n$ elements.
-
-## Clock arithmetic
-
-The most familiar example is $\\mathbb{Z}/12\\mathbb{Z}$ — the integers mod $12$. If it is $9$ o'clock and you wait $5$ hours, the clock reads $9 + 5 \\equiv 2 \\pmod{12}$. Every act of telling time is modular arithmetic.
-
-## When is $\\mathbb{Z}/n\\mathbb{Z}$ a field?
-
-$\\mathbb{Z}/n\\mathbb{Z}$ is a field iff $n$ is **prime**. For $n = p$ prime, every nonzero class has a multiplicative inverse (by Bézout's lemma), so you can divide. For $n$ composite, this fails: in $\\mathbb{Z}/6\\mathbb{Z}$, $2 \\cdot 3 = 6 \\equiv 0$ — two nonzero elements multiplying to zero, which a field forbids.
-
-## Fermat's Little Theorem
-
-For prime $p$ and integer $a$ not divisible by $p$,
-
-$$a^{p-1} \\equiv 1 \\pmod p.$$
-
-This single congruence is the backbone of:
-
-- **Primality testing.** Probabilistic tests (Miller–Rabin) check whether a candidate $n$ satisfies an analogue of FLT; failure is a *proof* $n$ is composite.
-- **RSA encryption.** Picking two large primes $p$ and $q$ and computing $n = pq$, the security of every RSA-encrypted email and SSH connection rests on the difficulty of recovering $p$ and $q$ from $n$, combined with the modular-exponentiation identities that FLT provides.
-
-## The point
-
-Modular arithmetic is what week 2 was building toward: a small, *finite* number system that nonetheless obeys the field axioms of lecture 2.4, supports linear algebra (lecture 2.5), and has nontrivial groups (lecture 2.3) sitting inside it. It is also one of the most economically valuable structures in mathematics — virtually all of public-key cryptography is computation in $\\mathbb{Z}/n\\mathbb{Z}$.`,
-  },
-
   // ───────────────────────────────────────────────────────────────
-  // Week 3 — The continuum: calculus, geometry, topology
+  // Unit 3 — Percents, measurement, and beginning algebra
   // ───────────────────────────────────────────────────────────────
   {
-    slug: "limits-taming-infinity",
-    title: "Limits and the taming of infinity",
+    slug: "percent-problems-applications",
+    title: "Percent problems and applications",
     weekNumber: 3,
-    blurb: "Making 'gets arbitrarily close to' a precise idea.",
-    lectureTitle: "3.1 Limits and the taming of infinity",
-    body: `# Limits and the taming of infinity
+    blurb: "Tips, tax, discounts, and percent change.",
+    lectureTitle: "3.1 Percent problems and applications",
+    body: `# Percent problems and applications
 
-For two thousand years, mathematicians used phrases like "infinitely small" and "approaches but never reaches" without a rigorous definition. The 19th century replaced the metaphor with arithmetic.
+Most everyday math involving percents is a variation on one sentence: **"a percent *of* a base is an amount."** Translate the words and the arithmetic falls out.
 
-## The $\\varepsilon$–$\\delta$ definition
+## The basic three
 
-We write $\\lim_{x \\to a} f(x) = L$ to mean:
+"Of" means multiply; turn the percent into a decimal first.
 
-> For every $\\varepsilon > 0$ there exists a $\\delta > 0$ such that whenever $0 < |x - a| < \\delta$, we have $|f(x) - L| < \\varepsilon$.
+$$\\text{What is } 15\\% \\text{ of } 80? \\quad 0.15 \\times 80 = 12.$$
 
-In symbols:
+The same equation, $\\text{amount} = \\text{rate} \\times \\text{base}$, solves all three classic questions — find the amount, find the rate, or find the base — depending on which piece is missing.
 
-$$\\forall \\varepsilon > 0,\\ \\exists \\delta > 0 : 0 < |x - a| < \\delta \\Rightarrow |f(x) - L| < \\varepsilon.$$
+## Discounts, tax, and tip
 
-This formulation is due to Cauchy (1821) and refined by Weierstrass in the 1850s. It says: no matter how tight a window $\\varepsilon$ you demand on the output, I can find a tight enough window $\\delta$ on the input that guarantees it. Nothing in this definition mentions "infinity" or "infinitesimal." That is the entire point.
+These add or subtract a percent of the base:
 
-## What the definition replaced
+- **Discount:** a 50-dollar jacket at $20\\%$ off costs $50 - 0.20 \\times 50 = 50 - 10 = 40$ dollars. (Shortcut: you pay $80\\%$, so $0.80 \\times 50 = 40$.)
+- **Tax / tip:** a 40-dollar meal with a $20\\%$ tip costs $40 + 0.20 \\times 40 = 48$ dollars (or $1.20 \\times 40$).
 
-Newton and Leibniz, inventing calculus in the 1670s, spoke of *fluxions* and *infinitesimals* — quantities smaller than any positive number but not zero. Bishop Berkeley (1734) mocked them as "the ghosts of departed quantities," and he was right that the foundations were incoherent. Two centuries later, the $\\varepsilon$–$\\delta$ definition gave calculus the rigorous foundation it had been doing without. (Robinson, 1960, vindicated the infinitesimal approach with *nonstandard analysis* — but the $\\varepsilon$–$\\delta$ definition is still the working language.)
+## Percent change
 
-## Limits at infinity
+To measure growth or shrinkage:
 
-$$\\lim_{x \\to \\infty} f(x) = L \\iff \\forall \\varepsilon > 0,\\ \\exists M : x > M \\Rightarrow |f(x) - L| < \\varepsilon.$$
+$$\\text{percent change} = \\frac{\\text{new} - \\text{old}}{\\text{old}} \\times 100\\%.$$
 
-Same idea: the "tight window on the output" is met by a "far enough out on the input."
+A price rising from $40$ to $50$ is $\\frac{50-40}{40}\\times 100\\% = 25\\%$ growth.
 
-## A scientific example
+## A real example
 
-The terminal velocity of a falling skydiver is a limit:
-
-$$v_{\\text{term}} = \\lim_{t \\to \\infty} v(t).$$
-
-The skydiver never *reaches* terminal velocity — at any finite $t$, $v(t)$ is strictly less. But the difference gets arbitrarily small as time goes on. The limit captures this precisely without committing to "infinity" as a number.`,
+Compound interest is percent change applied over and over. Put $1000$ dollars in an account paying $5\\%$ a year and after one year you have $1.05 \\times 1000 = 1050$; after two, $1.05 \\times 1050 = 1102.50$. Because each year's percent is taken of a *bigger* base, savings — and credit-card debt — grow faster than people expect. Every interest rate you ever meet is this one percent idea, iterated.`,
   },
   {
-    slug: "continuity",
-    title: "Continuity",
+    slug: "units-measurement-conversion",
+    title: "Units, measurement, and conversion",
     weekNumber: 3,
-    blurb: "A function is continuous when small input changes give small output changes.",
-    lectureTitle: "3.2 Continuity",
-    body: `# Continuity
+    blurb: "Carrying units through a calculation correctly.",
+    lectureTitle: "3.2 Units, measurement, and conversion",
+    body: `# Units, measurement, and conversion
 
-A function $f : \\mathbb{R} \\to \\mathbb{R}$ is **continuous at $a$** if
+A measurement is a number *with a unit*: $5$ meters, $3$ pounds, $90$ minutes. The number alone is meaningless — "$5$" of what? Converting between units cleanly is a skill that prevents expensive mistakes.
 
-$$\\lim_{x \\to a} f(x) = f(a).$$
+## The metric system
 
-Three things have to be true simultaneously: $f(a)$ has to exist, the limit has to exist, and they have to be equal. $f$ is **continuous** if it is continuous at every $a$ in its domain.
+The metric system is built on powers of ten, so converting is just moving a decimal point:
 
-In plain English: nearby inputs go to nearby outputs. You can draw the graph without lifting your pen. (The plain-English version misses some pathological continuous functions, but it captures the spirit.)
+$$1 \\text{ km} = 1000 \\text{ m}, \\qquad 1 \\text{ m} = 100 \\text{ cm}, \\qquad 1 \\text{ kg} = 1000 \\text{ g}.$$
 
-## Discontinuities
+So $2.5$ km $= 2.5 \\times 1000 = 2500$ m.
 
-There are three flavors of failure:
+## Converting with conversion factors
 
-- **Removable.** $\\lim_{x \\to a} f(x)$ exists but isn't $f(a)$. Redefine $f(a)$ and you've fixed it.
-- **Jump.** Left and right limits exist but differ. A step function. Common in physics (phase transitions) and economics (tax brackets).
-- **Essential.** The limit doesn't exist at all. $\\sin(1/x)$ near $0$ oscillates forever.
+A **conversion factor** is a fraction equal to $1$, like $\\dfrac{60 \\text{ min}}{1 \\text{ hr}}$. Multiplying by it changes the units but not the amount, and the old units **cancel**:
 
-## The Intermediate Value Theorem
+$$3 \\text{ hr} \\times \\frac{60 \\text{ min}}{1 \\text{ hr}} = 180 \\text{ min}.$$
 
-If $f$ is continuous on $[a, b]$ and $y_0$ is any value between $f(a)$ and $f(b)$, then there is some $c \\in [a, b]$ with $f(c) = y_0$.
+Watching units cancel ("dimensional analysis") tells you whether you multiplied or divided correctly — if the leftover unit is wrong, the setup is wrong.
 
-This is one of those theorems that feels like a definition: of *course* a continuous curve from $f(a)$ to $f(b)$ has to cross every height between them. But you cannot prove it without the completeness of $\\mathbb{R}$ (lecture 1.4) — the IVT is false on $\\mathbb{Q}$ alone.
+## Area and volume scale differently
 
-## The Extreme Value Theorem
+Units square and cube: $1 \\text{ m} = 100 \\text{ cm}$, but $1 \\text{ m}^2 = 100^2 = 10000 \\text{ cm}^2$, and $1 \\text{ m}^3 = 100^3 = 1{,}000{,}000 \\text{ cm}^3$.
 
-If $f$ is continuous on a closed bounded interval $[a, b]$, then $f$ attains a maximum and a minimum on $[a, b]$.
+## A real example
 
-This too fails without compactness: $f(x) = 1/x$ on $(0, 1]$ is continuous but unbounded.
-
-## A scientific example
-
-Temperature is a continuous function of position on Earth. By the IVT (applied on a great circle), at every moment there exist two *antipodal* points on the equator that have the exact same temperature. This is a special case of the **Borsuk–Ulam theorem**, which generalizes to any continuous map from a sphere to a Euclidean space of lower dimension.`,
+In $1983$, Air Canada Flight 143 ran out of fuel mid-flight because the ground crew loaded it in **pounds** instead of **kilograms** — a unit slip that left the plane with less than half the fuel it needed. The pilots glided it to a safe landing, but the lesson stuck: keep units attached to every number, and let them cancel, so the calculation tells you when it has gone wrong.`,
   },
   {
-    slug: "derivatives-instantaneous-rate",
-    title: "Derivatives as instantaneous rate",
+    slug: "variables-expressions-intro",
+    title: "Introduction to variables and expressions",
     weekNumber: 3,
-    blurb: "What's the speed *right now*? — the question that started calculus.",
-    lectureTitle: "3.3 Derivatives as instantaneous rate",
-    body: `# Derivatives as instantaneous rate
+    blurb: "Letters that stand for numbers.",
+    lectureTitle: "3.3 Introduction to variables and expressions",
+    body: `# Introduction to variables and expressions
 
-The average rate of change of $f$ over an interval $[a, a + h]$ is
+Algebra begins when we let a **letter stand for a number we do not yet know** — a **variable**. An **expression** is a combination of numbers, variables, and operations, like $2n + 5$, that names a quantity without (yet) asserting anything about it.
 
-$$\\frac{f(a + h) - f(a)}{h}.$$
+## Reading the notation
 
-The **derivative** of $f$ at $a$ is what this approaches as the interval shrinks:
+Two shorthand conventions trip people up at first:
 
-$$f'(a) = \\lim_{h \\to 0} \\frac{f(a + h) - f(a)}{h},$$
+- A number next to a variable means multiply: $2n$ means $2 \\times n$. The number is the **coefficient**.
+- A repeated factor uses an exponent: $n \\times n = n^2$.
 
-when the limit exists. Geometrically, $f'(a)$ is the *slope of the tangent line* to the graph of $f$ at $x = a$.
+So $2n + 5$ says "double the number, then add five."
 
-## Three pictures
+## Translating English into algebra
 
-- **Geometric.** Slope of the tangent line.
-- **Physical.** Instantaneous rate of change. Velocity is the derivative of position; acceleration is the derivative of velocity.
-- **Numerical.** The best linear approximation: near $a$, $f(x) \\approx f(a) + f'(a)(x - a)$.
+| English | Expression |
+|---|---|
+| five more than a number | $n + 5$ |
+| twice a number | $2n$ |
+| five more than twice a number | $2n + 5$ |
+| a number decreased by $4$ | $n - 4$ |
+| half of a number | $\\dfrac{n}{2}$ |
 
-All three are the same idea, stated in three languages.
+## Terms
 
-## Notation
+An expression is built from **terms** separated by $+$ or $-$. In $2n + 5$, the terms are $2n$ and $5$. A plain number like $5$ is a **constant** term. Terms with the *same* variable part are **like terms** — the key to simplifying, which is next.
 
-- Lagrange: $f'(x)$.
-- Leibniz: $\\dfrac{\\mathrm{d}f}{\\mathrm{d}x}$. Treats the derivative as a ratio of "differentials" — heuristic, but extremely useful for change-of-variable.
-- Newton: $\\dot f$. Mostly survives in physics, for derivatives with respect to time.
-- Operator: $D f$ or $\\partial_x f$.
+## A real example
 
-Same object, four notations. Each makes a different calculation natural.
-
-## Differentiable implies continuous
-
-If $f$ is differentiable at $a$, it is continuous at $a$. (Proof sketch: $f(a + h) - f(a) = h \\cdot \\dfrac{f(a+h)-f(a)}{h} \\to 0 \\cdot f'(a) = 0$ as $h \\to 0$.) The converse fails: $f(x) = |x|$ is continuous everywhere but not differentiable at $0$.
-
-In fact, Weierstrass (1872) constructed a function that is continuous everywhere and differentiable *nowhere* — a curve that is unbroken but has no tangent line at any point. The intuition that "continuous = smooth" is a useful lie.
-
-## A scientific example
-
-Newton's second law in its most general form is
-
-$$\\vec F = \\frac{\\mathrm{d}\\vec p}{\\mathrm{d}t},$$
-
-force equals the time-derivative of momentum. Reducing the universe of mechanics to a single derivative — that is what calculus is *for*.`,
+Every spreadsheet formula is an algebraic expression. When you write \`=2*A1+5\`, the cell \`A1\` is a variable: the formula computes $2n + 5$ for whatever number $n$ currently lives in \`A1\`, and updates the instant that number changes. Variables are what let one formula stand in for infinitely many specific calculations — the entire reason spreadsheets, and algebra, are powerful.`,
   },
   {
-    slug: "integrals-accumulation",
-    title: "Integrals as accumulation",
+    slug: "simplifying-evaluating-expressions",
+    title: "Simplifying and evaluating expressions",
     weekNumber: 3,
-    blurb: "Summing infinitely many infinitesimal pieces.",
-    lectureTitle: "3.4 Integrals as accumulation",
-    body: `# Integrals as accumulation
+    blurb: "Combining like terms and plugging in values.",
+    lectureTitle: "3.4 Simplifying and evaluating expressions",
+    body: `# Simplifying and evaluating expressions
 
-If the derivative answers "how fast is it changing?", the **integral** answers "how much has accumulated?".
+Two everyday jobs with expressions: **simplify** them (rewrite them shorter) and **evaluate** them (find their value for given numbers).
 
-## The Riemann integral
+## Combining like terms
 
-Partition $[a, b]$ into $n$ pieces by points $a = x_0 < x_1 < \\cdots < x_n = b$. Pick a sample point $x_i^*$ in each subinterval $[x_{i-1}, x_i]$. Form the **Riemann sum**
+**Like terms** have the same variable part, so you can add their coefficients — it is just the distributive law in reverse:
 
-$$S_n = \\sum_{i=1}^{n} f(x_i^*) \\, (x_i - x_{i-1}).$$
+$$3x + 5x = (3 + 5)x = 8x.$$
 
-Each term is a rectangle: width times height. Their sum approximates the area under $f$ over $[a,b]$.
+You cannot combine unlike terms: $3x + 2$ stays $3x + 2$. A fuller example:
 
-The **definite integral** is the limit of these sums as the partition is refined:
+$$3x + 2 + 5x - 4 = (3x + 5x) + (2 - 4) = 8x - 2.$$
 
-$$\\int_a^b f(x)\\,\\mathrm{d}x = \\lim_{\\|P\\| \\to 0} \\sum_{i=1}^{n} f(x_i^*)(x_i - x_{i-1}),$$
+## The distributive property
 
-where $\\|P\\|$ is the width of the widest subinterval, and provided the limit exists independent of choices.
+To remove parentheses, multiply the outside factor by every term inside:
 
-## What integrals compute
+$$3(x + 4) = 3x + 12, \\qquad 2(3x - 5) = 6x - 10.$$
 
-- **Area** under a curve, when $f \\ge 0$.
-- **Signed area** in general (positive above the axis, negative below).
-- **Accumulated total** of any rate: $\\int_a^b v(t)\\,\\mathrm{d}t$ is the displacement over $[a, b]$ if $v$ is velocity.
-- **Average value** of $f$ on $[a, b]$: $\\dfrac{1}{b - a}\\int_a^b f(x)\\,\\mathrm{d}x$.
-- **Probability**: the probability that a continuous random variable $X$ with density $p$ lies in $[a, b]$ is $\\int_a^b p(x)\\,\\mathrm{d}x$.
+This is the single most-used move in all of algebra.
 
-## Why "$\\mathrm{d}x$"
+## Evaluating
 
-The "$\\mathrm{d}x$" is the limiting width of a rectangle. It is the same $\\mathrm{d}x$ that appears in Leibniz's derivative notation $\\mathrm{d}f/\\mathrm{d}x$, and the symmetry is the subject of the next lecture.
+To **evaluate**, substitute a number for each variable and follow the order of operations:
+
+$$\\text{at } x = 3: \\quad 8x - 2 = 8(3) - 2 = 24 - 2 = 22.$$
+
+Simplifying first makes evaluating easier and less error-prone.
+
+## A real example
+
+A phone plan that charges 30 dollars a month plus 10 cents per gigabyte is the expression $30 + 0.10g$. Simplifying keeps it tidy; *evaluating* answers the real question — at $g = 20$ gigabytes the bill is $30 + 0.10(20) = 32$ dollars. One expression, evaluated at different $g$, prices every possible month. That is exactly how billing software works under the hood.`,
+  },
+  {
+    slug: "one-step-equations",
+    title: "Solving one-step equations",
+    weekNumber: 3,
+    blurb: "Undoing one operation to isolate the variable.",
+    lectureTitle: "3.5 Solving one-step equations",
+    body: `# Solving one-step equations
+
+An **equation** says two expressions are equal: $x - 7 = 12$. To **solve** it is to find the value of the variable that makes the statement true. The whole method rests on one idea: **keep the equation balanced.**
+
+## The balance principle
+
+An equation is like a scale. Whatever you do to one side you must do to the other, or it tips:
+
+$$\\text{if } a = b, \\text{ then } a + c = b + c, \\quad a - c = b - c, \\quad ac = bc, \\quad \\frac{a}{c} = \\frac{b}{c}\\ (c \\neq 0).$$
+
+## Undo with the inverse
+
+To isolate the variable, undo the operation attached to it using its **inverse** (from Unit 1):
+
+- $x - 7 = 12$: undo "$-7$" by adding $7$. $\\;x = 19$.
+- $x + 5 = 11$: subtract $5$. $\\;x = 6$.
+- $3x = 12$: undo "$\\times 3$" by dividing by $3$. $\\;x = 4$.
+- $\\dfrac{x}{4} = 5$: multiply by $4$. $\\;x = 20$.
+
+## Always check
+
+Substitute your answer back: for $x = 19$, $\\;19 - 7 = 12$. ✓ Checking is free insurance against sign slips.
+
+## A real example
+
+Solving for an unknown is how you "work backwards" from a result. You spent 19 dollars and have 12 left — how much did you start with? The story is $x - 7 \\ne$… rather, you started with $x$, spent some, and $x - 7 = 12$ gives $x = 19$. Any time you know the outcome and want the input, you are solving an equation by undoing operations.`,
+  },
+  {
+    slug: "multi-step-equations",
+    title: "Solving multi-step equations",
+    weekNumber: 3,
+    blurb: "Reversing the order of operations to solve.",
+    lectureTitle: "3.6 Solving multi-step equations",
+    body: `# Solving multi-step equations
+
+Most equations take more than one move. The strategy: **simplify each side, then undo operations in reverse order** — the opposite of the order of operations.
+
+## The general plan
+
+1. Clear parentheses (distribute) and combine like terms on each side.
+2. Get all variable terms on one side, all constants on the other.
+3. Undo addition/subtraction first, then multiplication/division last.
+4. Check.
+
+## Worked examples
+
+$$2x + 3 = 11 \\;\\Rightarrow\\; 2x = 8 \\;\\Rightarrow\\; x = 4.$$
+
+(First subtract $3$ — the *last* thing done to $x$ — then divide by $2$.)
+
+A variable on both sides:
+
+$$5x - 4 = 2x + 11 \\;\\Rightarrow\\; 3x - 4 = 11 \\;\\Rightarrow\\; 3x = 15 \\;\\Rightarrow\\; x = 5.$$
+
+With parentheses:
+
+$$3(x + 2) = 18 \\;\\Rightarrow\\; 3x + 6 = 18 \\;\\Rightarrow\\; 3x = 12 \\;\\Rightarrow\\; x = 4.$$
+
+## A real example
+
+A taxi charges a 3-dollar flat fee plus 2 dollars per mile, and your fare was 11 dollars. How far did you go? The model is $2x + 3 = 11$, and solving gives $x = 4$ miles. Notice you *undo* the trip in reverse: strip off the flat fee first ($-3$), then divide out the per-mile rate. Reversing the order of operations is exactly reversing the story.`,
+  },
+  {
+    slug: "translating-words-equations",
+    title: "Translating words into equations",
+    weekNumber: 3,
+    blurb: "Turning a sentence into a solvable equation.",
+    lectureTitle: "3.7 Translating words into equations",
+    body: `# Translating words into equations
+
+The bridge from a word problem to algebra is a single equation. The skill is translation: deciding what the variable stands for and how the sentence connects to it.
+
+## Key words
+
+| Words | Symbol |
+|---|---|
+| is, equals, results in | $=$ |
+| sum, more than, increased by | $+$ |
+| difference, less than, decreased by | $-$ |
+| product, times, of | $\\times$ |
+| quotient, per, divided by | $\\div$ |
+
+Watch word order: "five **less than** a number" is $n - 5$, not $5 - n$.
+
+## Worked translation
+
+*"Three times a number, decreased by $4$, equals $11$."*
+
+$$3n - 4 = 11.$$
+
+Then solve as a multi-step equation: $3n = 15$, so $n = 5$.
+
+## A four-step habit
+
+1. Name the unknown with a variable ("let $n$ be the number").
+2. Translate each phrase into symbols.
+3. Solve the equation.
+4. Answer the actual question, with units, and check it against the words.
+
+## A real example
+
+Algebra word problems are how engineers and budgeters turn goals into numbers. "We need revenue of 50,000 dollars; each unit sells for 25 dollars and we have 10,000 dollars in fixed costs — how many must we sell?" becomes $25n + 10000 = 50000$, giving $n = 1600$ units. The hard, valuable step is never the algebra — it is writing the equation that captures the situation.`,
+  },
+  // ───────────────────────────────────────────────────────────────
+  // Unit 4 — Graphing, exponents, polynomials, and geometry
+  // ───────────────────────────────────────────────────────────────
+  {
+    slug: "coordinate-plane",
+    title: "The coordinate plane",
+    weekNumber: 4,
+    blurb: "Locating points with ordered pairs.",
+    lectureTitle: "4.1 The coordinate plane",
+    body: `# The coordinate plane
+
+The **coordinate plane** is two number lines crossed at right angles: a horizontal **x-axis** and a vertical **y-axis**, meeting at the **origin** $(0,0)$. It turns the one-dimensional number line into a two-dimensional map.
+
+## Ordered pairs
+
+Every point has an address, an **ordered pair** $(x, y)$:
+
+- the first number, $x$, says how far **right** (positive) or **left** (negative) of the origin,
+- the second, $y$, says how far **up** (positive) or **down** (negative).
+
+So the point $3$ right and $2$ down from the origin is $(3, -2)$. Order matters: $(3, 2)$ and $(2, 3)$ are different points.
+
+## The four quadrants
+
+The axes cut the plane into four **quadrants**, numbered counterclockwise from the top right:
+
+$$\\text{I: } (+,+), \\quad \\text{II: } (-,+), \\quad \\text{III: } (-,-), \\quad \\text{IV: } (+,-).$$
+
+A point on an axis (like $(5,0)$) belongs to no quadrant.
 
 ## A historical example
 
-Archimedes computed the area of a parabolic segment, around 250 BCE, using essentially Riemann sums two millennia before Riemann. He bounded the area between inscribed and circumscribed triangles, refined the partition, and showed the bounds squeeze to the same value. Calculus existed in spirit long before its symbols did.`,
+The idea is barely four centuries old. According to legend, René Descartes invented it around $1637$ while watching a fly walk across his ceiling and realizing he could pin down its position with two numbers — distance from two walls. Linking *geometry* (points, shapes) to *algebra* (pairs of numbers) was revolutionary: suddenly a line could be an equation and an equation could be a picture. We still call the plane "Cartesian" in his honor.`,
   },
   {
-    slug: "ftc",
-    title: "The Fundamental Theorem of Calculus",
-    weekNumber: 3,
-    blurb: "Differentiation and integration undo each other.",
-    lectureTitle: "3.5 The Fundamental Theorem of Calculus",
-    body: `# The Fundamental Theorem of Calculus
-
-Derivatives measure instantaneous change. Integrals accumulate change. The **Fundamental Theorem** says these are inverse operations.
-
-## Part 1: derivative of an integral
-
-Let $f$ be continuous on $[a, b]$, and define $F : [a, b] \\to \\mathbb{R}$ by
-
-$$F(x) = \\int_a^x f(t)\\,\\mathrm{d}t.$$
-
-Then $F$ is differentiable and $F'(x) = f(x)$.
-
-So integration *produces* an antiderivative: $F$ is a function whose derivative is $f$.
-
-## Part 2: integral of a derivative
-
-If $F$ is any antiderivative of $f$ on $[a, b]$ (i.e. $F' = f$ and $F$ is continuous on $[a, b]$), then
-
-$$\\int_a^b f(x)\\,\\mathrm{d}x = F(b) - F(a).$$
-
-This is the calculation rule: to integrate $f$, find any antiderivative $F$, and subtract.
-
-## Why this is "fundamental"
-
-Differentiation is a *local* operation: $f'(a)$ depends only on $f$ near $a$. Integration is a *global* operation: $\\int_a^b f$ depends on $f$ everywhere on $[a, b]$. There is no a priori reason these two operations should be related, much less inverse.
-
-The FTC is the bridge. It says: to compute the global thing (the integral), you can solve a local problem (find an antiderivative) and read off two values. Every closed-form integral you have ever computed is an application of the FTC.
-
-## A historical note
-
-Newton and Leibniz are usually credited with calculus because they were the first to recognize and exploit the FTC. Earlier mathematicians (Cavalieri, Fermat, Barrow) had pieces of the differentiation and integration theory but treated them as separate subjects. The unification was the conceptual leap.
-
-## A scientific example
-
-In thermodynamics, the change in internal energy of a closed system over a process is
-
-$$\\Delta U = \\int_{t_1}^{t_2} \\frac{\\mathrm{d}U}{\\mathrm{d}t}\\,\\mathrm{d}t = U(t_2) - U(t_1).$$
-
-We almost never know $\\mathrm{d}U/\\mathrm{d}t$ as a function we could integrate term by term. The point of having the FTC is that the *value* $\\Delta U$ depends only on the initial and final states, never on the path — energy is a *state function*. Every conservation law in physics is, formally, a statement that some integrand is the derivative of something.`,
-  },
-  {
-    slug: "sequences-series-zeno",
-    title: "Sequences, series, and Zeno",
-    weekNumber: 3,
-    blurb: "An infinite sum can have a finite value.",
-    lectureTitle: "3.6 Sequences, series, and Zeno",
-    body: `# Sequences, series, and Zeno
-
-A **sequence** is a function $\\mathbb{N} \\to \\mathbb{R}$, usually written $(a_n)_{n \\ge 1}$. A **series** is the formal sum
-
-$$\\sum_{n=1}^{\\infty} a_n = a_1 + a_2 + a_3 + \\cdots$$
-
-## What an infinite sum *means*
-
-You cannot add infinitely many numbers in finite time. So the value of an infinite series is defined as the limit of its **partial sums**:
-
-$$\\sum_{n=1}^{\\infty} a_n := \\lim_{N \\to \\infty} \\sum_{n=1}^{N} a_n,$$
-
-if the limit exists. If it does, the series **converges**; otherwise it **diverges**.
-
-## Zeno's paradox
-
-Achilles races a tortoise that starts $10$ meters ahead. Zeno (5th c. BCE) argued Achilles can never overtake it: first he has to cover the $10$ meters, then the new gap, then the new new gap, and so on — infinitely many steps in finite time, which Zeno called absurd.
-
-We now see the argument for what it is: the steps form a **geometric series**
-
-$$10 + 10 \\cdot r + 10 \\cdot r^2 + \\cdots = \\frac{10}{1 - r}$$
-
-which is *finite* whenever $|r| < 1$. Zeno's mistake was assuming infinitely many steps must take infinite time. They don't.
-
-## Convergence tests
-
-A short menu of standard tools:
-
-- **Geometric**: $\\sum r^n$ converges iff $|r| < 1$.
-- **$p$-series**: $\\sum 1/n^p$ converges iff $p > 1$.
-- **Ratio test**: if $\\lim |a_{n+1}/a_n| < 1$, the series converges absolutely.
-- **Comparison test**: if $|a_n| \\le b_n$ and $\\sum b_n$ converges, so does $\\sum a_n$.
-
-## Power series
-
-A **power series** is $\\sum c_n (x - a)^n$. Its **radius of convergence** is the largest $R$ such that the series converges for $|x - a| < R$. Inside its radius, a power series defines an infinitely differentiable function — its **analytic** representative. The functions $e^x = \\sum x^n / n!$, $\\sin x = \\sum (-1)^n x^{2n+1}/(2n+1)!$, and $\\cos x$ are all power series convergent for all $x$.
-
-## A scientific example
-
-Quantum field theory's predictions are computed as **perturbation series** in a small coupling constant. The series for the electron's anomalous magnetic moment, computed to high order, matches experiment to twelve decimal places — one of the most precise agreements between theory and measurement in all of science. (Notoriously, these series usually do not converge; they are *asymptotic*. The first few terms approximate the right answer, but adding more terms eventually makes things worse. Which is a story for an analysis course.)`,
-  },
-  {
-    slug: "euclidean-non-euclidean",
-    title: "Euclidean vs. non-Euclidean geometry",
-    weekNumber: 3,
-    blurb: "Euclid's fifth postulate is independent — and false on a sphere.",
-    lectureTitle: "3.7 Euclidean vs. non-Euclidean geometry",
-    body: `# Euclidean vs. non-Euclidean geometry
-
-Euclid's *Elements* (c. 300 BCE) developed plane geometry from five postulates. Four are uncontroversially "obvious." The fifth is not.
-
-## The parallel postulate
-
-> Through a point not on a given line, there is exactly one line parallel to the given line.
-
-For two millennia, mathematicians tried to *prove* this from the other four — believing it should be a theorem, not a postulate. Every attempt failed.
-
-## The resolution
-
-In the early 19th century, Lobachevsky (1829), Bolyai (1832), and Gauss (unpublished) independently realized why every attempt had failed: the parallel postulate is **independent** of the others. You can replace it with its negation and get a consistent geometry.
-
-Three possibilities:
-
-- **Exactly one parallel** — Euclidean geometry, $\\mathbb{R}^2$.
-- **No parallels** — elliptic / spherical geometry. On a sphere, every two great circles intersect.
-- **Infinitely many parallels** — hyperbolic geometry. Through a point off a line, infinitely many lines never meet the given line.
-
-Each of these is a logically consistent geometry. The angles of a triangle sum to $180°$ in Euclidean, more than $180°$ in elliptic, and less than $180°$ in hyperbolic.
-
-## Why this mattered
-
-The discovery of non-Euclidean geometry was a philosophical earthquake. It demonstrated, for the first time, that mathematics is not the description of a single "true" world but the systematic study of consequences of chosen axioms (a theme we will return to in 4.5).
-
-## A scientific example
-
-General relativity (Einstein, 1915) models spacetime as a *curved* manifold whose geometry is determined by the matter and energy inside it. Light rays follow **geodesics** — the analogues of straight lines — and those geodesics bend through gravitational fields. The first experimental confirmation was Eddington's 1919 measurement of starlight bending around the Sun during a solar eclipse. The universe is not Euclidean. The geometry of spacetime is fixed not by axiom but by Einstein's field equations:
-
-$$R_{\\mu\\nu} - \\tfrac{1}{2} g_{\\mu\\nu} R = \\frac{8\\pi G}{c^4} T_{\\mu\\nu}.$$`,
-  },
-  {
-    slug: "topology-dimension-curvature",
-    title: "Topology, dimension, and curvature",
-    weekNumber: 3,
-    blurb: "Geometry without distance: what survives when you stretch the page.",
-    lectureTitle: "3.8 Topology, dimension, and curvature",
-    body: `# Topology, dimension, and curvature
-
-**Topology** is the study of geometric properties that are preserved under continuous deformations — stretching, bending, twisting, but not tearing or gluing. The classic joke is that a topologist cannot tell a coffee mug from a donut, because each can be continuously deformed into the other.
-
-## What topology keeps and discards
-
-- **Discarded:** distance, angle, area, volume, curvature.
-- **Kept:** number of connected pieces, number of holes, orientability, the way the space loops back on itself.
-
-A circle and a square are topologically the same (both are simple closed loops). A line segment and a Y-shape are different: removing one point disconnects them differently.
-
-## Dimension
-
-Topology lets us say what the **dimension** of a space *is*, independent of any coordinate system.
-
-- Informally: a space is $n$-dimensional if it locally looks like $\\mathbb{R}^n$.
-- A line is $1$-dimensional; the plane is $2$-dimensional; the surface of a sphere is $2$-dimensional (yes, the surface — you can describe any point on it with latitude and longitude).
-- The Cantor set has dimension $\\log 2 / \\log 3 \\approx 0.63$ in the fractal (Hausdorff) sense — a single number need not be an integer to make sense as a dimension.
-
-## Curvature
-
-Once you put a *metric* (a notion of distance) back on a topological space, you can ask whether it is **curved**. Gauss (1827) showed that curvature is *intrinsic*: an ant living on a surface can detect curvature without ever leaving the surface, by measuring how the angles of triangles sum.
-
-- A plane has curvature $0$. Triangle angle sums equal $\\pi$.
-- A sphere of radius $R$ has constant positive curvature $1/R^2$. Triangle angle sums exceed $\\pi$.
-- A saddle / pseudosphere has negative curvature. Triangle angle sums fall below $\\pi$.
-
-## The Euler characteristic
-
-For a polyhedron with $V$ vertices, $E$ edges, and $F$ faces,
-
-$$\\chi = V - E + F.$$
-
-For *every* triangulation of a sphere, $\\chi = 2$. For *every* triangulation of a torus, $\\chi = 0$. The Euler characteristic is a topological invariant: it depends on the surface, not on how you cut it up.
-
-## A scientific example
-
-The shape of the *universe* — its global topology — is an open question in cosmology. Locally it appears flat (zero curvature). Globally it could be an infinite plane, a finite 3-torus, a 3-sphere, or any number of more exotic possibilities. Distinguishing these requires looking for repeated patterns in the cosmic microwave background — circles in the sky that would be "the same place seen twice." So far none have been found, but the constraints continue to tighten.`,
-  },
-
-  // ───────────────────────────────────────────────────────────────
-  // Week 4 — Foundations: logic, proof, set theory, undecidability
-  // ───────────────────────────────────────────────────────────────
-  {
-    slug: "propositional-predicate-logic",
-    title: "Propositional and predicate logic",
+    slug: "graphing-linear-equations",
+    title: "Graphing linear equations",
     weekNumber: 4,
-    blurb: "Truth values, connectives, quantifiers: the grammar of proof.",
-    lectureTitle: "4.1 Propositional and predicate logic",
-    body: `# Propositional and predicate logic
+    blurb: "Equations whose graphs are straight lines.",
+    lectureTitle: "4.2 Graphing linear equations",
+    body: `# Graphing linear equations
 
-Mathematics is built out of *statements* — sentences that are either true or false — combined according to a fixed grammar. **Logic** is the study of that grammar.
+A **linear equation** in two variables, like $y = 2x + 1$, pairs each $x$ with a $y$. Plotting all those pairs $(x, y)$ traces a **straight line** — hence "linear."
 
-## Propositional logic
+## From equation to points
 
-A **proposition** is a declarative sentence with a truth value. We build complex propositions out of simple ones using five **connectives**:
+Pick values of $x$, compute $y$, and make a table:
 
-- $\\neg P$ — not $P$.
-- $P \\wedge Q$ — $P$ and $Q$.
-- $P \\vee Q$ — $P$ or $Q$ (inclusive — at least one).
-- $P \\to Q$ — if $P$ then $Q$ (implication).
-- $P \\leftrightarrow Q$ — $P$ if and only if $Q$ (biconditional).
+| $x$ | $y = 2x + 1$ | point |
+|---|---|---|
+| $0$ | $1$ | $(0, 1)$ |
+| $1$ | $3$ | $(1, 3)$ |
+| $3$ | $7$ | $(3, 7)$ |
 
-Each connective is fully described by a truth table. Implication is the trickiest: $P \\to Q$ is false only when $P$ is true and $Q$ is false. In particular, "if $0 = 1$, then I am the Pope" is true — from a false premise, anything follows ($ex\\ falso\\ quodlibet$).
+Plot the points and draw the line through them. Two points determine a line; a third is a check.
 
-A **tautology** is a propositional formula that is true under every truth assignment, e.g. $P \\vee \\neg P$ (the law of excluded middle).
+## A point is a solution
 
-## Predicate logic
+A point lies on the line exactly when its coordinates make the equation true. $(3, 7)$ is on $y = 2x + 1$ because $7 = 2(3) + 1$. Every point on the line is a solution; every solution is a point on the line. That is the deep link Descartes opened up: **the graph is the picture of the equation's solutions.**
 
-Propositional logic cannot say "every integer has a successor." For that we need **predicates** $P(x)$ — statements about a variable — and **quantifiers**:
+## Special lines
 
-- $\\forall x \\, P(x)$ — *for all* $x$, $P(x)$.
-- $\\exists x \\, P(x)$ — *there exists* $x$ such that $P(x)$.
+- $y = 3$ is a **horizontal** line (every $y$ is $3$).
+- $x = 3$ is a **vertical** line (every $x$ is $3$).
 
-Predicate logic is strictly more powerful. The Pythagorean theorem, "for every right triangle with legs $a$, $b$ and hypotenuse $c$, $a^2 + b^2 = c^2$," is genuinely a $\\forall$ statement and cannot be captured in propositional logic alone.
+## A real example
 
-## Negation of quantifiers
-
-These are easy to get wrong:
-
-$$\\neg(\\forall x \\, P(x)) \\equiv \\exists x \\, \\neg P(x),$$
-$$\\neg(\\exists x \\, P(x)) \\equiv \\forall x \\, \\neg P(x).$$
-
-The negation of "every swan is white" is "some swan is not white" — not "no swan is white."
-
-## A scientific example
-
-The $\\varepsilon$–$\\delta$ definition of a limit (3.1) is the canonical example of a nested-quantifier statement: $\\forall \\varepsilon, \\exists \\delta, \\forall x, \\ldots$. Reversing the order of the quantifiers — $\\exists \\delta, \\forall \\varepsilon$ — produces a strictly *stronger* condition (uniform continuity). Quantifier order *is* the mathematics.`,
+A phone plan of 30 dollars plus 2 dollars per gigabyte graphs as $y = 2x + 30$ — a straight line starting at $(0, 30)$ and climbing $2$ for each step right. Reading the graph, you can *see* the cost of any usage at a glance, and compare two plans by where their lines cross. Linear graphs make relationships visible.`,
   },
   {
-    slug: "what-is-proof",
-    title: "What a proof is",
+    slug: "slope-intercepts",
+    title: "Slope and intercepts",
     weekNumber: 4,
-    blurb: "A proof is a finite chain of inferences from accepted premises.",
-    lectureTitle: "4.2 What a proof is",
-    body: `# What a proof is
+    blurb: "Steepness and where a line crosses the axes.",
+    lectureTitle: "4.3 Slope and intercepts",
+    body: `# Slope and intercepts
 
-A **proof** of a statement $S$, in a given axiomatic system, is a finite sequence of statements ending in $S$, where each statement is either:
+Two numbers capture everything about a line: its **slope** (how steep) and its **intercepts** (where it crosses the axes).
 
-1. an axiom (a premise accepted without proof),
-2. a previously proven theorem, or
-3. a consequence of earlier statements in the sequence by an explicit rule of inference (e.g. modus ponens: from $P$ and $P \\to Q$, conclude $Q$).
+## Slope: rise over run
 
-This is what proof *is*, formally. In practice, mathematicians write proofs in natural language that compresses many such steps into one — but the underlying object is always, in principle, a finite chain like the above.
+The **slope** $m$ measures steepness — the change in $y$ for each step in $x$:
 
-## Common proof techniques
+$$m = \\frac{\\text{rise}}{\\text{run}} = \\frac{y_2 - y_1}{x_2 - x_1}.$$
 
-- **Direct proof.** To prove $P \\to Q$: assume $P$, derive $Q$.
-- **Proof by contradiction.** To prove $S$: assume $\\neg S$, derive a contradiction. (Used in 1.3 for $\\sqrt 2 \\notin \\mathbb{Q}$.)
-- **Proof by contrapositive.** To prove $P \\to Q$: prove $\\neg Q \\to \\neg P$ instead. Logically equivalent.
-- **Proof by cases.** To prove $S$ given that exactly one of $C_1, \\ldots, C_n$ must hold: prove $S$ assuming each $C_i$ in turn.
-- **Proof by induction.** See 4.3.
-- **Constructive proof.** Prove $\\exists x \\, P(x)$ by exhibiting a specific $x$.
-- **Nonconstructive proof.** Prove $\\exists x \\, P(x)$ without producing one. (Classic: there exist irrational $a, b$ with $a^b$ rational. Proof: consider $\\sqrt 2 ^{\\sqrt 2}$. If rational, done. If irrational, then $(\\sqrt 2 ^{\\sqrt 2})^{\\sqrt 2} = 2$ is rational, done. We don't know which case applied.)
+Through $(1, 2)$ and $(4, 8)$:
 
-## What a proof is *not*
+$$m = \\frac{8 - 2}{4 - 1} = \\frac{6}{3} = 2.$$
 
-A proof is not a description, a strong argument, an accumulation of examples, or a check that the result agrees with computation. "I've tried it for the first ten million $n$ and it works" is not a proof. (Famous example: the conjecture that $\\sum_{k=2}^n 1/(k \\ln k) > \\ln \\ln n$ for all $n \\ge 2$ holds for *every* $n$ ever checked but is now known to fail somewhere around $n \\approx 1.4 \\times 10^{316}$ — a number too large to ever check by computer.)
+Positive slope rises left-to-right; negative slope falls; zero slope is flat; a vertical line has *undefined* slope.
 
-## Why proof matters
+## Intercepts
 
-Proof is the *currency* of mathematics. It is what separates mathematics from every other field: a result is part of the body of mathematics if and only if it has been proven from the axioms. Outside mathematics, "proof" is rhetoric. Inside mathematics, it is a precisely defined object.`,
+- The **y-intercept** is where the line crosses the y-axis (where $x = 0$).
+- The **x-intercept** is where it crosses the x-axis (where $y = 0$).
+
+## Slope-intercept form
+
+The tidiest way to write a line is
+
+$$y = mx + b,$$
+
+where $m$ is the slope and $b$ is the y-intercept. From $y = 2x + 1$ you can read off, with no work, slope $2$ and y-intercept $(0, 1)$ — then graph it instantly.
+
+## A real example
+
+Slope is "rate of change" everywhere. On a distance-vs-time graph the slope is **speed**; on a cost-vs-quantity graph it is **price per item**; on a wheelchair ramp it is literally the steepness building codes regulate (no steeper than $\\frac{1}{12}$). Whenever someone says "per" — miles per hour, dollars per pound — they are naming a slope.`,
   },
   {
-    slug: "mathematical-induction",
-    title: "Mathematical induction",
+    slug: "exponents-powers",
+    title: "Exponents and powers",
     weekNumber: 4,
-    blurb: "Prove a statement for all natural numbers from a base and a step.",
-    lectureTitle: "4.3 Mathematical induction",
-    body: `# Mathematical induction
+    blurb: "Repeated multiplication and its rules.",
+    lectureTitle: "4.4 Exponents and powers",
+    body: `# Exponents and powers
 
-**Mathematical induction** is the proof technique tailored to statements of the form "for every natural number $n$, $P(n)$ holds."
+An **exponent** is shorthand for repeated multiplication. In $x^4$, the **base** $x$ is multiplied by itself, and the **exponent** $4$ counts the factors:
 
-## The principle
+$$x^4 = x \\times x \\times x \\times x.$$
 
-To prove $\\forall n \\in \\mathbb{N}\\, P(n)$:
+## The rules of exponents
 
-1. **Base case.** Prove $P(0)$ (or $P(1)$, depending on where $\\mathbb{N}$ starts).
-2. **Inductive step.** Prove that $P(k) \\Rightarrow P(k+1)$ for every $k$.
+Each rule comes straight from counting factors:
 
-If both succeed, $P(n)$ holds for all $n$. The metaphor is dominoes: knock the first one down (base), arrange each one so it knocks the next (step), and they all fall.
+- **Product rule:** $x^a \\times x^b = x^{a+b}$. ($x^3 \\times x^4 = x^7$.)
+- **Quotient rule:** $\\dfrac{x^a}{x^b} = x^{a-b}$. ($x^5 \\div x^2 = x^3$.)
+- **Power rule:** $(x^a)^b = x^{ab}$. ($(x^2)^3 = x^6$.)
+- **Zero exponent:** $x^0 = 1$ (for $x \\neq 0$).
 
-## Why it works
+A numeric check: $2^3 \\times 2^2 = 8 \\times 4 = 32 = 2^5$. ✓
 
-Induction is *equivalent* to the **well-ordering principle**: every nonempty subset of $\\mathbb{N}$ has a least element. Suppose induction failed for some $P$. Then $\\{n : \\neg P(n)\\}$ is a nonempty subset of $\\mathbb{N}$; let $m$ be its least element. We know $m > 0$ (since the base case holds), so $m - 1 \\in \\mathbb{N}$ and $P(m - 1)$ holds. But then by the inductive step $P(m)$ holds — contradiction.
+## Powers of ten and scientific notation
 
-So induction is not a separate axiom: it is a consequence of how $\\mathbb{N}$ is ordered. Conversely, the **Peano axioms** for $\\mathbb{N}$ take induction as one of the foundational axioms.
+Powers of ten let us write huge or tiny numbers compactly. **Scientific notation** writes a number as a digit-times-a-power-of-ten:
 
-## A worked example
+$$3{,}000{,}000 = 3 \\times 10^6, \\qquad 0.0004 = 4 \\times 10^{-4}.$$
 
-**Claim.** $1 + 2 + 3 + \\cdots + n = \\dfrac{n(n+1)}{2}$ for all $n \\ge 1$.
+## A real example
 
-*Base.* For $n = 1$: LHS $= 1$, RHS $= 1 \\cdot 2 / 2 = 1$. ✓
-
-*Step.* Assume the formula for $n = k$:
-
-$$1 + 2 + \\cdots + k = \\frac{k(k+1)}{2}.$$
-
-Add $k + 1$ to both sides:
-
-$$1 + 2 + \\cdots + k + (k+1) = \\frac{k(k+1)}{2} + (k+1) = \\frac{(k+1)(k+2)}{2}.$$
-
-That's the formula at $n = k+1$. ✓ ∎
-
-## Strong induction
-
-A useful variant: assume $P(0), P(1), \\ldots, P(k)$ all hold and prove $P(k+1)$. Logically equivalent to ordinary induction, but more convenient when the proof needs more than the immediate predecessor — e.g. proving that every integer $\\ge 2$ has a prime factorization.
-
-## A scientific example
-
-The proof that a binary heap of $n$ elements supports *extract-min* in $O(\\log n)$ time goes by induction on the height of the heap. Almost every correctness proof in computer science is, under the hood, an induction over the size or structure of the input.`,
+Exponential growth is exponents in time. A rumor told to $2$ people who each tell $2$ more, every round, reaches $2^n$ people after $n$ rounds — just $30$ rounds tops a billion. The same math drives compound interest, population growth, and how a virus spreads. Humans badly underestimate exponents, which is exactly why $2^{30}$ feels impossible until you multiply it out.`,
   },
   {
-    slug: "sets-russell-paradox",
-    title: "Sets and Russell's paradox",
+    slug: "intro-polynomials",
+    title: "Introduction to polynomials",
     weekNumber: 4,
-    blurb: "The naive notion of a set is inconsistent.",
-    lectureTitle: "4.4 Sets and Russell's paradox",
-    body: `# Sets and Russell's paradox
+    blurb: "Adding, subtracting, and multiplying expressions with powers.",
+    lectureTitle: "4.5 Introduction to polynomials",
+    body: `# Introduction to polynomials
 
-Set theory is the lingua franca of modern mathematics: every object we have studied — numbers, functions, groups, vector spaces — can be encoded as a set. So you might expect the foundations of set theory to be straightforward. They are not.
+A **polynomial** is a sum of terms, each a number times a power of a variable — like $2x^2 + 3x - 5$. They are the expressions algebra is built from, and working with them just extends "combining like terms" to terms with exponents.
 
-## Naive set theory
+## Vocabulary
 
-Cantor and Frege, in the late 1800s, took as a basic principle:
+- Each piece ($2x^2$, $3x$, $-5$) is a **term**; the number in front is the **coefficient**.
+- The **degree** is the highest exponent. $2x^2 + 3x - 5$ has degree $2$ (a **quadratic**); degree $1$ is **linear**.
+- One term is a **monomial**, two a **binomial**, three a **trinomial**.
 
-> **Unrestricted comprehension.** For every property $P$, there is a set $\\{x : P(x)\\}$ of all things satisfying $P$.
+## Adding and subtracting
 
-This is the "naive" picture: a set is any collection you can describe. It seems obviously true. It is also inconsistent.
+Combine **like terms** — terms with the same variable *and* exponent:
 
-## Russell's paradox (1901)
+$$(2x^2 + 3x) + (x^2 - 5x) = 3x^2 - 2x.$$
 
-Define
+For subtraction, distribute the minus sign first:
 
-$$R = \\{x : x \\notin x\\},$$
+$$(4x^2 + 2x) - (x^2 - 3x) = 4x^2 + 2x - x^2 + 3x = 3x^2 + 5x.$$
 
-the set of all sets that are not members of themselves. (Most familiar sets satisfy this: $\\mathbb{N}$ is not an element of $\\mathbb{N}$.) Now ask: is $R \\in R$?
+## Multiplying
 
-- If $R \\in R$, then by definition of $R$, $R \\notin R$. Contradiction.
-- If $R \\notin R$, then $R$ satisfies the defining property, so $R \\in R$. Contradiction.
+Use the distributive property. A monomial times a binomial:
 
-Either way, contradiction. Therefore $R$ cannot be a set. Therefore unrestricted comprehension is false. Therefore naive set theory is inconsistent.
+$$2x(3x + 4) = 6x^2 + 8x.$$
 
-Russell sent this to Frege in 1902, just as Frege's life work on the foundations of arithmetic was going to press. Frege added an appendix to the second volume acknowledging that the work was now on broken ground.
+Two binomials — multiply every term by every term (the "FOIL" pattern):
 
-## The fix: axiomatic set theory
+$$(x + 2)(x + 3) = x^2 + 3x + 2x + 6 = x^2 + 5x + 6.$$
 
-Modern set theory (Zermelo 1908, Fraenkel 1922) replaces unrestricted comprehension with weaker, carefully chosen axioms:
+## A real example
 
-- **Extensionality.** Two sets are equal iff they have the same elements.
-- **Pairing.** For any $a, b$, $\\{a, b\\}$ is a set.
-- **Union, power set, infinity, replacement, regularity, …**
-- **Restricted comprehension.** From a *given* set $A$ and a property $P$, you can form $\\{x \\in A : P(x)\\}$.
-
-The crucial change: you can only filter elements out of an existing set; you cannot conjure a set from a property alone. This blocks Russell's construction.
-
-This system, with the axiom of choice added, is **ZFC** — the standard foundation of mathematics today. (Almost) every theorem you know is, in principle, derivable from ZFC.
-
-## The lesson
-
-Mathematics is not self-evidently consistent. Even our most basic intuitions about "collection" can lead to contradiction. Foundations are not optional plumbing; they are a thing you can get wrong.`,
+Polynomials model curved relationships that lines cannot. The height of a thrown ball is a quadratic in time, $h = -5t^2 + 20t + 1$; a company's profit often curves with price. Engineers and economists fit polynomials to data precisely because adding one squared term lets a straight-line model bend to match reality.`,
   },
   {
-    slug: "axioms-independence",
-    title: "Axioms and independence results",
+    slug: "geometry-perimeter-area-volume",
+    title: "Basic geometry: perimeter, area, volume",
     weekNumber: 4,
-    blurb: "Some questions cannot be answered by the axioms we have.",
-    lectureTitle: "4.5 Axioms and independence results",
-    body: `# Axioms and independence results
+    blurb: "Measuring length, surface, and space.",
+    lectureTitle: "4.6 Basic geometry: perimeter, area, volume",
+    body: `# Basic geometry: perimeter, area, volume
 
-A statement $S$ is **independent** of an axiom system $T$ if neither $S$ nor $\\neg S$ can be proven from $T$. Independence is a fact about a *system*, not about the truth of $S$.
+Three measurements describe a shape: **perimeter** (distance around it), **area** (surface it covers), and **volume** (space it fills). They differ not just in formula but in *dimension*.
 
-## The parallel postulate, again
+## Perimeter (1-D, measured in units)
 
-We met the first major independence result in 3.7: Euclid's fifth postulate is independent of the other four. You can adopt it (Euclidean geometry), negate it one way (elliptic geometry), or negate it the other way (hyperbolic geometry), and each choice yields a consistent system. There is no "right answer" inside the axioms.
+Add up the sides. For a rectangle of length $l$ and width $w$:
 
-How was independence proven? By **models**. Exhibit a model of geometry in which the other four postulates hold and the fifth fails. The Poincaré disc model of the hyperbolic plane does exactly this — and its consistency is reduced to the consistency of Euclidean geometry, which is reduced to the consistency of $\\mathbb{R}$, which is reduced to ZFC.
+$$P = 2l + 2w.$$
 
-## The Continuum Hypothesis
+For a circle the perimeter is the **circumference**: $C = 2\\pi r$.
 
-In 1878 Cantor asked: are there any cardinalities strictly between $|\\mathbb{N}|$ and $|\\mathbb{R}|$? The **Continuum Hypothesis (CH)** says no:
+## Area (2-D, measured in square units)
 
-$$\\text{CH:}\\quad |\\mathbb{R}| = \\aleph_1.$$
+- Rectangle: $A = l \\times w$. (An $8$-by-$5$ rectangle has area $8 \\times 5 = 40$.)
+- Triangle: $A = \\tfrac{1}{2} b h$.
+- Circle: $A = \\pi r^2$.
 
-Cantor and others tried for decades to prove CH from set theory. The resolution came in two stages:
+Area is always in **square** units (cm$^2$, ft$^2$) because you are tiling with unit squares.
 
-- **Gödel (1940).** CH is *consistent* with ZFC. If ZFC is consistent, so is ZFC + CH.
-- **Cohen (1963).** $\\neg$CH is also *consistent* with ZFC. If ZFC is consistent, so is ZFC + $\\neg$CH.
+## Volume (3-D, measured in cubic units)
 
-Together: CH is **independent** of ZFC. There is no proof in either direction. (Cohen invented the technique of *forcing* to do this, the deepest tool in set theory.)
+- Rectangular box: $V = l \\times w \\times h$.
+- Cylinder: $V = \\pi r^2 h$.
 
-This is unsettling. CH looks like a definite mathematical question — does some specific cardinality exist or not? — and the axioms we use for all of mathematics cannot answer it. There are at least three reactions:
+Volume is in **cubic** units — you are filling with unit cubes.
 
-1. **Platonism.** CH has a definite truth value; our axioms are incomplete. We should look for new, well-motivated axioms that decide it.
-2. **Formalism.** CH has no truth value independent of an axiom system. Math is the study of consequences of axiom systems; pick one and proceed.
-3. **Multiverse view (Hamkins).** There are many "universes of sets," some satisfying CH, some not, all equally legitimate.
+## A real example
 
-## The Axiom of Choice
-
-A similar story: the **Axiom of Choice** (AC) says that, given any family of nonempty sets, you can pick one element from each. Innocuous-sounding, but it implies the **Banach–Tarski paradox**: a solid ball can be decomposed into five pieces and reassembled into two solid balls of the same size. (The pieces are non-measurable.) AC is independent of ZF (ZFC minus choice), and ZFC routinely takes AC on board.
-
-## The deeper point
-
-The discovery of independence results dissolved the dream — already in trouble after Russell's paradox — that mathematics is a single, finished, complete body of truth. It is, instead, the study of *what follows from what*. The axioms are the starting point you chose; the theorems are what you got. Different starting points are different mathematics.`,
+The dimension is why a large pizza is a far better deal than a small one. Doubling a pizza's radius does not double the food — area grows with $r^2$, so a $16$-inch pizza has *four times* the area of an $8$-inch one, rarely for four times the price. Understanding that length, area, and volume scale by different powers turns geometry into everyday savings.`,
   },
   {
-    slug: "godel-incompleteness",
-    title: "Gödel's incompleteness theorems",
+    slug: "reading-tables-charts-graphs",
+    title: "Reading tables, charts, and graphs",
     weekNumber: 4,
-    blurb: "Any sufficient axiom system contains true statements it cannot prove.",
-    lectureTitle: "4.6 Gödel's incompleteness theorems",
-    body: `# Gödel's incompleteness theorems
+    blurb: "Pulling numbers and summaries out of data.",
+    lectureTitle: "4.7 Reading tables, charts, and graphs",
+    body: `# Reading tables, charts, and graphs
 
-In 1931, Kurt Gödel — age 25 — published two theorems that ended the century-old dream of finding a complete, consistent axiomatization of mathematics.
+Data arrives as tables and pictures, and reading them — pulling out values, spotting trends, and computing simple summaries — is one of the most practical math skills there is.
 
-## What the theorems say
+## Kinds of displays
 
-Let $T$ be a formal axiom system rich enough to encode basic arithmetic (Peano arithmetic suffices, as does ZFC). Assume $T$ is **consistent** (proves no contradiction) and *effective* (its axioms can be recognized by an algorithm).
+- **Tables** list exact values in rows and columns.
+- **Bar charts** compare amounts across categories.
+- **Line graphs** show change over time (slope again: rising means growing).
+- **Pie charts** show parts of a whole, as percents that sum to $100\\%$.
 
-- **First incompleteness theorem.** There is a statement $G$ in the language of $T$ that is *true* (in the standard model) but *not provable* in $T$. Moreover, $\\neg G$ is also not provable. $T$ is **incomplete**.
-- **Second incompleteness theorem.** The statement "$T$ is consistent" is not provable in $T$ itself.
+Always read the **labels, axes, and units** first — a chart with no scale can say anything.
 
-In a sentence: any system strong enough to do arithmetic is either inconsistent or unable to prove its own consistency, and is always missing some truths.
+## Simple summaries
 
-## The construction (sketch)
+For a list of numbers, three averages describe the "center":
 
-Gödel's proof works by *self-reference*. He showed how to encode statements about $T$'s proofs as statements about numbers (this is **Gödel numbering**). Inside arithmetic, you can then formulate a sentence $G$ that says, in effect:
+$$\\text{mean} = \\frac{\\text{sum of values}}{\\text{how many}}, \\quad \\text{median} = \\text{middle value}, \\quad \\text{mode} = \\text{most frequent}.$$
 
-> "This sentence is not provable in $T$."
+For sales of $20$, $30$, and $40$:
 
-Now: if $T$ proves $G$, then $G$ is false — but $T$ proves only true things (by consistency). Contradiction. So $T$ does not prove $G$. But that is exactly what $G$ asserts. So $G$ is true. And $T$ does not prove it.
+$$\\text{mean} = \\frac{20 + 30 + 40}{3} = \\frac{90}{3} = 30.$$
 
-The self-reference is the same machinery that powers the liar paradox ("this sentence is false") — but Gödel rebuilt it inside arithmetic, where it cannot be waved away as a quirk of natural language.
+## A real example
 
-## What it does **not** say
-
-The theorems are routinely misquoted. They do not say:
-
-- "Mathematics is inconsistent." (No — they assume consistency.)
-- "Some mathematical questions have no answer." (Only relative to a given axiom system.)
-- "Machines can never match human reasoning." (A philosophical extrapolation, not a theorem.)
-- "Anything goes." (No — proofs from the axioms are still proofs from the axioms.)
-
-What the theorems *do* say is sharp and limited: any single effective axiom system $T$ for arithmetic has true statements outside it. You can always extend $T$ to a larger system $T'$ that proves $G_T$ — but then $T'$ has its own unprovable $G_{T'}$. You never finish.
-
-## The historical impact
-
-Hilbert's program (1920s) was an explicit plan to formalize *all* of mathematics in a single system and prove it complete and consistent from within. The second incompleteness theorem killed the consistency half outright. The first killed the completeness half. The program was over within a year.
-
-What replaced it is the *modern* understanding of mathematics: as a network of axiom systems, each studied for its own consequences, with relationships between systems (relative consistency, conservative extension, mutual interpretability) doing the work that a single foundational system was supposed to do.`,
+A misleading chart usually attacks one of these basics. A news graphic might start its y-axis at $90$ instead of $0$ to make a tiny rise look like a cliff, or quote the **mean** income of a town where one billionaire drags it far above what a **typical** family earns (the median). Reading data critically — checking the axis, asking *which* average — is numeric literacy in the real world.`,
   },
   {
-    slug: "probability-foundations",
-    title: "Probability: measure, frequency, credence",
+    slug: "capstone-synthesis",
+    title: "Capstone synthesis",
     weekNumber: 4,
-    blurb: "What does it *mean* to say a probability is $0.7$?",
-    lectureTitle: "4.7 Probability: measure, frequency, credence",
-    body: `# Probability: measure, frequency, credence
+    blurb: "Putting the whole course together on real problems.",
+    lectureTitle: "4.8 Capstone synthesis",
+    body: `# Capstone synthesis
 
-We use the word *probability* for at least three different things. Modern mathematics has a precise definition of one of them and leaves the others to philosophy.
+You now hold a connected toolkit, not a pile of tricks. This final lecture shows how the pieces — whole-number operations, fractions, percents, proportions, and algebra — combine to solve the layered problems real life actually asks.
 
-## The mathematical definition (Kolmogorov, 1933)
+## The threads, tied together
 
-A **probability space** is a triple $(\\Omega, \\mathcal{F}, P)$ where:
+- **Operations and place value** (Week 1) are the foundation everything else stands on.
+- **Fractions, decimals, percents** (Week 2) are one idea — a part of a whole — in three notations.
+- **Proportions and percents** (Weeks 2–3) scale and compare; they power discounts, rates, and conversions.
+- **Variables and equations** (Week 3) let you solve for an unknown instead of guessing.
+- **Graphs, exponents, and geometry** (Week 4) make relationships visible and measure the world.
 
-- $\\Omega$ is a set of **outcomes** (the *sample space*).
-- $\\mathcal{F}$ is a collection of subsets of $\\Omega$ called **events**, closed under complement and countable unions (a *$\\sigma$-algebra*).
-- $P : \\mathcal{F} \\to [0, 1]$ is a function satisfying:
-  1. $P(\\Omega) = 1$,
-  2. $P(\\emptyset) = 0$,
-  3. *Countable additivity:* for any disjoint sequence $A_1, A_2, \\ldots \\in \\mathcal{F}$,
-     $$P\\!\\left(\\bigcup_n A_n\\right) = \\sum_n P(A_n).$$
+## A worked synthesis
 
-That is *all* probability theory says probability *is*: a normalized measure on a $\\sigma$-algebra. Every theorem (law of large numbers, central limit theorem, Bayes' rule) is a consequence.
+*A recipe for $4$ servings uses $3$ cups of flour. You are cooking for $10$. How much flour?* Set up a **proportion** and solve:
 
-This is a beautifully clean foundation. But it leaves an enormous question unanswered: *how do you choose $P$ in a real problem?*
+$$\\frac{3}{4} = \\frac{x}{10} \\;\\Rightarrow\\; 4x = 30 \\;\\Rightarrow\\; x = 7.5 \\text{ cups}.$$
 
-## The three interpretations
-
-- **Frequentist.** $P(A)$ is the long-run relative frequency of $A$ in independent repeated trials. "The probability this coin lands heads is $0.5$" means: if you toss it forever, the fraction of heads tends to $0.5$. Concept of probability for one-off events is undefined.
-- **Bayesian / subjective.** $P(A)$ is your **degree of belief** that $A$ is true, calibrated so that you would accept fair bets at those odds. New evidence updates your beliefs by Bayes' rule. Applies to one-off events ("the probability it rains tomorrow") and to hypotheses ("the probability the coin is fair").
-- **Propensity.** $P(A)$ is a real, physical disposition of the system — a tendency. Useful for talking about quantum mechanics, where the probabilities seem to be features of the world rather than features of our ignorance.
-
-All three interpretations satisfy Kolmogorov's axioms. The math is the same; the *meaning* is contested.
-
-## A scientific example
-
-When a clinical trial reports "the drug reduces mortality by $40\\%$ ($p = 0.03$)," the $p$-value is a frequentist statement: under the null hypothesis (drug has no effect), the probability of seeing data this extreme or more is $0.03$. This is *not* the probability that the null hypothesis is false — that would be a Bayesian statement, requiring a prior. The widespread confusion of these two statements is responsible for a substantial fraction of misreported science. The math doesn't care which interpretation you adopt; the *conclusion you can draw* depends on it absolutely.`,
-  },
-  {
-    slug: "computability-halting",
-    title: "Computability and the halting problem",
-    weekNumber: 4,
-    blurb: "There is no algorithm that decides whether an algorithm halts.",
-    lectureTitle: "4.8 Computability and the halting problem",
-    body: `# Computability and the halting problem
-
-To finish the course, we ask: what can be computed, in principle, by any mechanical procedure?
-
-## Turing machines
-
-Alan Turing (1936) formalized an *idealized computer*: a finite state controller reading and writing symbols on an unbounded tape, according to a finite table of rules. A **Turing machine** is fully specified by that table.
-
-The **Church–Turing thesis** says: every function that is computable, by any mechanical procedure whatsoever — pencil and paper, modern computer, abacus, biological cell — is computable by some Turing machine. This is a thesis, not a theorem, because "mechanical procedure" has no a priori mathematical definition. But every alternative model of computation people have invented (lambda calculus, recursive functions, register machines, modern CPUs) turns out to compute exactly the same class of functions. The Turing-computable functions are, empirically, *the* computable functions.
-
-## The halting problem
-
-A natural question: given a Turing machine $M$ and an input $x$, does $M$ eventually halt, or does it run forever?
-
-Turing's headline result: **no algorithm can decide this in general.** The **halting problem** is *undecidable*.
-
-## The proof
-
-Suppose, for contradiction, there is a Turing machine $H$ that, given $\\langle M, x \\rangle$, outputs "yes" if $M(x)$ halts and "no" otherwise. Build a new machine $D$ that, given an input $\\langle M \\rangle$ (the description of a machine), runs $H$ on $\\langle M, M \\rangle$ and then:
-
-- if $H$ says "yes" (i.e. $M$ halts on input $M$), $D$ loops forever;
-- if $H$ says "no," $D$ halts.
-
-Now ask: what does $D$ do on input $\\langle D \\rangle$?
-
-- If $D$ halts on $\\langle D \\rangle$, then by construction $H$ said "yes" — which means $D$ does not halt on $\\langle D \\rangle$. Contradiction.
-- If $D$ does not halt, then $H$ said "no" — which means $D$ does halt on $\\langle D \\rangle$. Contradiction.
-
-Either way, contradiction. Therefore no such $H$ exists. The halting problem is uncomputable. ∎
-
-This argument is the *exact same* diagonal trick that Cantor used to prove $\\mathbb{R}$ uncountable (1.8) and that Gödel used in the incompleteness theorem (4.6). The three results — uncountability, incompleteness, undecidability — are siblings of one self-referential move.
-
-## What follows
-
-Once you have one undecidable problem, you get many. By a standard reduction technique, you can show:
-
-- It is undecidable whether two given programs compute the same function.
-- It is undecidable whether a given Diophantine equation $p(x_1, \\ldots, x_n) = 0$ with integer coefficients has an integer solution (**Hilbert's 10th problem**, settled by Matiyasevich, 1970).
-- It is undecidable whether a given mathematical statement in first-order logic over the integers is true.
-
-There are well-posed yes/no questions about numbers that no algorithm — and, granting the Church–Turing thesis, *no possible procedure* — can answer.
+Now layer on a percent: *flour is on sale at $20\\%$ off $\\$5$ for a $5$-cup bag.* You need $2$ bags ($10$ cups $\\ge 7.5$), each costing $0.80 \\times 5 = 4$ dollars, so $2 \\times 4 = 8$ dollars. One everyday question, four tools.
 
 ## The arc
 
-We began the course with counting on our fingers. We end it with the discovery that some questions about the integers are mechanically unanswerable. The reach of mathematics is enormous; its limits are sharp; and the proofs that establish those limits use the same handful of conceptual moves — quantification, self-reference, diagonalization — that we have met again and again. *That* is conceptual mathematics.`,
+We began by writing numbers with place value and end by chaining proportions, percents, and equations into a single answer. That is the real goal of developmental math: not isolated procedures, but the confidence to break any word problem into steps you know how to take.`,
   },
 ];
 
@@ -1312,235 +1038,225 @@ type SeedAssignment = {
 };
 
 const ASSIGNMENTS: SeedAssignment[] = [
-  // ───────────── Week 1 ─────────────
+  // ───────────── Unit 1 ─────────────
   {
     kind: "homework",
-    title: "Homework 1.1 — Numbers and their extensions",
+    title: "Homework 1.1 — Whole numbers and operations",
     weekNumber: 1,
     isTimed: false,
     timeLimitMinutes: null,
     instructions:
-      "Short-answer problems on counting, rationals, irrationals, and the reals. Use the math keyboard for the blackboard-bold number sets (ℕ, ℤ, ℚ, ℝ, ℂ) and any symbols.",
+      "Short-answer problems on place value and the four operations. Use the math keyboard for ×, ÷, exponents, and any symbols.",
     problems: [
       {
-        topicSlug: "counting-integers-numberline",
+        topicSlug: "whole-numbers-place-value",
         prompt:
-          "Using ∈ and ∉, write two true membership statements: one placing −7 in the integers, and one excluding −7 from the natural numbers ℕ = {1, 2, 3, …}.",
-        correctAnswer: "−7 ∈ ℤ and −7 ∉ ℕ",
+          "Write the number four thousand seven (4007) in expanded form using powers of ten (use × and exponents).",
+        correctAnswer: "4007 = 4×10³ + 0×10² + 0×10¹ + 7×10⁰",
         explanation:
-          "$-7 \\in \\mathbb{Z}$ (it is an integer), and $-7 \\notin \\mathbb{N}$ under the convention $\\mathbb{N} = \\{1, 2, 3, \\ldots\\}$.",
+          "$4007 = 4\\times 1000 + 0\\times 100 + 0\\times 10 + 7\\times 1 = 4\\times 10^3 + 7\\times 10^0$. Each place is a power of ten.",
       },
       {
-        topicSlug: "rationals-ratios",
+        topicSlug: "addition-subtraction",
         prompt:
-          "Using set-builder notation, write the definition of the rational numbers ℚ as ratios of integers (be sure to exclude the impossible denominator).",
-        correctAnswer: "ℚ = { p/q : p, q ∈ ℤ, q ≠ 0 }",
+          "Given the addition fact 8 + 5 = 13, write the two subtraction facts that undo it (use −).",
+        correctAnswer: "13 − 5 = 8 and 13 − 8 = 5",
         explanation:
-          "$\\mathbb{Q} = \\{\\,p/q : p, q \\in \\mathbb{Z},\\ q \\neq 0\\,\\}$. Excluding $q = 0$ is essential — division by zero is undefined.",
+          "Subtraction is the inverse of addition: if $8+5=13$ then $13-5=8$ and $13-8=5$.",
       },
       {
-        topicSlug: "irrationals-sqrt2",
+        topicSlug: "multiplication-division",
         prompt:
-          "State, in symbols, the membership claim that √2 is real but not rational. Use ∈, ∉, ℝ, ℚ.",
-        correctAnswer: "√2 ∈ ℝ and √2 ∉ ℚ",
+          "Write 7 × 6 as repeated addition, and write the matching division fact (use × and ÷).",
+        correctAnswer: "7 × 6 = 6+6+6+6+6+6+6 = 42; 42 ÷ 6 = 7",
         explanation:
-          "$\\sqrt 2 \\in \\mathbb{R}$ but $\\sqrt 2 \\notin \\mathbb{Q}$ — proven by the classical contradiction argument from $\\sqrt 2 = p/q$ in lowest terms.",
+          "$7\\times 6$ is seven sixes, $42$. Division undoes it: $42\\div 6 = 7$.",
       },
       {
-        topicSlug: "reals-completeness",
+        topicSlug: "factors-multiples-primes",
         prompt:
-          "Write the chain of strict subset inclusions from the natural numbers up through the complex numbers (use ⊂ to indicate proper subsets).",
-        correctAnswer: "ℕ ⊂ ℤ ⊂ ℚ ⊂ ℝ ⊂ ℂ",
+          "Write the prime factorization of 60 using exponents (use × and exponents).",
+        correctAnswer: "60 = 2² × 3 × 5",
         explanation:
-          "$\\mathbb{N} \\subset \\mathbb{Z} \\subset \\mathbb{Q} \\subset \\mathbb{R} \\subset \\mathbb{C}$. Each inclusion is strict — each extension is genuinely larger.",
+          "$60 = 2\\times 2\\times 3\\times 5 = 2^2\\times 3\\times 5$ — its unique prime fingerprint.",
       },
     ],
   },
   {
     kind: "homework",
-    title: "Homework 1.2 — Complex numbers, representation, infinity",
+    title: "Homework 1.2 — Integers, order of operations, problem solving",
     weekNumber: 1,
     isTimed: false,
     timeLimitMinutes: null,
     instructions:
-      "Use the math keyboard for i, π, exponents, and blackboard-bold set symbols.",
+      "Use the math keyboard for −, <, >, |x|, exponents, and parentheses.",
     problems: [
       {
-        topicSlug: "complex-rotations",
+        topicSlug: "negative-numbers-number-line",
         prompt:
-          "Write the defining equation of the imaginary unit i, and then write Euler's identity (the special case linking 0, 1, π, e, and i).",
-        correctAnswer: "i² = −1; e^{iπ} + 1 = 0",
+          "Write an inequality comparing −5 and −2, and give the absolute value of −5 (use <, >, and |x|).",
+        correctAnswer: "−5 < −2; |−5| = 5",
         explanation:
-          "$i^2 = -1$ defines the imaginary unit. Euler's identity $e^{i\\pi} + 1 = 0$ links five fundamental constants in a single equation.",
+          "$-5$ is farther left on the number line, so $-5 < -2$. Absolute value is distance from zero: $|-5| = 5$.",
       },
       {
-        topicSlug: "zero-negatives-leaps",
+        topicSlug: "order-of-operations",
         prompt:
-          "For each of the equations x + 1 = 0, 2x = 1, x² = 2, x² + 1 = 0, give the smallest standard number system (use ℕ, ℤ, ℚ, ℝ, ℂ) in which the equation has a solution.",
-        correctAnswer:
-          "x + 1 = 0 → ℤ; 2x = 1 → ℚ; x² = 2 → ℝ; x² + 1 = 0 → ℂ",
+          "Using the order of operations, evaluate 2 + 3 × 4² and write the final value.",
+        correctAnswer: "50",
         explanation:
-          "Each enlargement of the number system was driven by an equation the previous system could not solve.",
+          "Exponent first: $4^2 = 16$. Then multiply: $3\\times 16 = 48$. Then add: $2 + 48 = 50$.",
       },
       {
-        topicSlug: "bases-place-value",
-        prompt:
-          "Write the number seventeen (a) in base 10, (b) in base 2, and (c) in base 16.",
-        correctAnswer: "(a) 17, (b) 10001, (c) 11",
+        topicSlug: "order-of-operations",
+        prompt: "Evaluate 5 × (2 + 3)² and write the final value.",
+        correctAnswer: "125",
         explanation:
-          "$17_{10} = 10001_2 = 11_{16}$. The number is the same; only the representation changes with the base.",
+          "Parentheses first: $2+3=5$. Then exponent: $5^2 = 25$. Then multiply: $5\\times 25 = 125$.",
       },
       {
-        topicSlug: "countable-uncountable",
+        topicSlug: "word-problems-strategies",
         prompt:
-          "Using ∼ for 'has the same cardinality as', write two true statements: (a) that the integers and the rationals are equinumerous, and (b) that the reals are *not* equinumerous with the naturals.",
-        correctAnswer: "ℤ ∼ ℚ and ℝ ≁ ℕ",
+          "You deposit 40 dollars and then withdraw 55 dollars. Write this as a signed-number addition and give the resulting balance (use − for the negative).",
+        correctAnswer: "40 + (−55) = −15",
         explanation:
-          "$\\mathbb{Z}$ and $\\mathbb{Q}$ are both countable (cardinality $\\aleph_0$), so $\\mathbb{Z} \\sim \\mathbb{Q}$. By Cantor's diagonal argument, $\\mathbb{R}$ is uncountable, so $\\mathbb{R} \\not\\sim \\mathbb{N}$.",
+          "A withdrawal is negative: $40 + (-55) = -15$, an account 15 dollars overdrawn.",
       },
     ],
   },
   {
     kind: "test",
-    title: "Week 1 Test — The number systems",
+    title: "Week 1 Test — Whole numbers and operations",
     weekNumber: 1,
     isTimed: true,
     timeLimitMinutes: 30,
     instructions:
-      "Timed. 30 minutes. Math keyboard available; pasting is disabled. Answers should be written in compact symbolic form using the on-screen math keyboard.",
+      "Timed test on Week 1. Use the math keyboard for ×, ÷, −, exponents, and |x|.",
     problems: [
       {
-        topicSlug: "counting-integers-numberline",
+        topicSlug: "whole-numbers-place-value",
         prompt:
-          "Using a single statement, write that the integers are closed under subtraction but the natural numbers are not. (Give a specific counterexample for ℕ.)",
-        correctAnswer: "∀ a, b ∈ ℤ, a − b ∈ ℤ; but 3 − 5 = −2 ∉ ℕ",
+          "Use < or > to compare the whole numbers 4072 and 3999.",
+        correctAnswer: "4072 > 3999",
         explanation:
-          "For all $a, b \\in \\mathbb{Z}$, $a - b \\in \\mathbb{Z}$. But $3 - 5 = -2 \\notin \\mathbb{N}$ shows $\\mathbb{N}$ is not closed under subtraction.",
+          "Compare from the left: $4$ thousands beats $3$ thousands, so $4072 > 3999$.",
       },
       {
-        topicSlug: "irrationals-sqrt2",
+        topicSlug: "multiplication-division",
         prompt:
-          "Outline the proof that √2 ∉ ℚ as a contradiction: state the assumption, the algebraic consequence, and the contradiction reached.",
-        correctAnswer:
-          "Assume √2 = p/q in lowest terms ⇒ p² = 2q² ⇒ p even ⇒ p = 2k ⇒ q² = 2k² ⇒ q even ⇒ p, q share factor 2, contradicting 'lowest terms'.",
+          "Write 17 ÷ 5 as a quotient with a remainder, and write the check using × and + (use ÷, ×, +).",
+        correctAnswer: "17 ÷ 5 = 3 remainder 2; 5 × 3 + 2 = 17",
         explanation:
-          "Assume $\\sqrt 2 = p/q$ in lowest terms. Then $p^2 = 2q^2$, so $p$ is even, $p = 2k$, then $q^2 = 2k^2$, so $q$ is even — contradicting 'lowest terms.'",
+          "$5$ goes into $17$ three times with $2$ left over; check: $5\\times 3 + 2 = 17$.",
       },
       {
-        topicSlug: "reals-completeness",
+        topicSlug: "factors-multiples-primes",
         prompt:
-          "State the Least Upper Bound (supremum) property of ℝ in symbols.",
-        correctAnswer:
-          "∀ S ⊆ ℝ with S ≠ ∅ and S bounded above, ∃ sup(S) ∈ ℝ",
+          "For 12 and 18, write the greatest common factor and the least common multiple (use gcd and lcm).",
+        correctAnswer: "gcd(12,18) = 6; lcm(12,18) = 36",
         explanation:
-          "Every nonempty subset $S \\subseteq \\mathbb{R}$ with an upper bound has a least upper bound $\\sup(S) \\in \\mathbb{R}$. This property fails in $\\mathbb{Q}$.",
+          "$12 = 2^2\\times 3$, $18 = 2\\times 3^2$. GCF uses shared factors $2\\times 3 = 6$; LCM uses the highest powers $2^2\\times 3^2 = 36$.",
       },
       {
-        topicSlug: "complex-rotations",
-        prompt:
-          "Using i, write the two complex square roots of −9.",
-        correctAnswer: "±3i",
+        topicSlug: "negative-numbers-number-line",
+        prompt: "Evaluate (−3) × (−4) and write the result (use × and −).",
+        correctAnswer: "(−3) × (−4) = 12",
         explanation:
-          "$x^2 = -9 \\Rightarrow x = \\pm 3i$, since $(3i)^2 = 9 \\cdot i^2 = -9$.",
+          "A negative times a negative is positive: $(-3)\\times(-4) = 12$.",
       },
       {
-        topicSlug: "countable-uncountable",
-        prompt:
-          "Using ℵ₀, write the cardinality of ℚ and a strict inequality showing |ℝ| is larger.",
-        correctAnswer: "|ℚ| = ℵ₀ and |ℝ| > ℵ₀",
+        topicSlug: "order-of-operations",
+        prompt: "Evaluate 8 ÷ 4 × 2 (use ÷ and ×).",
+        correctAnswer: "4",
         explanation:
-          "$|\\mathbb{Q}| = \\aleph_0$ (the rationals are countable). $|\\mathbb{R}| > \\aleph_0$ by Cantor's diagonal argument; $|\\mathbb{R}| = 2^{\\aleph_0}$.",
+          "Multiplication and division go left to right: $8\\div 4 = 2$, then $2\\times 2 = 4$.",
       },
     ],
   },
-
-  // ───────────── Week 2 ─────────────
+  // ───────────── Unit 2 ─────────────
   {
     kind: "homework",
-    title: "Homework 2.1 — Operations, structural laws, groups",
+    title: "Homework 2.1 — Understanding and operating with fractions",
     weekNumber: 2,
     isTimed: false,
     timeLimitMinutes: null,
     instructions:
-      "Use the math keyboard for ∀, ∃, ∈, ∘, and any operator symbols.",
+      "Use the math keyboard for the fraction bar (/), ×, and ÷. Give every answer in lowest terms.",
     problems: [
       {
-        topicSlug: "what-is-operation",
+        topicSlug: "understanding-fractions",
         prompt:
-          "Using the function-arrow notation, write the formal definition of a binary operation ∗ on a set S.",
-        correctAnswer: "∗ : S × S → S",
+          "Write the fraction equivalent to 3/4 that has denominator 12 (use the fraction bar /).",
+        correctAnswer: "9/12",
         explanation:
-          "$\\ast : S \\times S \\to S$. The codomain $S$ encodes the closure requirement: combining two elements of $S$ must produce an element of $S$.",
+          "Multiply top and bottom by $3$: $\\frac{3}{4} = \\frac{9}{12}$.",
       },
       {
-        topicSlug: "commutative-associative-distributive",
+        topicSlug: "adding-subtracting-fractions",
         prompt:
-          "Using ∀, write the commutative law for an operation ∗ on a set S, and the associative law for the same ∗.",
-        correctAnswer:
-          "∀ a, b ∈ S, a ∗ b = b ∗ a; ∀ a, b, c ∈ S, (a ∗ b) ∗ c = a ∗ (b ∗ c)",
+          "Compute 1/2 + 1/3 and write the result as a single fraction in lowest terms (use /).",
+        correctAnswer: "5/6",
         explanation:
-          "Commutativity: $\\forall a, b \\in S,\\ a \\ast b = b \\ast a$. Associativity: $\\forall a, b, c \\in S,\\ (a \\ast b) \\ast c = a \\ast (b \\ast c)$.",
+          "Common denominator $6$: $\\frac{3}{6} + \\frac{2}{6} = \\frac{5}{6}$.",
       },
       {
-        topicSlug: "groups-symmetry",
+        topicSlug: "multiplying-dividing-fractions",
         prompt:
-          "List the four axioms a set G with operation ∗ must satisfy to be a group. Use compact symbolic notation (closure, associativity, identity, inverses).",
-        correctAnswer:
-          "(1) ∀ a, b ∈ G, a∗b ∈ G; (2) ∀ a, b, c, (a∗b)∗c = a∗(b∗c); (3) ∃ e ∈ G, ∀ a, e∗a = a∗e = a; (4) ∀ a ∈ G, ∃ a⁻¹ ∈ G, a∗a⁻¹ = a⁻¹∗a = e",
+          "Compute 3/4 × 2/9 and write the result in lowest terms (use × and /).",
+        correctAnswer: "1/6",
         explanation:
-          "Closure, associativity, identity element $e$, inverses. An abelian group additionally satisfies $a \\ast b = b \\ast a$.",
+          "Multiply across: $\\frac{6}{36}$, which simplifies to $\\frac{1}{6}$.",
+      },
+      {
+        topicSlug: "multiplying-dividing-fractions",
+        prompt:
+          "Compute 2/3 ÷ 4/5 and write the result in lowest terms (use ÷ and /).",
+        correctAnswer: "5/6",
+        explanation:
+          "Multiply by the reciprocal: $\\frac{2}{3}\\times\\frac{5}{4} = \\frac{10}{12} = \\frac{5}{6}$.",
       },
     ],
   },
   {
     kind: "homework",
-    title: "Homework 2.2 — Rings, fields, vector spaces, functions, modular arithmetic",
+    title: "Homework 2.2 — Decimals, percents, ratios, and proportions",
     weekNumber: 2,
     isTimed: false,
     timeLimitMinutes: null,
     instructions:
-      "Use the math keyboard for blackboard-bold sets, ∀/∃, ≡, ∘, ∈, ∉.",
+      "Use the math keyboard for /, %, =, and the variable x.",
     problems: [
       {
-        topicSlug: "rings-fields",
+        topicSlug: "decimals-place-value",
         prompt:
-          "Give the precise condition on the positive integer n for the ring ℤ/nℤ to be a field. State it as a single sentence in symbols.",
-        correctAnswer: "ℤ/nℤ is a field ⟺ n is prime",
+          "Write 0.07 as a fraction (in lowest terms) and as a percent (use / and %).",
+        correctAnswer: "7/100 = 7%",
         explanation:
-          "$\\mathbb{Z}/n\\mathbb{Z}$ is a field if and only if $n$ is prime. For composite $n = ab$ with $1 < a, b < n$, the classes $[a]$ and $[b]$ are nonzero zero-divisors and have no multiplicative inverses.",
+          "Two decimal places means hundredths: $0.07 = \\frac{7}{100} = 7\\%$.",
       },
       {
-        topicSlug: "vector-spaces",
+        topicSlug: "converting-fractions-decimals-percents",
         prompt:
-          "Using Σ notation, write the general form of a linear combination of vectors v₁, …, vₖ with scalars α₁, …, αₖ from a field F.",
-        correctAnswer: "Σ_{i=1}^{k} α_i v_i",
+          "Write 3/5 as a decimal and as a percent (use / and %).",
+        correctAnswer: "3/5 = 0.6 = 60%",
         explanation:
-          "A linear combination is $\\sum_{i=1}^{k} \\alpha_i v_i$, with each $\\alpha_i \\in F$ and each $v_i$ a vector. The span of $\\{v_1, \\ldots, v_k\\}$ is the set of all such combinations.",
+          "$3\\div 5 = 0.6$, and $0.6 = 60\\%$.",
       },
       {
-        topicSlug: "functions-mappings",
+        topicSlug: "ratios-rates-proportions",
         prompt:
-          "Using ∀ and ⇒, write the formal definition that a function f : A → B is injective.",
-        correctAnswer: "∀ a₁, a₂ ∈ A, f(a₁) = f(a₂) ⇒ a₁ = a₂",
+          "Write the ratio 12 to 18 in lowest terms (use / or the ratio symbol).",
+        correctAnswer: "2/3",
         explanation:
-          "$f$ is injective iff $\\forall a_1, a_2 \\in A,\\ f(a_1) = f(a_2) \\Rightarrow a_1 = a_2$. Equivalently: different inputs give different outputs.",
+          "Divide both by $6$: $\\frac{12}{18} = \\frac{2}{3}$ (that is $2:3$).",
       },
       {
-        topicSlug: "relations-equivalence-iso",
+        topicSlug: "ratios-rates-proportions",
         prompt:
-          "List the three properties (in symbols) that a relation ∼ on a set S must satisfy to be an equivalence relation.",
-        correctAnswer:
-          "Reflexive: ∀ a, a ∼ a. Symmetric: ∀ a, b, a ∼ b ⇒ b ∼ a. Transitive: ∀ a, b, c, (a ∼ b ∧ b ∼ c) ⇒ a ∼ c.",
+          "Solve the proportion 3/4 = x/20 for x. Write the solution as an equation (use /, =, and x).",
+        correctAnswer: "x = 15",
         explanation:
-          "Reflexivity, symmetry, transitivity. An equivalence relation partitions $S$ into disjoint equivalence classes.",
-      },
-      {
-        topicSlug: "modular-arithmetic",
-        prompt:
-          "Using the ≡ ... (mod n) notation, write Fermat's Little Theorem for a prime p and an integer a not divisible by p.",
-        correctAnswer: "a^{p−1} ≡ 1 (mod p)",
-        explanation:
-          "Fermat's Little Theorem: $a^{p-1} \\equiv 1 \\pmod p$ when $\\gcd(a, p) = 1$. It is the foundation of probabilistic primality testing and RSA encryption.",
+          "Cross-multiply: $4x = 60$, so $x = 15$.",
       },
     ],
   },
@@ -1551,397 +1267,344 @@ const ASSIGNMENTS: SeedAssignment[] = [
     isTimed: true,
     timeLimitMinutes: 60,
     instructions:
-      "Cumulative midterm on the number systems and on algebraic structures. 60 minutes. Math keyboard available; pasting disabled.",
+      "Cumulative timed midterm over Weeks 1 and 2. Use the math keyboard for all symbols (×, ÷, /, %, exponents, =).",
     problems: [
       {
-        topicSlug: "rationals-ratios",
+        topicSlug: "whole-numbers-place-value",
         prompt:
-          "Using set-builder notation, write the definition of ℚ as ratios of integers.",
-        correctAnswer: "ℚ = { p/q : p, q ∈ ℤ, q ≠ 0 }",
+          "Write the number 3502 in expanded form using powers of ten (use × and exponents).",
+        correctAnswer: "3502 = 3×10³ + 5×10² + 0×10¹ + 2×10⁰",
         explanation:
-          "$\\mathbb{Q} = \\{\\,p/q : p, q \\in \\mathbb{Z},\\ q \\neq 0\\,\\}$.",
+          "$3502 = 3\\times 1000 + 5\\times 100 + 0\\times 10 + 2\\times 1$.",
       },
       {
-        topicSlug: "irrationals-sqrt2",
+        topicSlug: "factors-multiples-primes",
         prompt:
-          "Write the membership claim that √2 is real but not rational.",
-        correctAnswer: "√2 ∈ ℝ and √2 ∉ ℚ",
-        explanation:
-          "$\\sqrt 2 \\in \\mathbb{R}$ and $\\sqrt 2 \\notin \\mathbb{Q}$.",
+          "Write the prime factorization of 48 using exponents (use × and exponents).",
+        correctAnswer: "48 = 2⁴ × 3",
+        explanation: "$48 = 2\\times 2\\times 2\\times 2\\times 3 = 2^4\\times 3$.",
       },
       {
-        topicSlug: "complex-rotations",
-        prompt:
-          "State the defining equation of the imaginary unit i and write Euler's identity.",
-        correctAnswer: "i² = −1; e^{iπ} + 1 = 0",
+        topicSlug: "order-of-operations",
+        prompt: "Evaluate 3 + 2 × (5 − 1)² and write the final value.",
+        correctAnswer: "35",
         explanation:
-          "$i^2 = -1$ and $e^{i\\pi} + 1 = 0$.",
+          "Parentheses: $5-1=4$. Exponent: $4^2=16$. Multiply: $2\\times 16 = 32$. Add: $3+32 = 35$.",
       },
       {
-        topicSlug: "countable-uncountable",
+        topicSlug: "adding-subtracting-fractions",
         prompt:
-          "Using ℵ₀, write the cardinality of ℕ. Then write a strict inequality comparing |ℕ| and |ℝ|.",
-        correctAnswer: "|ℕ| = ℵ₀ and |ℕ| < |ℝ|",
+          "Compute 3/4 − 1/6 in lowest terms (use / and −).",
+        correctAnswer: "7/12",
         explanation:
-          "$|\\mathbb{N}| = \\aleph_0$ and $|\\mathbb{N}| < |\\mathbb{R}|$ (Cantor).",
+          "Common denominator $12$: $\\frac{9}{12} - \\frac{2}{12} = \\frac{7}{12}$.",
       },
       {
-        topicSlug: "groups-symmetry",
+        topicSlug: "converting-fractions-decimals-percents",
         prompt:
-          "Using ∃ and ∀, state the identity-element axiom and the inverses axiom for a group (G, ∗).",
-        correctAnswer:
-          "∃ e ∈ G, ∀ a ∈ G, e ∗ a = a ∗ e = a; and ∀ a ∈ G, ∃ a⁻¹ ∈ G, a ∗ a⁻¹ = a⁻¹ ∗ a = e",
-        explanation:
-          "Identity: $\\exists e,\\ \\forall a,\\ e \\ast a = a \\ast e = a$. Inverses: $\\forall a,\\ \\exists a^{-1},\\ a \\ast a^{-1} = a^{-1} \\ast a = e$.",
+          "Write 1/4 as a decimal and as a percent (use / and %).",
+        correctAnswer: "1/4 = 0.25 = 25%",
+        explanation: "$1\\div 4 = 0.25 = 25\\%$.",
       },
       {
-        topicSlug: "rings-fields",
+        topicSlug: "ratios-rates-proportions",
         prompt:
-          "State the condition on n for ℤ/nℤ to be a field.",
-        correctAnswer: "ℤ/nℤ is a field ⟺ n is prime",
+          "A car travels 120 miles in 2 hours. Write the unit rate in miles per hour (use / or 'mph').",
+        correctAnswer: "60 mph",
         explanation:
-          "$\\mathbb{Z}/n\\mathbb{Z}$ is a field iff $n$ is prime.",
-      },
-      {
-        topicSlug: "vector-spaces",
-        prompt:
-          "Using Σ, write the linear combination of v₁, v₂, v₃ with scalars α₁, α₂, α₃.",
-        correctAnswer: "Σ_{i=1}^{3} α_i v_i = α₁v₁ + α₂v₂ + α₃v₃",
-        explanation:
-          "$\\sum_{i=1}^{3} \\alpha_i v_i$.",
-      },
-      {
-        topicSlug: "modular-arithmetic",
-        prompt:
-          "Using the ≡ ... (mod n) notation, write Fermat's Little Theorem.",
-        correctAnswer: "a^{p−1} ≡ 1 (mod p) when gcd(a, p) = 1",
-        explanation:
-          "$a^{p-1} \\equiv 1 \\pmod p$ for prime $p$ and $\\gcd(a, p) = 1$.",
+          "$\\frac{120\\text{ mi}}{2\\text{ hr}} = 60$ miles per hour.",
       },
     ],
   },
-
-  // ───────────── Week 3 ─────────────
+  // ───────────── Unit 3 ─────────────
   {
     kind: "homework",
-    title: "Homework 3.1 — Limits, continuity, derivatives, integrals",
+    title: "Homework 3.1 — Percents, measurement, and variables",
     weekNumber: 3,
     isTimed: false,
     timeLimitMinutes: null,
     instructions:
-      "Use the math keyboard for limits, derivatives, integrals, and quantifiers.",
+      "Use the math keyboard for ×, %, =, and variables.",
     problems: [
       {
-        topicSlug: "limits-taming-infinity",
+        topicSlug: "percent-problems-applications",
         prompt:
-          "Write the ε–δ definition of lim_{x → a} f(x) = L using ∀, ∃, and |·|.",
-        correctAnswer:
-          "∀ ε > 0, ∃ δ > 0 : 0 < |x − a| < δ ⇒ |f(x) − L| < ε",
+          "What is 15% of 80? Write the computation as a product and give the result (use × and %).",
+        correctAnswer: "0.15 × 80 = 12",
         explanation:
-          "$\\forall \\varepsilon > 0,\\ \\exists \\delta > 0$ such that $0 < |x - a| < \\delta \\Rightarrow |f(x) - L| < \\varepsilon$.",
+          "'Of' means multiply, and $15\\% = 0.15$: $0.15\\times 80 = 12$.",
       },
       {
-        topicSlug: "continuity",
+        topicSlug: "percent-problems-applications",
         prompt:
-          "State, as a single equation, the definition that a function f is continuous at the point a.",
-        correctAnswer: "lim_{x → a} f(x) = f(a)",
+          "A jacket costs 50 dollars and is marked 20% off. Write an expression for the sale price and evaluate it (use × and −).",
+        correctAnswer: "50 − 0.20 × 50 = 40",
         explanation:
-          "$f$ is continuous at $a$ iff $\\lim_{x \\to a} f(x) = f(a)$ — meaning the limit exists, $f(a)$ exists, and the two are equal.",
+          "Discount is $0.20\\times 50 = 10$, so the price is $50 - 10 = 40$ dollars.",
       },
       {
-        topicSlug: "derivatives-instantaneous-rate",
+        topicSlug: "units-measurement-conversion",
         prompt:
-          "Using a limit, write the definition of the derivative f'(a).",
-        correctAnswer: "f'(a) = lim_{h → 0} (f(a + h) − f(a)) / h",
-        explanation:
-          "$f'(a) = \\lim_{h \\to 0} \\dfrac{f(a+h) - f(a)}{h}$, when the limit exists.",
+          "Convert 2.5 kilometers to meters. Write the conversion as a product and give the result (use ×).",
+        correctAnswer: "2.5 × 1000 = 2500",
+        explanation: "$1$ km $= 1000$ m, so $2.5\\times 1000 = 2500$ meters.",
       },
       {
-        topicSlug: "integrals-accumulation",
+        topicSlug: "variables-expressions-intro",
         prompt:
-          "Using ∫, write the definite integral of f from a to b. Include the dx.",
-        correctAnswer: "∫_a^b f(x) dx",
+          "Write an algebraic expression for 'five more than twice a number n' (use the variable n).",
+        correctAnswer: "2n + 5",
         explanation:
-          "$\\int_a^b f(x)\\,\\mathrm{d}x$. The $\\mathrm{d}x$ is the limit of the rectangle widths in the Riemann sum.",
+          "'Twice a number' is $2n$; 'five more than' adds $5$: $2n + 5$.",
       },
     ],
   },
   {
     kind: "homework",
-    title: "Homework 3.2 — FTC, series, geometry, topology",
+    title: "Homework 3.2 — Expressions and equations",
     weekNumber: 3,
     isTimed: false,
     timeLimitMinutes: null,
-    instructions: "Use the math keyboard freely.",
+    instructions:
+      "Use the math keyboard for variables, =, +, −, and ×.",
     problems: [
       {
-        topicSlug: "ftc",
+        topicSlug: "simplifying-evaluating-expressions",
         prompt:
-          "State Part 2 of the Fundamental Theorem of Calculus: if F' = f on [a, b], express ∫_a^b f(x) dx in terms of F.",
-        correctAnswer: "∫_a^b f(x) dx = F(b) − F(a)",
+          "Simplify 3x + 2 + 5x − 4 by combining like terms (use the variable x).",
+        correctAnswer: "8x − 2",
         explanation:
-          "$\\int_a^b f(x)\\,\\mathrm{d}x = F(b) - F(a)$ for any antiderivative $F$ of $f$.",
+          "$3x+5x = 8x$ and $2-4 = -2$, giving $8x - 2$.",
       },
       {
-        topicSlug: "sequences-series-zeno",
+        topicSlug: "one-step-equations",
         prompt:
-          "Using Σ, write the closed-form sum of the infinite geometric series 1 + r + r² + r³ + ⋯ when |r| < 1.",
-        correctAnswer: "Σ_{n=0}^{∞} r^n = 1 / (1 − r), valid for |r| < 1",
+          "Solve the equation x − 7 = 12. Write the solution (use = and x).",
+        correctAnswer: "x = 19",
         explanation:
-          "$\\sum_{n=0}^{\\infty} r^n = \\dfrac{1}{1 - r}$ when $|r| < 1$. This is the resolution of Zeno's paradox: infinitely many shrinking steps sum to a finite total.",
+          "Add $7$ to both sides: $x = 12 + 7 = 19$.",
       },
       {
-        topicSlug: "euclidean-non-euclidean",
+        topicSlug: "multi-step-equations",
         prompt:
-          "For a triangle on a sphere of constant positive curvature, write an inequality comparing the sum of its interior angles to π.",
-        correctAnswer: "α + β + γ > π",
+          "Solve the equation 2x + 3 = 11. Write the solution (use = and x).",
+        correctAnswer: "x = 4",
         explanation:
-          "On a sphere (positive curvature), the angle sum of any triangle exceeds $\\pi$. On a hyperbolic surface (negative curvature), the sum is less than $\\pi$. Only in Euclidean geometry is the sum exactly $\\pi$.",
+          "Subtract $3$: $2x = 8$. Divide by $2$: $x = 4$.",
       },
       {
-        topicSlug: "topology-dimension-curvature",
+        topicSlug: "translating-words-equations",
         prompt:
-          "Using V, E, F, write the Euler characteristic χ of a polyhedron, and give its value for any triangulation of the sphere.",
-        correctAnswer: "χ = V − E + F; for the sphere, χ = 2",
+          "Translate 'three times a number, decreased by 4, equals 11' into an equation (use the variable n and =).",
+        correctAnswer: "3n − 4 = 11",
         explanation:
-          "$\\chi = V - E + F$. For any triangulation of the sphere, $\\chi = 2$ (Euler, 1758). For the torus, $\\chi = 0$.",
+          "'Three times a number' is $3n$, 'decreased by 4' subtracts $4$, 'equals 11' is $= 11$.",
       },
     ],
   },
   {
     kind: "test",
-    title: "Week 3 Test — Calculus, geometry, topology",
+    title: "Week 3 Test — Percents, measurement, and algebra",
     weekNumber: 3,
     isTimed: true,
     timeLimitMinutes: 40,
-    instructions: "Timed. 40 minutes. Math keyboard available; pasting disabled.",
+    instructions:
+      "Timed test on Week 3. Use the math keyboard for %, ×, =, and variables.",
     problems: [
       {
-        topicSlug: "limits-taming-infinity",
+        topicSlug: "percent-problems-applications",
         prompt:
-          "Write the ε–δ definition of lim_{x → a} f(x) = L.",
-        correctAnswer:
-          "∀ ε > 0, ∃ δ > 0 : 0 < |x − a| < δ ⇒ |f(x) − L| < ε",
+          "A price rises from 40 to 50. Write the percent change as a computation and give the percent (use the percent-change formula and %).",
+        correctAnswer: "(50 − 40)/40 × 100% = 25%",
         explanation:
-          "$\\forall \\varepsilon > 0,\\ \\exists \\delta > 0 : 0 < |x - a| < \\delta \\Rightarrow |f(x) - L| < \\varepsilon$.",
+          "Percent change $= \\frac{\\text{new}-\\text{old}}{\\text{old}}\\times 100\\% = \\frac{10}{40}\\times 100\\% = 25\\%$.",
       },
       {
-        topicSlug: "derivatives-instantaneous-rate",
+        topicSlug: "simplifying-evaluating-expressions",
         prompt:
-          "Using a limit, write the definition of f'(a).",
-        correctAnswer: "f'(a) = lim_{h → 0} (f(a + h) − f(a)) / h",
+          "Use the distributive property to expand 3(x + 4) (use the variable x).",
+        correctAnswer: "3x + 12",
         explanation:
-          "$f'(a) = \\lim_{h \\to 0} \\dfrac{f(a+h) - f(a)}{h}$.",
+          "Multiply $3$ by each term: $3\\times x + 3\\times 4 = 3x + 12$.",
       },
       {
-        topicSlug: "ftc",
+        topicSlug: "simplifying-evaluating-expressions",
         prompt:
-          "State the Fundamental Theorem of Calculus Part 2 in symbols.",
-        correctAnswer: "If F' = f on [a, b], then ∫_a^b f(x) dx = F(b) − F(a)",
-        explanation:
-          "$\\int_a^b f(x)\\,\\mathrm{d}x = F(b) - F(a)$.",
+          "Evaluate 8x − 2 when x = 3 (substitute and give the value).",
+        correctAnswer: "22",
+        explanation: "$8(3) - 2 = 24 - 2 = 22$.",
       },
       {
-        topicSlug: "sequences-series-zeno",
+        topicSlug: "multi-step-equations",
         prompt:
-          "Sum the geometric series Σ_{n=0}^{∞} (1/2)^n.",
-        correctAnswer: "Σ_{n=0}^{∞} (1/2)^n = 1/(1 − 1/2) = 2",
+          "Solve 5x − 4 = 2x + 11. Write the solution (use = and x).",
+        correctAnswer: "x = 5",
         explanation:
-          "$\\sum_{n=0}^{\\infty} (1/2)^n = \\dfrac{1}{1 - 1/2} = 2$.",
+          "Subtract $2x$: $3x - 4 = 11$. Add $4$: $3x = 15$. Divide by $3$: $x = 5$.",
       },
       {
-        topicSlug: "topology-dimension-curvature",
+        topicSlug: "translating-words-equations",
         prompt:
-          "Give the Euler characteristic of (a) a sphere and (b) a torus.",
-        correctAnswer: "(a) χ = 2; (b) χ = 0",
+          "A taxi charges a 3-dollar flat fee plus 2 dollars per mile for a total of 11 dollars. Write an equation for the miles x (use =, +, ×, and x).",
+        correctAnswer: "2x + 3 = 11",
         explanation:
-          "Sphere: $\\chi = 2$. Torus: $\\chi = 0$. Each is a topological invariant.",
+          "Per-mile cost $2x$ plus the flat fee $3$ equals the total $11$: $2x + 3 = 11$ (so $x = 4$).",
       },
     ],
   },
-
-  // ───────────── Week 4 ─────────────
+  // ───────────── Unit 4 ─────────────
   {
     kind: "homework",
-    title: "Homework 4.1 — Logic, proof, induction, sets",
+    title: "Homework 4.1 — Coordinate plane, lines, and exponents",
     weekNumber: 4,
     isTimed: false,
     timeLimitMinutes: null,
     instructions:
-      "Use the math keyboard for ∀, ∃, ∧, ∨, ¬, →, ↔, ∈, ∉.",
+      "Use the math keyboard for coordinates ( , ), −, /, =, and exponents.",
     problems: [
       {
-        topicSlug: "propositional-predicate-logic",
+        topicSlug: "coordinate-plane",
         prompt:
-          "Using ¬, ∀, and ∃, write the equivalences that negate a universal and an existential statement.",
-        correctAnswer:
-          "¬(∀ x, P(x)) ≡ ∃ x, ¬P(x); ¬(∃ x, P(x)) ≡ ∀ x, ¬P(x)",
+          "Write the coordinates of the point 3 units right and 2 units down from the origin (use an ordered pair with parentheses and −).",
+        correctAnswer: "(3, −2)",
         explanation:
-          "$\\neg(\\forall x\\, P(x)) \\equiv \\exists x\\, \\neg P(x)$; $\\neg(\\exists x\\, P(x)) \\equiv \\forall x\\, \\neg P(x)$. The negation of 'every swan is white' is 'some swan is not white'.",
+          "Right is positive $x$, down is negative $y$: $(3, -2)$, in quadrant IV.",
       },
       {
-        topicSlug: "what-is-proof",
+        topicSlug: "graphing-linear-equations",
         prompt:
-          "State, in symbols, the inference rule modus ponens (from P and P → Q, conclude Q) and the rule modus tollens.",
-        correctAnswer:
-          "Modus ponens: P, P → Q ⊢ Q. Modus tollens: P → Q, ¬Q ⊢ ¬P.",
-        explanation:
-          "Modus ponens: $P,\\ P \\to Q \\vdash Q$. Modus tollens: $P \\to Q,\\ \\neg Q \\vdash \\neg P$. Both are fundamental inference rules.",
+          "For the line y = 2x + 1, write the y-value when x = 3 (use = and y).",
+        correctAnswer: "y = 7",
+        explanation: "$y = 2(3) + 1 = 7$, so the point $(3, 7)$ is on the line.",
       },
       {
-        topicSlug: "mathematical-induction",
+        topicSlug: "slope-intercepts",
         prompt:
-          "Using Σ, write the closed-form formula for the sum of the first n positive integers, which is the classical example proven by induction.",
-        correctAnswer: "Σ_{k=1}^{n} k = n(n + 1) / 2",
+          "Find the slope of the line through (1, 2) and (4, 8) using the slope formula (use / and −).",
+        correctAnswer: "m = (8 − 2)/(4 − 1) = 2",
         explanation:
-          "$\\sum_{k=1}^{n} k = \\dfrac{n(n+1)}{2}$. Proven by induction: base $n = 1$ gives $1 = 1$; step uses $\\frac{k(k+1)}{2} + (k+1) = \\frac{(k+1)(k+2)}{2}$.",
+          "$m = \\frac{y_2 - y_1}{x_2 - x_1} = \\frac{8-2}{4-1} = \\frac{6}{3} = 2$.",
       },
       {
-        topicSlug: "sets-russell-paradox",
+        topicSlug: "exponents-powers",
         prompt:
-          "Using set-builder notation, write Russell's set R — the set of all sets that are not members of themselves.",
-        correctAnswer: "R = { x : x ∉ x }",
+          "Simplify x³ × x⁴ using the product rule (use the variable x and exponents).",
+        correctAnswer: "x⁷",
         explanation:
-          "$R = \\{\\,x : x \\notin x\\,\\}$. The question 'is $R \\in R$?' yields a contradiction either way, which is why naive (unrestricted-comprehension) set theory is inconsistent.",
+          "Add the exponents: $x^3\\times x^4 = x^{3+4} = x^7$.",
       },
     ],
   },
   {
     kind: "homework",
-    title: "Homework 4.2 — Independence, Gödel, probability, computability",
+    title: "Homework 4.2 — Polynomials, geometry, and data",
     weekNumber: 4,
     isTimed: false,
     timeLimitMinutes: null,
-    instructions: "Use the math keyboard for ℵ, ∈, ∪, Σ, ≥.",
+    instructions:
+      "Use the math keyboard for variables, exponents, ×, +, −, /, and =.",
     problems: [
       {
-        topicSlug: "axioms-independence",
+        topicSlug: "intro-polynomials",
         prompt:
-          "Using ℵ-notation, write the Continuum Hypothesis as an equation, and state in words what its independence from ZFC means.",
-        correctAnswer:
-          "CH: |ℝ| = ℵ₁. Independence: neither CH nor ¬CH is provable from ZFC (Gödel 1940, Cohen 1963).",
+          "Add the polynomials (2x² + 3x) + (x² − 5x) and write the result (use the variable x and exponents).",
+        correctAnswer: "3x² − 2x",
         explanation:
-          "$|\\mathbb{R}| = \\aleph_1$ is the CH. Gödel showed ZFC + CH is consistent (1940); Cohen showed ZFC + ¬CH is also consistent (1963). So CH is independent of ZFC.",
+          "Combine like terms: $2x^2 + x^2 = 3x^2$ and $3x - 5x = -2x$.",
       },
       {
-        topicSlug: "godel-incompleteness",
+        topicSlug: "geometry-perimeter-area-volume",
         prompt:
-          "State Gödel's First Incompleteness Theorem in one sentence: for any sufficiently strong consistent effective system T, what must exist?",
-        correctAnswer:
-          "There exists a statement G in the language of T such that G is true but T does not prove G and T does not prove ¬G.",
+          "Write the area of a rectangle with length 8 and width 5 as a product and give its value (use × and =).",
+        correctAnswer: "A = 8 × 5 = 40",
         explanation:
-          "Any sufficiently strong consistent effective axiom system $T$ contains a sentence $G$ that is true (in the standard model) but neither $G$ nor $\\neg G$ is provable in $T$.",
+          "Area of a rectangle is $l\\times w = 8\\times 5 = 40$ square units.",
       },
       {
-        topicSlug: "probability-foundations",
+        topicSlug: "reading-tables-charts-graphs",
         prompt:
-          "State Kolmogorov's three axioms of probability for a probability measure P on a sample space Ω with σ-algebra ℱ.",
-        correctAnswer:
-          "(1) P(Ω) = 1; (2) P(A) ≥ 0 for all A ∈ ℱ; (3) for disjoint A₁, A₂, … ∈ ℱ, P(⋃_n A_n) = Σ_n P(A_n).",
+          "A table shows sales of 20, 30, and 40. Write the mean as a computation and give its value (use / and =).",
+        correctAnswer: "(20 + 30 + 40)/3 = 30",
         explanation:
-          "Normalization $P(\\Omega) = 1$, non-negativity $P(A) \\ge 0$, and countable additivity $P(\\bigcup_n A_n) = \\sum_n P(A_n)$ for disjoint events.",
+          "Mean $= \\frac{20+30+40}{3} = \\frac{90}{3} = 30$.",
       },
       {
-        topicSlug: "computability-halting",
+        topicSlug: "capstone-synthesis",
         prompt:
-          "State the halting problem and Turing's headline result about it (in one sentence each).",
-        correctAnswer:
-          "Halting problem: given a Turing machine M and input x, does M halt on x? Turing's theorem: no algorithm decides the halting problem — it is undecidable.",
+          "A recipe for 4 servings uses 3 cups of flour. Write a proportion for 10 servings and solve for x cups (use /, =, and x).",
+        correctAnswer: "3/4 = x/10, x = 7.5",
         explanation:
-          "The halting problem is undecidable: there is no Turing machine $H$ that, given $\\langle M, x \\rangle$, always correctly outputs whether $M$ halts on $x$. Proved by diagonalization.",
+          "Cross-multiply: $4x = 30$, so $x = 7.5$ cups.",
       },
     ],
   },
   {
     kind: "final",
-    title: "Final Exam — Conceptual mathematics",
+    title: "Final Exam — Developmental mathematics",
     weekNumber: 4,
     isTimed: true,
     timeLimitMinutes: 90,
     instructions:
-      "Cumulative final covering all four weeks. 90 minutes. Math keyboard available; pasting disabled.",
+      "Cumulative timed final over all four weeks. Use the math keyboard for every symbol (×, ÷, /, %, exponents, =, coordinates, variables).",
     problems: [
       {
-        topicSlug: "rationals-ratios",
+        topicSlug: "factors-multiples-primes",
         prompt:
-          "Using set-builder notation, write the definition of ℚ.",
-        correctAnswer: "ℚ = { p/q : p, q ∈ ℤ, q ≠ 0 }",
-        explanation:
-          "$\\mathbb{Q} = \\{\\,p/q : p, q \\in \\mathbb{Z},\\ q \\neq 0\\,\\}$.",
+          "Write the prime factorization of 72 using exponents (use × and exponents).",
+        correctAnswer: "72 = 2³ × 3²",
+        explanation: "$72 = 2\\times 2\\times 2\\times 3\\times 3 = 2^3\\times 3^2$.",
       },
       {
-        topicSlug: "countable-uncountable",
-        prompt:
-          "Using ℵ₀, compare the cardinalities of ℚ and ℝ with a strict inequality.",
-        correctAnswer: "|ℚ| = ℵ₀ < |ℝ|",
+        topicSlug: "order-of-operations",
+        prompt: "Evaluate 4 + 2 × 3² − 5 and write the final value.",
+        correctAnswer: "17",
         explanation:
-          "$|\\mathbb{Q}| = \\aleph_0 < |\\mathbb{R}|$. The rationals are countable, the reals are not.",
+          "Exponent: $3^2 = 9$. Multiply: $2\\times 9 = 18$. Then $4 + 18 - 5 = 17$.",
       },
       {
-        topicSlug: "groups-symmetry",
+        topicSlug: "multiplying-dividing-fractions",
         prompt:
-          "Using ∃ and ∀, state the identity-element axiom for a group (G, ∗).",
-        correctAnswer: "∃ e ∈ G, ∀ a ∈ G, e ∗ a = a ∗ e = a",
+          "Compute 3/4 ÷ 1/8 and write the result (use ÷ and /).",
+        correctAnswer: "6",
         explanation:
-          "$\\exists e \\in G,\\ \\forall a \\in G,\\ e \\ast a = a \\ast e = a$.",
+          "Multiply by the reciprocal: $\\frac{3}{4}\\times\\frac{8}{1} = \\frac{24}{4} = 6$.",
       },
       {
-        topicSlug: "modular-arithmetic",
+        topicSlug: "percent-problems-applications",
         prompt:
-          "Using ≡ … (mod n), write Fermat's Little Theorem.",
-        correctAnswer: "a^{p−1} ≡ 1 (mod p), for prime p and gcd(a, p) = 1",
-        explanation:
-          "$a^{p-1} \\equiv 1 \\pmod p$ for prime $p$ and $\\gcd(a, p) = 1$.",
+          "What is 25% of 64? Write the computation as a product and give the result (use × and %).",
+        correctAnswer: "0.25 × 64 = 16",
+        explanation: "$25\\% = 0.25$, and $0.25\\times 64 = 16$.",
       },
       {
-        topicSlug: "limits-taming-infinity",
+        topicSlug: "ratios-rates-proportions",
         prompt:
-          "Write the ε–δ definition of lim_{x → a} f(x) = L.",
-        correctAnswer:
-          "∀ ε > 0, ∃ δ > 0 : 0 < |x − a| < δ ⇒ |f(x) − L| < ε",
-        explanation:
-          "$\\forall \\varepsilon > 0,\\ \\exists \\delta > 0 : 0 < |x - a| < \\delta \\Rightarrow |f(x) - L| < \\varepsilon$.",
+          "Solve the proportion 2/5 = x/30 for x (use /, =, and x).",
+        correctAnswer: "x = 12",
+        explanation: "Cross-multiply: $5x = 60$, so $x = 12$.",
       },
       {
-        topicSlug: "ftc",
+        topicSlug: "multi-step-equations",
         prompt:
-          "State Part 2 of the Fundamental Theorem of Calculus in symbols.",
-        correctAnswer: "If F' = f on [a, b], then ∫_a^b f(x) dx = F(b) − F(a)",
-        explanation:
-          "$\\int_a^b f(x)\\,\\mathrm{d}x = F(b) - F(a)$ for any antiderivative $F$ of $f$.",
+          "Solve the equation 3x + 5 = 20. Write the solution (use = and x).",
+        correctAnswer: "x = 5",
+        explanation: "Subtract $5$: $3x = 15$. Divide by $3$: $x = 5$.",
       },
       {
-        topicSlug: "sequences-series-zeno",
+        topicSlug: "slope-intercepts",
         prompt:
-          "Using Σ, write the closed form of the geometric series Σ_{n=0}^{∞} r^n for |r| < 1.",
-        correctAnswer: "Σ_{n=0}^{∞} r^n = 1 / (1 − r)",
+          "For the line y = 3x − 2 written in slope-intercept form, write the slope and the y-intercept (use = and an ordered pair).",
+        correctAnswer: "m = 3; y-intercept (0, −2)",
         explanation:
-          "$\\sum_{n=0}^{\\infty} r^n = \\dfrac{1}{1 - r}$ for $|r| < 1$.",
+          "In $y = mx + b$, the slope is $m = 3$ and the y-intercept is $b = -2$, the point $(0,-2)$.",
       },
       {
-        topicSlug: "mathematical-induction",
+        topicSlug: "intro-polynomials",
         prompt:
-          "Using Σ, write the closed-form formula proved by the classical induction example: the sum of 1 through n.",
-        correctAnswer: "Σ_{k=1}^{n} k = n(n + 1) / 2",
+          "Multiply the binomials (x + 2)(x + 3) and write the result (use the variable x and exponents).",
+        correctAnswer: "x² + 5x + 6",
         explanation:
-          "$\\sum_{k=1}^{n} k = \\dfrac{n(n+1)}{2}$.",
-      },
-      {
-        topicSlug: "sets-russell-paradox",
-        prompt:
-          "Using set-builder notation, write Russell's set R that produces the paradox.",
-        correctAnswer: "R = { x : x ∉ x }",
-        explanation:
-          "$R = \\{\\,x : x \\notin x\\,\\}$. Asking whether $R \\in R$ yields a contradiction either way.",
-      },
-      {
-        topicSlug: "godel-incompleteness",
-        prompt:
-          "State Gödel's First Incompleteness Theorem in one sentence.",
-        correctAnswer:
-          "Any sufficiently strong consistent effective formal system T contains a true statement G such that T proves neither G nor ¬G.",
-        explanation:
-          "Any consistent effective axiom system capable of encoding arithmetic is incomplete: there is a true statement $G$ that is not provable in the system.",
+          "$(x+2)(x+3) = x^2 + 3x + 2x + 6 = x^2 + 5x + 6$.",
       },
     ],
   },
@@ -1955,13 +1618,13 @@ const EXPECTED_TOPIC_SLUGS = TOPICS.map((t) => t.slug).sort().join(",");
 // Bump this whenever lecture bodies, assignment problems, or correct answers
 // change in a way that should propagate to the database on the next boot.
 // The value is stored alongside topics and compared in seedIfEmpty.
-const CONTENT_REVISION = "2026-05-27.conceptual-math.r1";
+const CONTENT_REVISION = "2026-06-06.developmental-math.r1";
 
 // A sentinel phrase present in exactly one lecture body — used to detect that
 // the database holds the *current* revision of the content (not just a set of
 // matching slugs). Bump whenever the seed content is overhauled.
-const REVISION_SENTINEL_SLUG = "counting-integers-numberline";
-const REVISION_SENTINEL_PHRASE = "John Wallis popularized the picture of integers";
+const REVISION_SENTINEL_SLUG = "whole-numbers-place-value";
+const REVISION_SENTINEL_PHRASE = "place value is the quiet engine";
 
 export async function seedIfEmpty(): Promise<void> {
   const existing = await db.execute(sql`select count(*)::int as n from topics`);

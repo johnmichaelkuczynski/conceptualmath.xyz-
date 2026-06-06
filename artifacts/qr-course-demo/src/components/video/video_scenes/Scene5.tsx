@@ -5,7 +5,7 @@ import { StreamingText } from '../StreamingText';
 export function Scene5({ setCursorPos, setIsClicking }: { setCursorPos: (pos: {x: string, y: string}) => void, setIsClicking: (val: boolean) => void }) {
   const [phase, setPhase] = useState(0);
   const [typedAnswer, setTypedAnswer] = useState("");
-  const [activeTab, setActiveTab] = useState("Logic & sets");
+  const [activeTab, setActiveTab] = useState("Exponents");
 
   useEffect(() => {
     setCursorPos({ x: '40vw', y: '65vh' }); 
@@ -17,7 +17,7 @@ export function Scene5({ setCursorPos, setIsClicking }: { setCursorPos: (pos: {x
     }, 2000);
 
     const t3 = setTimeout(() => {
-      setTypedAnswer("8");
+      setTypedAnswer("2 × 6");
     }, 3000);
 
     const t4 = setTimeout(() => {
@@ -47,22 +47,22 @@ export function Scene5({ setCursorPos, setIsClicking }: { setCursorPos: (pos: {x
     }, 8500);
     const t11 = setTimeout(() => {
       setIsClicking(false);
-      setTypedAnswer("√");
+      setTypedAnswer("2²");
     }, 8600);
-    const t12 = setTimeout(() => setTypedAnswer("√2"), 9000);
-    const t12a = setTimeout(() => setTypedAnswer("√2 "), 9300);
+    const t12 = setTimeout(() => setTypedAnswer("2² "), 9000);
+    const t12a = setTimeout(() => setTypedAnswer("2² "), 9300);
 
     const t13 = setTimeout(() => {
-      setCursorPos({ x: '45vw', y: '82vh' }); // move to ∉
+      setCursorPos({ x: '45vw', y: '82vh' }); // move to ×
     }, 9500);
     const t14 = setTimeout(() => {
       setIsClicking(true);
     }, 9800);
     const t15 = setTimeout(() => {
       setIsClicking(false);
-      setTypedAnswer("√2 ∉");
+      setTypedAnswer("2² ×");
     }, 9900);
-    const t16 = setTimeout(() => setTypedAnswer("√2 ∉ ℚ"), 10200);
+    const t16 = setTimeout(() => setTypedAnswer("2² × 3"), 10200);
 
     const t17 = setTimeout(() => {
       setCursorPos({ x: '70vw', y: '60vh' }); // Move to Submit
@@ -118,7 +118,7 @@ export function Scene5({ setCursorPos, setIsClicking }: { setCursorPos: (pos: {x
         <div className="text-xs font-bold text-muted-foreground tracking-widest uppercase mb-4">Topic Practice</div>
         <div className="flex justify-between items-end mb-8">
           <div>
-            <h1 className="text-4xl font-serif text-primary mb-2">Irrationals and the √2 scandal</h1>
+            <h1 className="text-4xl font-serif text-primary mb-2">Factors, multiples, and primes</h1>
             <div className="text-sm text-muted-foreground">Week 1 · 1 prior attempt · 100% accuracy · <span className="text-emerald-600 font-semibold">STRONG</span></div>
           </div>
           <div className="text-sm font-medium border border-border px-3 py-1 rounded-md bg-white">
@@ -129,10 +129,10 @@ export function Scene5({ setCursorPos, setIsClicking }: { setCursorPos: (pos: {x
         <div className="bg-white border border-border rounded-xl shadow-sm overflow-hidden flex flex-col min-h-[400px]">
           <div className="p-8 flex-1 border-b border-border text-lg text-primary font-medium leading-relaxed">
             {phase >= 1 && phase < 4 && (
-              <StreamingText text="Which set does √2 belong to: the integers ℤ, the rationals ℚ, or the reals ℝ?" delay={0} />
+              <StreamingText text="Write the prime factorization of 12 using exponents." delay={0} />
             )}
             {phase >= 4 && (
-              <StreamingText text="The Pythagoreans discovered that the diagonal of a unit square cannot be written as a ratio of two integers. Write that fact — that √2 is not a rational number — in symbols." delay={0} />
+              <StreamingText text="Almost there. We found 12 = 2 × 2 × 3. Now rewrite it using an exponent for the repeated factor of 2." delay={0} />
             )}
           </div>
           
@@ -162,7 +162,7 @@ export function Scene5({ setCursorPos, setIsClicking }: { setCursorPos: (pos: {x
                     <span>Not quite</span>
                   </div>
                   <div className="text-sm text-red-900 leading-relaxed">
-                    <StreamingText text="Not quite — √2 is a real number (it lies on the number line) but it is not rational: no integer ratio p/q equals it. So √2 ∈ ℝ but √2 ∉ ℚ. This is exactly the Pythagorean scandal." delay={0} />
+                    <StreamingText text="Not quite — 6 is not prime, so 2 × 6 isn't a prime factorization. Since 6 = 2 × 3, the full factorization is 12 = 2 × 2 × 3. Keep breaking factors down until every one is prime." delay={0} />
                   </div>
                 </motion.div>
               )}
@@ -177,7 +177,7 @@ export function Scene5({ setCursorPos, setIsClicking }: { setCursorPos: (pos: {x
                     <span>Correct!</span>
                   </div>
                   <div className="text-sm text-emerald-900 leading-relaxed">
-                    <StreamingText text="√2 ∉ ℚ captures it exactly: √2 is not an element of the rationals. The proof — that no p/q in lowest terms can square to 2 — is one of the oldest proofs by contradiction in mathematics." delay={0} />
+                    <StreamingText text="2² × 3 captures it exactly: the exponent 2 records that the prime 2 appears twice. Every whole number bigger than 1 has exactly one such prime fingerprint — that's the Fundamental Theorem of Arithmetic." delay={0} />
                   </div>
                 </motion.div>
               )}
@@ -185,12 +185,12 @@ export function Scene5({ setCursorPos, setIsClicking }: { setCursorPos: (pos: {x
 
             <div className="mt-4 border rounded-md p-3 bg-secondary/50">
               <div className="flex space-x-2 pb-2 mb-3 overflow-x-auto text-xs font-medium">
-                {['Numbers', 'Algebra & structures', 'Calculus & continuum', 'Logic & sets'].map(t => (
+                {['Basic', 'Fractions', 'Exponents', 'Geometry'].map(t => (
                   <div key={t} className={`px-3 py-1 rounded-full whitespace-nowrap ${t === activeTab ? 'bg-primary text-primary-foreground' : 'bg-background text-muted-foreground border border-border'}`}>{t}</div>
                 ))}
               </div>
               <div className="flex flex-wrap gap-1.5">
-                {['√', '∈', '∉', '⊂', '⊆', 'ℕ', 'ℤ', 'ℚ', 'ℝ', 'ℂ', '∀', '∃', '∧', '∨', '¬', '→'].map(sym => (
+                {['+', '−', '×', '÷', '=', '/', '%', '²', '³', '√', '<', '>', '(', ')', 'π', '°'].map(sym => (
                   <div key={sym} className="min-w-9 h-10 px-2 bg-white border border-border rounded flex items-center justify-center font-mono text-sm shadow-sm text-foreground/80 hover:bg-muted/50 cursor-pointer">
                     {sym}
                   </div>

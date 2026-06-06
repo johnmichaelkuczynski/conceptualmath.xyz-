@@ -57,11 +57,11 @@ export function Scene3({ setCursorPos, setIsClicking }: { setCursorPos: (pos: {x
     >
       {/* Left Pane (Static from previous) */}
       <div className="w-1/2 h-full border-r border-border p-12 overflow-hidden flex flex-col relative opacity-50">
-        <div className="text-xs font-bold tracking-widest text-muted-foreground mb-4">WEEK 1 — THE NUMBER SYSTEMS</div>
-        <h1 className="text-3xl font-serif text-primary mb-8">1.1 Counting, the integers, and the number line</h1>
+        <div className="text-xs font-bold tracking-widest text-muted-foreground mb-4">WEEK 1 — WHOLE NUMBERS AND OPERATIONS</div>
+        <h1 className="text-3xl font-serif text-primary mb-8">1.1 Whole numbers and place value</h1>
         <div className="prose prose-sm max-w-none text-foreground/80 space-y-6">
-          <h2 className="font-serif text-2xl text-primary">What is a number?</h2>
-          <p>Conceptual mathematics asks the question math classes usually skip: what are these things, really? What is a number, an operation, a proof, an axiom? This course teaches the ideas behind the symbols, from the integers to Gödel and the halting problem.</p>
+          <h2 className="font-serif text-2xl text-primary">What is place value?</h2>
+          <p>Developmental mathematics rebuilds the foundations from the ground up: what a number really is, how the four operations work, and why the rules you half-remember are true. This course teaches the ideas behind the arithmetic, from place value to fractions, percents, and the start of algebra.</p>
         </div>
       </div>
 
@@ -79,7 +79,7 @@ export function Scene3({ setCursorPos, setIsClicking }: { setCursorPos: (pos: {x
               <motion.div exit={{ opacity: 0, y: -20 }} className="mt-auto">
                 <div className="mb-4 text-xs font-semibold text-muted-foreground uppercase tracking-widest">Starter questions for this section</div>
                 <div className="flex flex-wrap gap-2 mb-6">
-                  <div className="px-3 py-1.5 rounded-full border border-border text-sm text-primary bg-muted/30">Why are the rationals countable but the reals are not?</div>
+                  <div className="px-3 py-1.5 rounded-full border border-border text-sm text-primary bg-muted/30">Why is dividing by zero undefined?</div>
                 </div>
               </motion.div>
             )}
@@ -90,7 +90,7 @@ export function Scene3({ setCursorPos, setIsClicking }: { setCursorPos: (pos: {x
                 animate={{ opacity: 1, y: 0, scale: 1 }} 
                 className="self-end max-w-[85%] bg-primary text-white p-4 rounded-2xl rounded-tr-sm shadow-sm mt-auto"
               >
-                Why are the rationals countable but the reals are not?
+                Why is dividing by zero undefined?
               </motion.div>
             )}
 
@@ -110,7 +110,7 @@ export function Scene3({ setCursorPos, setIsClicking }: { setCursorPos: (pos: {x
                 animate={{ opacity: 1, y: 0 }} 
                 className="self-start w-[85%] bg-muted/30 border border-border p-5 rounded-2xl rounded-tl-sm text-[15px] leading-relaxed shadow-sm"
               >
-                <StreamingText text="Great question. The rationals ℚ can be listed in a single infinite sequence — Cantor's diagonal enumeration walks the grid of (numerator, denominator) pairs. The reals ℝ can't: Cantor's diagonal argument constructs a real not in any proposed list. So |ℕ| = |ℚ| &lt; |ℝ| — two different sizes of infinity." delay={0} />
+                <StreamingText text="Great question. Dividing 12 by 4 asks 'what times 4 gives 12?' — the answer is 3. But 12 ÷ 0 asks 'what times 0 gives 12?' and nothing times 0 is 12. And 0 ÷ 0 could be anything. Since there is no single answer, we leave division by zero undefined." delay={0} />
               </motion.div>
             )}
           </div>
@@ -118,9 +118,9 @@ export function Scene3({ setCursorPos, setIsClicking }: { setCursorPos: (pos: {x
           <div className="mt-6 w-full min-h-24 border border-border rounded-xl bg-background p-3 flex items-end shadow-inner relative z-10">
             <div className="w-full flex justify-between items-center pr-2">
               <div className="text-foreground text-[15px] font-medium pl-2 relative w-full h-full flex items-center">
-                {phase === 1 && <TypewriterText text="Why are the rationals countable but the reals are not?" speed={25} />}
-                {phase >= 2 && phase < 4 && <span className="text-muted-foreground font-normal">Ask a question about counting and the number line...</span>}
-                {phase >= 4 && <TypewriterText text="So how big is |ℝ|?" speed={20} />}
+                {phase === 1 && <TypewriterText text="Why is dividing by zero undefined?" speed={25} />}
+                {phase >= 2 && phase < 4 && <span className="text-muted-foreground font-normal">Ask a question about place value...</span>}
+                {phase >= 4 && <TypewriterText text="So what is 0 ÷ 5 then?" speed={20} />}
                 {((phase >= 1 && phase < 2) || phase >= 4) && (
                   <motion.div className="w-0.5 h-5 bg-primary ml-1" animate={{ opacity: [1, 0] }} transition={{ repeat: Infinity, duration: 0.8 }} />
                 )}
