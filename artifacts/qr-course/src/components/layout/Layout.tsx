@@ -1,16 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { LayoutDashboard, PenTool, BarChart3, Activity, RotateCcw, Sparkles } from "lucide-react";
+import { LayoutDashboard, PenTool, BarChart3, Activity, RotateCcw, Sparkles, LogOut } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
+import { useClerk, useUser } from "@clerk/react";
+
+const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 export function Sidebar() {
   const [location] = useLocation();
+  const { user } = useUser();
+  const { signOut } = useClerk();
 
   const navItems = [
-    { href: "/", label: "Dashboard", icon: LayoutDashboard },
+    { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
     { href: "/assignments", label: "Assignments", icon: PenTool },
     { href: "/analytics", label: "Analytics", icon: BarChart3 },
   ];
+
+  const displayName =
+    user?.fullName ||
+    user?.primaryEmailAddress?.emailAddress ||
+    user?.username ||
+    "Signed in";
 
   return (
     <div className="w-64 border-r bg-sidebar flex flex-col h-full h-screen sticky top-0">
@@ -45,8 +56,21 @@ export function Sidebar() {
         })}
       </div>
 
-      <div className="p-4 border-t border-border text-xs text-muted-foreground text-center">
-        Teach Yourself Developmental Mathematics
+      <div className="p-4 border-t border-border flex flex-col gap-3">
+        <div className="min-w-0">
+          <p className="text-xs text-muted-foreground">Signed in as</p>
+          <p className="text-sm font-medium truncate" title={displayName}>
+            {displayName}
+          </p>
+        </div>
+        <button
+          onClick={() => signOut({ redirectUrl: basePath || "/" })}
+          className="inline-flex items-center justify-center gap-2 px-3 py-2 rounded-md text-sm font-medium border border-border hover:bg-secondary transition-colors"
+          data-testid="button-logout"
+        >
+          <LogOut className="w-4 h-4" />
+          Log out
+        </button>
       </div>
     </div>
   );
