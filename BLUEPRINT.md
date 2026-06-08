@@ -1,12 +1,12 @@
-# Teach Yourself Developmental Mathematics — App Blueprint
+# Developmental Mathematics — App Blueprint
 
-A complete architectural blueprint for the *Teach Yourself Developmental Mathematics* 4-week course. This document is the single reference for what the app does, how it's wired, and the contracts between pieces. For day-to-day commands and gotchas see `replit.md`.
+A complete architectural blueprint for the *Developmental Mathematics* 4-week course. This document is the single reference for what the app does, how it's wired, and the contracts between pieces. For day-to-day commands and gotchas see `replit.md`.
 
 ---
 
 ## 1. Product summary
 
-Teach Yourself Developmental Mathematics is a self-paced, single-user, no-login web course that rebuilds the foundations of arithmetic and pre-algebra from the ground up — whole numbers and operations, fractions, decimals and percents, ratios and proportions, and the start of algebra. Each micro-lecture introduces one idea, grounds it in a concrete everyday example, and asks the student to write the answer *in proper math notation of their own* using the on-screen math keyboard.
+Developmental Mathematics is a self-paced, single-user, no-login web course that rebuilds the foundations of arithmetic and pre-algebra from the ground up — whole numbers and operations, fractions, decimals and percents, ratios and proportions, and the start of algebra. Each micro-lecture introduces one idea, grounds it in a concrete everyday example, and asks the student to write the answer *in proper math notation of their own* using the on-screen math keyboard.
 
 It is a content reskin of the **QuantReason** Quantitative Reasoning app: the full runtime is preserved unchanged — lectures at three depths, section-scoped AI tutor, adaptive practice, AI-graded assignments, two-layer AI-authorship detection, and one-click diagnostics. Only the subject matter is new.
 

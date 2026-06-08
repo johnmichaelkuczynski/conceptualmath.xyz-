@@ -163,7 +163,7 @@ router.get("/course/overview", async (req, res) => {
 
   res.json(
     GetCourseOverviewResponse.parse({
-      title: "Teach Yourself Developmental Mathematics",
+      title: "Developmental Mathematics",
       weeks,
       totals: { assignmentsCompleted, assignmentsTotal, practiceCount },
     }),

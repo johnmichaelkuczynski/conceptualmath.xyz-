@@ -52,7 +52,7 @@ export default function Landing() {
           A four-week foundations course
         </p>
         <h1 className="font-serif font-bold text-4xl sm:text-5xl leading-tight text-primary mb-5">
-          Teach Yourself Developmental Mathematics
+          Developmental Mathematics
         </h1>
         <p className="text-lg text-muted-foreground max-w-2xl mb-9">
           Rebuild your arithmetic from the ground up — what numbers really are,
@@ -92,7 +92,7 @@ export default function Landing() {
       </main>
 
       <footer className="px-6 py-6 text-center text-xs text-muted-foreground border-t border-border">
-        Teach Yourself Developmental Mathematics — read the idea, ground the idea,
+        Developmental Mathematics — read the idea, ground the idea,
         write the idea.
       </footer>
     </div>

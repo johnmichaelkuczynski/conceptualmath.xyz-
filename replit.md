@@ -1,4 +1,4 @@
-# 🧮 Teach Yourself Developmental Mathematics
+# 🧮 Developmental Mathematics
 
 **A Four-Week Course That Rebuilds the Foundations — From Place Value to the Start of Algebra**
 
@@ -6,7 +6,7 @@
 
 ## 🧩 Overview
 
-Teach Yourself Developmental Mathematics is a self-paced, single-user web course for anyone who wants to rebuild their arithmetic from the ground up: what numbers really are, how the four operations work, and why the rules you half-remember are actually true. It covers whole numbers and operations, fractions, decimals and percents, ratios and proportions, and a first taste of algebra.
+Developmental Mathematics is a self-paced, single-user web course for anyone who wants to rebuild their arithmetic from the ground up: what numbers really are, how the four operations work, and why the rules you half-remember are actually true. It covers whole numbers and operations, fractions, decimals and percents, ratios and proportions, and a first taste of algebra.
 
 The course is a content reskin of the **QuantReason** Quantitative Reasoning app. The full QuantReason runtime — lectures with short / medium / long depth, section-scoped AI tutor, adaptive practice, AI-graded homework / tests / midterm / final, two-layer AI-authorship detection, and one-click diagnostics — is preserved unchanged. Only the **subject matter** is new: the same proven format, now teaching developmental (foundational) math.
 
@@ -65,7 +65,7 @@ Most math help reteaches the *procedures* — how to borrow, how to flip-and-mul
 
 Read the idea, see it grounded in an everyday example, then write the answer in proper notation of your own.
 
-**Teach Yourself Developmental Mathematics — read the idea, ground the idea, write the idea.**
+**Developmental Mathematics — read the idea, ground the idea, write the idea.**
 
 ---
 

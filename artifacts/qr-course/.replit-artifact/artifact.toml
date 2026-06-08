@@ -1,6 +1,6 @@
 kind = "web"
 previewPath = "/"
-title = "Teach Yourself Developmental Mathematics"
+title = "Developmental Mathematics"
 version = "1.0.0"
 id = "artifacts/qr-course"
 router = "path"
