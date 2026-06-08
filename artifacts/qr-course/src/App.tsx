@@ -26,6 +26,7 @@ import NotFound from "@/pages/not-found";
 import Landing from "@/pages/Landing";
 
 import Dashboard from "@/pages/Dashboard";
+import Curriculum from "@/pages/Curriculum";
 import Assignments from "@/pages/Assignments";
 import Analytics from "@/pages/Analytics";
 import WeekView from "@/pages/WeekView";
@@ -195,6 +196,11 @@ function Router() {
       <Route path="/dashboard">
         <Protected>
           <Dashboard />
+        </Protected>
+      </Route>
+      <Route path="/curriculum">
+        <Protected>
+          <Curriculum />
         </Protected>
       </Route>
       <Route path="/assignments">
