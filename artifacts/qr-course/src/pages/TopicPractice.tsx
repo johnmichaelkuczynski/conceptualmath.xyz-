@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { MarkdownRenderer } from "@/components/MarkdownRenderer";
 import { AnswerInput } from "@/components/AnswerInput";
+import { TutorPanel } from "@/components/TutorPanel";
 import { ArrowLeft, CheckCircle2, XCircle, RefreshCw } from "lucide-react";
 
 function difficultyFromAccuracy(attempts: number, accuracy: number): {
@@ -151,7 +152,8 @@ export default function TopicPractice() {
 
   return (
     <Layout>
-      <div className="p-6 md:p-8 max-w-3xl mx-auto w-full flex flex-col gap-5">
+      <div className="p-6 md:p-8 max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-6 items-start">
+        <div className="flex flex-col gap-5 min-w-0">
         <div>
           <Link
             href="/analytics"
@@ -280,6 +282,14 @@ export default function TopicPractice() {
             </Button>
           </div>
         )}
+        </div>
+
+        <aside className="lg:sticky lg:top-6 h-[600px] lg:h-[calc(100vh-3rem)]">
+          <TutorPanel
+            contextText={problem?.prompt}
+            subtitle="Always here while you practice"
+          />
+        </aside>
       </div>
     </Layout>
   );

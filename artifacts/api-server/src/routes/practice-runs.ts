@@ -27,6 +27,7 @@ import {
 import { chatJson, chatText } from "../lib/ai";
 import { gradeAnswer } from "../lib/grading";
 import { getUserId } from "../middlewares/requireAuth";
+import { bumpUserTopicProfile } from "../lib/profile";
 
 const router: IRouter = Router();
 
@@ -142,50 +143,6 @@ async function generateForTopic(
     results.push(chosen);
   }
   return results;
-}
-
-type DbExecutor = typeof db | Parameters<Parameters<typeof db.transaction>[0]>[0];
-
-async function bumpProfile(
-  exec: DbExecutor,
-  userId: string,
-  topicId: number,
-  delta: {
-    practiceAttempts?: number;
-    practiceCorrect?: number;
-    gradedAttempts?: number;
-    gradedCorrect?: number;
-    lastDifficulty?: number;
-  },
-): Promise<void> {
-  // Atomic upsert: concurrent submissions add their deltas without lost updates.
-  const pA = delta.practiceAttempts ?? 0;
-  const pC = delta.practiceCorrect ?? 0;
-  const gA = delta.gradedAttempts ?? 0;
-  const gC = delta.gradedCorrect ?? 0;
-  await exec
-    .insert(userTopicProfileTable)
-    .values({
-      userId,
-      topicId,
-      practiceAttempts: pA,
-      practiceCorrect: pC,
-      gradedAttempts: gA,
-      gradedCorrect: gC,
-      lastDifficulty: delta.lastDifficulty ?? 2.5,
-    })
-    .onConflictDoUpdate({
-      target: [userTopicProfileTable.userId, userTopicProfileTable.topicId],
-      set: {
-        practiceAttempts: sql`${userTopicProfileTable.practiceAttempts} + ${pA}`,
-        practiceCorrect: sql`${userTopicProfileTable.practiceCorrect} + ${pC}`,
-        gradedAttempts: sql`${userTopicProfileTable.gradedAttempts} + ${gA}`,
-        gradedCorrect: sql`${userTopicProfileTable.gradedCorrect} + ${gC}`,
-        lastDifficulty:
-          delta.lastDifficulty ?? sql`${userTopicProfileTable.lastDifficulty}`,
-        updatedAt: new Date(),
-      },
-    });
 }
 
 async function buildRunDetail(runId: number) {
@@ -332,6 +289,19 @@ router.post(
     for (const rp of realProblems) {
       forbiddenByTopic.get(rp.topicId)!.add(hashPrompt(rp.prompt));
       avoidTextByTopic.get(rp.topicId)!.push(rp.prompt);
+    }
+    // Forbid EVERY graded problem across the whole course on these topics, not
+    // just the mirrored assignment's — practice must never reproduce a graded
+    // question the student could later be tested on, regardless of assignment.
+    const allGradedOnTopics = await db
+      .select({
+        topicId: problemsTable.topicId,
+        prompt: problemsTable.prompt,
+      })
+      .from(problemsTable)
+      .where(inArray(problemsTable.topicId, topicIds));
+    for (const gp of allGradedOnTopics) {
+      forbiddenByTopic.get(gp.topicId)?.add(hashPrompt(gp.prompt));
     }
     // Also avoid recently served practice-run prompts (text) for context.
     const recentRunProblems = await db
@@ -732,7 +702,7 @@ router.post("/practice-runs/:runId/submit", async (req, res): Promise<void> => {
       .returning();
     if (!claimed) return; // Already finalized elsewhere — skip increments.
     for (const [topicId, agg] of byTopic.entries()) {
-      await bumpProfile(tx, userId, topicId, {
+      await bumpUserTopicProfile(tx, userId, topicId, {
         practiceAttempts: agg.attempts,
         practiceCorrect: agg.correct,
         lastDifficulty: problems.find((p) => p.topicId === topicId)?.difficulty,

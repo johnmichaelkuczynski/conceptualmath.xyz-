@@ -6,7 +6,6 @@ import {
   practiceSessionsTable,
   practiceProblemsTable,
   practiceAttemptsTable,
-  userTopicProfileTable,
 } from "@workspace/db";
 import {
   StartPracticeSessionBody,
@@ -19,6 +18,7 @@ import {
 import { chatJson } from "../lib/ai";
 import { gradeAnswer } from "../lib/grading";
 import { getUserId } from "../middlewares/requireAuth";
+import { bumpUserTopicProfile } from "../lib/profile";
 
 const router: IRouter = Router();
 
@@ -28,34 +28,12 @@ async function bumpPracticeProfile(
   correct: boolean,
   difficulty: number,
 ): Promise<void> {
-  const [existing] = await db
-    .select()
-    .from(userTopicProfileTable)
-    .where(
-      and(
-        eq(userTopicProfileTable.userId, userId),
-        eq(userTopicProfileTable.topicId, topicId),
-      ),
-    );
-  if (existing) {
-    await db
-      .update(userTopicProfileTable)
-      .set({
-        practiceAttempts: existing.practiceAttempts + 1,
-        practiceCorrect: existing.practiceCorrect + (correct ? 1 : 0),
-        lastDifficulty: difficulty,
-        updatedAt: new Date(),
-      })
-      .where(eq(userTopicProfileTable.id, existing.id));
-  } else {
-    await db.insert(userTopicProfileTable).values({
-      userId,
-      topicId,
-      practiceAttempts: 1,
-      practiceCorrect: correct ? 1 : 0,
-      lastDifficulty: difficulty,
-    });
-  }
+  // Atomic upsert — avoids lost updates under the read-modify-write race.
+  await bumpUserTopicProfile(db, userId, topicId, {
+    practiceAttempts: 1,
+    practiceCorrect: correct ? 1 : 0,
+    lastDifficulty: difficulty,
+  });
 }
 
 function parseIdParam(raw: unknown): number {

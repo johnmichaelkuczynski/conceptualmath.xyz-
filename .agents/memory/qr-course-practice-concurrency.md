@@ -21,10 +21,19 @@ only the request that gets a returned row runs `bumpProfile`. Losers skip increm
 left runs stuck in `grading`. Gating on the final transition instead means a crash just
 leaves the run `in_progress` for a clean retry, and there is never an intermediate status.
 
+**The same exactly-once rule applies to the GRADED attempt submit**
+(`POST /assignments/attempts/:attemptId/submit`), not just practice runs. Both share
+one atomic profile helper `bumpUserTopicProfile` in `artifacts/api-server/src/lib/profile.ts`
+(also used by per-answer practice grading). Any submit endpoint that folds deltas into
+`user_topic_profile` must gate them on its own atomic in_progress->submitted claim.
+
 **How to apply:**
 - Never introduce an intermediate `status` value unless the OpenAPI/Zod enum includes it.
-- `bumpProfile` is an atomic upsert (`onConflictDoUpdate` with `field = field + delta`),
+- `bumpUserTopicProfile` is an atomic upsert (`onConflictDoUpdate` with `field = field + delta`),
   requires the unique index `user_topic_profile(user_id, topic_id)`.
+- No-repeat: practice generation forbids the user's served-prompt history AND every
+  graded prompt course-wide on the involved topics (query `problems` by topicId), so a
+  practice item can never reproduce a question the student could be graded on.
 - `served_prompts` has unique `(user_id, topic_id, prompt_hash)`; inserts use
   `onConflictDoNothing`. This keeps no-repeat history clean for sequential runs.
   Truly-concurrent run *creation* serving a dup prompt is an accepted limitation

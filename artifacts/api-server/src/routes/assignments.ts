@@ -8,7 +8,6 @@ import {
   answersTable,
   topicsTable,
   practiceRunsTable,
-  userTopicProfileTable,
 } from "@workspace/db";
 import {
   GetAssignmentResponse,
@@ -21,6 +20,7 @@ import {
 import { gradeAnswer } from "../lib/grading";
 import { detect } from "../lib/detection";
 import { getUserId } from "../middlewares/requireAuth";
+import { bumpUserTopicProfile } from "../lib/profile";
 
 const router: IRouter = Router();
 
@@ -384,44 +384,35 @@ router.post("/assignments/attempts/:attemptId/submit", async (req, res): Promise
 
   const total = problems.length;
   const percent = total === 0 ? 0 : (score / total) * 100;
-  await db
-    .update(attemptsTable)
-    .set({
-      status: "submitted",
-      submittedAt: new Date(),
-      scorePercent: percent,
-    })
-    .where(eq(attemptsTable.id, id));
 
-  // Fold graded results into the evolving per-user, per-topic profile.
-  for (const [topicId, agg] of topicAgg.entries()) {
-    const [existing] = await db
-      .select()
-      .from(userTopicProfileTable)
+  // Finalize atomically. The graded mastery deltas are folded into the per-user
+  // profile ONLY by the single request that wins the in_progress -> submitted
+  // transition, so a repeated or concurrent submit of the same attempt can never
+  // double-count gradedAttempts/gradedCorrect (which would skew readiness).
+  await db.transaction(async (tx) => {
+    const [claimed] = await tx
+      .update(attemptsTable)
+      .set({
+        status: "submitted",
+        submittedAt: new Date(),
+        scorePercent: percent,
+      })
       .where(
         and(
-          eq(userTopicProfileTable.userId, userId),
-          eq(userTopicProfileTable.topicId, topicId),
+          eq(attemptsTable.id, id),
+          eq(attemptsTable.userId, userId),
+          eq(attemptsTable.status, "in_progress"),
         ),
-      );
-    if (existing) {
-      await db
-        .update(userTopicProfileTable)
-        .set({
-          gradedAttempts: existing.gradedAttempts + agg.attempts,
-          gradedCorrect: existing.gradedCorrect + agg.correct,
-          updatedAt: new Date(),
-        })
-        .where(eq(userTopicProfileTable.id, existing.id));
-    } else {
-      await db.insert(userTopicProfileTable).values({
-        userId,
-        topicId,
+      )
+      .returning();
+    if (!claimed) return; // Already submitted elsewhere — skip mastery deltas.
+    for (const [topicId, agg] of topicAgg.entries()) {
+      await bumpUserTopicProfile(tx, userId, topicId, {
         gradedAttempts: agg.attempts,
         gradedCorrect: agg.correct,
       });
     }
-  }
+  });
 
   res.json(
     SubmitAttemptResponse.parse({

@@ -1,14 +1,20 @@
 import React from "react";
-import { useGetCourseOverview, useGetRecentActivity } from "@workspace/api-client-react";
+import {
+  useGetCourseOverview,
+  useGetRecentActivity,
+  useListAssignments,
+} from "@workspace/api-client-react";
 import { Layout } from "@/components/layout/Layout";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Link } from "wouter";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Progress } from "@/components/ui/progress";
+import { PracticeCta } from "@/components/PracticeCta";
 
 export default function Dashboard() {
   const { data: overview, isLoading: isLoadingOverview } = useGetCourseOverview();
   const { data: activity, isLoading: isLoadingActivity } = useGetRecentActivity();
+  const { data: assignments, isLoading: isLoadingAssignments } = useListAssignments();
 
   return (
     <Layout>
@@ -47,6 +53,43 @@ export default function Dashboard() {
               )}
             </CardContent>
           </Card>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <div>
+            <h2 className="text-xl font-serif font-semibold">Ready to practice?</h2>
+            <p className="text-sm text-muted-foreground">
+              Each assignment has an unlimited, always-fresh practice version with
+              a live tutor. Your readiness updates as you go.
+            </p>
+          </div>
+          {isLoadingAssignments ? (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {Array.from({ length: 3 }).map((_, i) => (
+                <Skeleton key={i} className="h-28 w-full" />
+              ))}
+            </div>
+          ) : assignments && assignments.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {assignments.map((a) => (
+                <Card key={a.id} className="flex flex-col justify-between">
+                  <CardHeader className="pb-2">
+                    <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                      Week {a.weekNumber} · {a.kind}
+                    </div>
+                    <CardTitle className="text-base leading-snug">{a.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <PracticeCta assignmentId={a.id} />
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <div className="text-sm text-muted-foreground">
+              No assignments available yet.
+            </div>
+          )}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
