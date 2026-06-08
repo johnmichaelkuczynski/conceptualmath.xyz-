@@ -15,15 +15,16 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { MarkdownRenderer } from "@/components/MarkdownRenderer";
 import { AnswerInput } from "@/components/AnswerInput";
 import { StarterQuestionCard } from "@/components/StarterQuestionCard";
+import { MathKeyboard } from "@/components/MathKeyboard";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, MessageSquare, Sparkles, Send, X, RefreshCw, CheckCircle2, XCircle } from "lucide-react";
+import { ArrowLeft, MessageSquare, Sparkles, Send, X, RefreshCw, CheckCircle2, XCircle, Loader2, Calculator } from "lucide-react";
 
 type ChatMsg = { role: "user" | "tutor"; text: string };
 
 export default function LectureView() {
   const params = useParams();
   const lectureId = Number(params.lectureId);
-  const { data: lecture, isLoading } = useGetLecture(lectureId);
+  const { data: lecture, isLoading, refetch } = useGetLecture(lectureId);
 
   // shared selected-text state (used by both Tutor and Practice)
   const [selectedText, setSelectedText] = useState("");
@@ -67,6 +68,40 @@ export default function LectureView() {
         ? lecture.bodyMedium
         : (lecture?.body ?? "");
 
+  const [generatingLevel, setGeneratingLevel] = useState<"medium" | "long" | null>(null);
+  const [genError, setGenError] = useState<string | null>(null);
+
+  async function generateLevel(lvl: "medium" | "long") {
+    if (!lecture || generatingLevel) return;
+    setGeneratingLevel(lvl);
+    setGenError(null);
+    try {
+      const res = await fetch(
+        `/api/diagnostics/expand-lectures?level=${lvl}&id=${lecture.id}`,
+        { method: "POST" },
+      );
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = (await res.json()) as { updated?: number; failed?: number };
+      if (!data.updated) {
+        throw new Error("the generator returned nothing usable — please try again");
+      }
+      await refetch();
+      setLevel(lvl);
+    } catch (e) {
+      setGenError(`Couldn't generate the ${lvl} version: ${(e as Error).message}`);
+    } finally {
+      setGeneratingLevel(null);
+    }
+  }
+
+  function onLevelClick(lvl: "short" | "medium" | "long") {
+    if (lvl === "short" || availableLevels.includes(lvl)) {
+      setLevel(lvl);
+      return;
+    }
+    void generateLevel(lvl);
+  }
+
   return (
     <Layout>
       <div className="px-6 pt-4 pb-2">
@@ -103,30 +138,50 @@ export default function LectureView() {
                     {(["short", "medium", "long"] as const).map((lvl) => {
                       const enabled = availableLevels.includes(lvl);
                       const active = level === lvl;
+                      const busy = generatingLevel === lvl;
+                      const needsGen = !enabled && lvl !== "short";
                       return (
                         <button
                           key={lvl}
-                          onClick={() => enabled && setLevel(lvl)}
-                          disabled={!enabled}
+                          onClick={() => onLevelClick(lvl)}
+                          disabled={generatingLevel !== null}
                           title={
                             enabled
-                              ? `${lvl[0].toUpperCase() + lvl.slice(1)} version`
-                              : `${lvl[0].toUpperCase() + lvl.slice(1)} version not generated yet — click "Generate medium + long lectures" in the top bar`
+                              ? `Show the ${lvl} version`
+                              : `Generate the ${lvl} version of this lecture only (~20s)`
                           }
-                          className={`px-3 py-1.5 font-medium uppercase tracking-wider transition-colors ${
+                          className={`px-3 py-1.5 font-medium uppercase tracking-wider transition-colors inline-flex items-center gap-1 disabled:cursor-wait ${
                             active
                               ? "bg-primary text-primary-foreground"
-                              : enabled
-                                ? "bg-background hover:bg-secondary text-foreground"
-                                : "bg-background/50 text-muted-foreground/50 cursor-not-allowed"
-                          }`}
+                              : "bg-background hover:bg-secondary text-foreground"
+                          } ${needsGen && !active ? "text-primary" : ""}`}
                           data-testid={`button-level-${lvl}`}
                         >
+                          {busy ? (
+                            <Loader2 className="w-3 h-3 animate-spin" />
+                          ) : needsGen ? (
+                            <Sparkles className="w-3 h-3" />
+                          ) : null}
                           {lvl}
                         </button>
                       );
                     })}
                   </div>
+                </div>
+                <div className="mt-2 flex items-center gap-2 text-xs">
+                  {generatingLevel ? (
+                    <span className="text-muted-foreground inline-flex items-center gap-1.5">
+                      <Loader2 className="w-3 h-3 animate-spin" />
+                      Writing the {generatingLevel} version of this lecture…
+                    </span>
+                  ) : genError ? (
+                    <span className="text-red-600">{genError}</span>
+                  ) : availableLevels.length < 3 ? (
+                    <span className="text-muted-foreground">
+                      Medium and Long are written on demand for{" "}
+                      <strong>this lecture only</strong> — tap one to generate it.
+                    </span>
+                  ) : null}
                 </div>
               </header>
               <div className="bg-card border shadow-sm rounded-lg p-6 md:p-8" ref={articleRef}>
@@ -215,8 +270,60 @@ function TutorPane({
 }) {
   const [history, setHistory] = useState<ChatMsg[]>([]);
   const [input, setInput] = useState("");
+  const [showKeyboard, setShowKeyboard] = useState(false);
   const ask = useAskTutor();
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  const taRef = useRef<HTMLTextAreaElement | null>(null);
+
+  function insertAtCursor(text: string) {
+    if (!text) return;
+    const ta = taRef.current;
+    setInput((cur) => {
+      if (ta && document.activeElement === ta) {
+        const start = ta.selectionStart ?? cur.length;
+        const end = ta.selectionEnd ?? cur.length;
+        const next = cur.slice(0, start) + text + cur.slice(end);
+        const caret = start + text.length;
+        requestAnimationFrame(() => {
+          ta.focus();
+          try {
+            ta.setSelectionRange(caret, caret);
+          } catch {}
+        });
+        return next;
+      }
+      return cur + text;
+    });
+  }
+
+  function backspaceAtCursor() {
+    const ta = taRef.current;
+    setInput((cur) => {
+      if (ta && document.activeElement === ta) {
+        const start = ta.selectionStart ?? cur.length;
+        const end = ta.selectionEnd ?? cur.length;
+        if (start === end) {
+          if (start === 0) return cur;
+          const caret = start - 1;
+          requestAnimationFrame(() => {
+            ta.focus();
+            try {
+              ta.setSelectionRange(caret, caret);
+            } catch {}
+          });
+          return cur.slice(0, start - 1) + cur.slice(end);
+        }
+        requestAnimationFrame(() => {
+          ta.focus();
+          try {
+            ta.setSelectionRange(start, start);
+          } catch {}
+        });
+        return cur.slice(0, start) + cur.slice(end);
+      }
+      return cur.slice(0, -1);
+    });
+  }
 
   // Preloaded starter questions for this lecture
   const [suggestions, setSuggestions] = useState<string[] | null>(null);
@@ -301,24 +408,45 @@ function TutorPane({
 
   return (
     <div className="flex-1 flex flex-col min-h-0">
-      <div className="border-b border-border bg-background p-3 flex gap-2 items-end">
-        <textarea
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
-              e.preventDefault();
-              send();
-            }
-          }}
-          placeholder={placeholder}
-          rows={4}
-          className="flex-1 bg-secondary border-none rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary resize-y min-h-[96px] max-h-[280px]"
-          data-testid="input-tutor-question"
-        />
-        <Button size="lg" onClick={send} disabled={!input.trim() || ask.isPending}>
-          <Send className="w-4 h-4" />
-        </Button>
+      <div className="border-b border-border bg-background p-3 flex flex-col gap-2">
+        <div className="flex gap-2 items-end">
+          <textarea
+            ref={taRef}
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                send();
+              }
+            }}
+            placeholder={placeholder}
+            rows={4}
+            className="flex-1 bg-secondary border-none rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary resize-y min-h-[96px] max-h-[280px]"
+            data-testid="input-tutor-question"
+          />
+          <div className="flex flex-col gap-2">
+            <Button
+              size="lg"
+              variant={showKeyboard ? "default" : "outline"}
+              onClick={() => setShowKeyboard((v) => !v)}
+              title="Math keyboard"
+              data-testid="button-tutor-keyboard"
+            >
+              <Calculator className="w-4 h-4" />
+            </Button>
+            <Button size="lg" onClick={send} disabled={!input.trim() || ask.isPending}>
+              <Send className="w-4 h-4" />
+            </Button>
+          </div>
+        </div>
+        {showKeyboard && (
+          <MathKeyboard
+            onInsert={insertAtCursor}
+            onBackspace={backspaceAtCursor}
+            onClear={() => setInput("")}
+          />
+        )}
       </div>
       <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 flex flex-col gap-3">
         {showSuggestions && (

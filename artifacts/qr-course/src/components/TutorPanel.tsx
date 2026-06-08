@@ -3,7 +3,8 @@ import { useAskTutor } from "@workspace/api-client-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { MarkdownRenderer } from "@/components/MarkdownRenderer";
-import { Sparkles, Send } from "lucide-react";
+import { MathKeyboard } from "@/components/MathKeyboard";
+import { Sparkles, Send, Calculator } from "lucide-react";
 
 interface TutorMessage {
   role: "user" | "assistant";
@@ -27,12 +28,63 @@ interface TutorPanelProps {
 export function TutorPanel({ contextText, title = "AI Tutor", subtitle }: TutorPanelProps) {
   const [draft, setDraft] = useState("");
   const [messages, setMessages] = useState<TutorMessage[]>([]);
+  const [showKeyboard, setShowKeyboard] = useState(false);
   const ask = useAskTutor();
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  const taRef = useRef<HTMLTextAreaElement | null>(null);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight });
   }, [messages, ask.isPending]);
+
+  function insertAtCursor(text: string) {
+    if (!text) return;
+    const ta = taRef.current;
+    setDraft((cur) => {
+      if (ta && document.activeElement === ta) {
+        const start = ta.selectionStart ?? cur.length;
+        const end = ta.selectionEnd ?? cur.length;
+        const caret = start + text.length;
+        requestAnimationFrame(() => {
+          ta.focus();
+          try {
+            ta.setSelectionRange(caret, caret);
+          } catch {}
+        });
+        return cur.slice(0, start) + text + cur.slice(end);
+      }
+      return cur + text;
+    });
+  }
+
+  function backspaceAtCursor() {
+    const ta = taRef.current;
+    setDraft((cur) => {
+      if (ta && document.activeElement === ta) {
+        const start = ta.selectionStart ?? cur.length;
+        const end = ta.selectionEnd ?? cur.length;
+        if (start === end) {
+          if (start === 0) return cur;
+          const caret = start - 1;
+          requestAnimationFrame(() => {
+            ta.focus();
+            try {
+              ta.setSelectionRange(caret, caret);
+            } catch {}
+          });
+          return cur.slice(0, start - 1) + cur.slice(end);
+        }
+        requestAnimationFrame(() => {
+          ta.focus();
+          try {
+            ta.setSelectionRange(start, start);
+          } catch {}
+        });
+        return cur.slice(0, start) + cur.slice(end);
+      }
+      return cur.slice(0, -1);
+    });
+  }
 
   function send() {
     const message = draft.trim();
@@ -110,6 +162,7 @@ export function TutorPanel({ contextText, title = "AI Tutor", subtitle }: TutorP
 
       <div className="border-t p-3 flex flex-col gap-2">
         <Textarea
+          ref={taRef}
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
           onKeyDown={(e) => {
@@ -121,7 +174,24 @@ export function TutorPanel({ contextText, title = "AI Tutor", subtitle }: TutorP
           placeholder="Ask the tutor…"
           className="min-h-[60px] resize-none"
         />
-        <div className="flex justify-end">
+        {showKeyboard && (
+          <MathKeyboard
+            onInsert={insertAtCursor}
+            onBackspace={backspaceAtCursor}
+            onClear={() => setDraft("")}
+          />
+        )}
+        <div className="flex justify-between">
+          <Button
+            size="sm"
+            variant={showKeyboard ? "default" : "outline"}
+            onClick={() => setShowKeyboard((v) => !v)}
+            title="Math keyboard"
+            data-testid="button-tutor-keyboard"
+          >
+            <Calculator className="w-4 h-4 mr-1" />
+            Math
+          </Button>
           <Button size="sm" onClick={send} disabled={!draft.trim() || ask.isPending}>
             <Send className="w-4 h-4 mr-1" />
             Send
