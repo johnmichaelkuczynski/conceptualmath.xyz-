@@ -58,6 +58,7 @@ export const problemsTable = pgTable("problems", {
 
 export const attemptsTable = pgTable("attempts", {
   id: serial("id").primaryKey(),
+  userId: text("user_id"),
   assignmentId: integer("assignment_id")
     .notNull()
     .references(() => assignmentsTable.id, { onDelete: "cascade" }),
@@ -94,6 +95,7 @@ export const answersTable = pgTable("answers", {
 
 export const practiceSessionsTable = pgTable("practice_sessions", {
   id: serial("id").primaryKey(),
+  userId: text("user_id"),
   weekNumber: integer("week_number"),
   topicId: integer("topic_id"),
   tutorEnabled: boolean("tutor_enabled").notNull().default(false),

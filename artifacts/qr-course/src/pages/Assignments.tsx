@@ -1,10 +1,10 @@
-import React from "react";
 import { useListAssignments } from "@workspace/api-client-react";
 import { Layout } from "@/components/layout/Layout";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Link } from "wouter";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
+import { PracticeCta } from "@/components/PracticeCta";
 
 export default function Assignments() {
   const { data: assignments, isLoading } = useListAssignments();
@@ -67,6 +67,9 @@ export default function Assignments() {
                              item.status === 'in_progress' ? 'Resume' : 'Start'}
                           </Button>
                         </Link>
+                        <div className="pt-2 border-t">
+                          <PracticeCta assignmentId={item.id} />
+                        </div>
                       </CardContent>
                     </Card>
                   ))}

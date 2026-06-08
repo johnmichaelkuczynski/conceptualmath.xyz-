@@ -1,10 +1,11 @@
 import { Router, type IRouter } from "express";
-import { asc, desc, eq, sql } from "drizzle-orm";
+import { and, asc, desc, eq, sql } from "drizzle-orm";
 import {
   db,
   topicsTable,
   attemptsTable,
   practiceAttemptsTable,
+  practiceSessionsTable,
   assignmentsTable,
 } from "@workspace/db";
 import {
@@ -14,6 +15,7 @@ import {
   GenerateReportResponse,
 } from "@workspace/api-zod";
 import { chatJson } from "../lib/ai";
+import { getUserId } from "../middlewares/requireAuth";
 
 const router: IRouter = Router();
 
@@ -26,14 +28,18 @@ function labelFor(accuracy: number, attempts: number): StrengthLabel {
   return "weak";
 }
 
-async function topicStats() {
+async function topicStats(userId: string) {
   const topics = await db
     .select()
     .from(topicsTable)
     .orderBy(asc(topicsTable.position));
   const stats = await db.execute(sql`
-    select topic_id, count(*)::int as n, avg(case when correct then 1.0 else 0.0 end) as acc
-    from practice_attempts group by topic_id
+    select pa.topic_id as topic_id, count(*)::int as n,
+           avg(case when pa.correct then 1.0 else 0.0 end) as acc
+    from practice_attempts pa
+    join practice_sessions ps on pa.session_id = ps.id
+    where ps.user_id = ${userId}
+    group by pa.topic_id
   `);
   const byId = new Map<number, { n: number; acc: number }>();
   for (const r of stats.rows as Array<{ topic_id: number; n: number; acc: number }>) {
@@ -54,17 +60,30 @@ async function topicStats() {
   });
 }
 
-router.get("/analytics/summary", async (_req, res) => {
+router.get("/analytics/summary", async (req, res) => {
+  const userId = getUserId(req);
   const submitted = await db
     .select()
     .from(attemptsTable)
-    .where(eq(attemptsTable.status, "submitted"));
+    .where(
+      and(eq(attemptsTable.status, "submitted"), eq(attemptsTable.userId, userId)),
+    );
   const officialAverage =
     submitted.length === 0
       ? 0
       : submitted.reduce((s, a) => s + (a.scorePercent ?? 0), 0) / submitted.length;
 
-  const practice = await db.select().from(practiceAttemptsTable);
+  const practice = await db
+    .select({
+      correct: practiceAttemptsTable.correct,
+      createdAt: practiceAttemptsTable.createdAt,
+    })
+    .from(practiceAttemptsTable)
+    .innerJoin(
+      practiceSessionsTable,
+      eq(practiceAttemptsTable.sessionId, practiceSessionsTable.id),
+    )
+    .where(eq(practiceSessionsTable.userId, userId));
   const practiceCorrect = practice.filter((p) => p.correct).length;
   const practiceAccuracy =
     practice.length === 0 ? 0 : (practiceCorrect / practice.length) * 100;
@@ -85,7 +104,7 @@ router.get("/analytics/summary", async (_req, res) => {
     else if (i > 0) break;
   }
 
-  const topics = await topicStats();
+  const topics = await topicStats(userId);
   const tested = topics.filter((t) => t.attempts > 0);
   tested.sort((a, b) => b.accuracy - a.accuracy);
   const strongest = tested[0]?.topicTitle ?? null;
@@ -104,12 +123,14 @@ router.get("/analytics/summary", async (_req, res) => {
   );
 });
 
-router.get("/analytics/topics", async (_req, res) => {
-  const rows = await topicStats();
+router.get("/analytics/topics", async (req, res) => {
+  const userId = getUserId(req);
+  const rows = await topicStats(userId);
   res.json(GetTopicAnalyticsResponse.parse(rows));
 });
 
-router.get("/analytics/activity", async (_req, res) => {
+router.get("/analytics/activity", async (req, res) => {
+  const userId = getUserId(req);
   const recentPractice = await db
     .select({
       id: practiceAttemptsTable.id,
@@ -118,6 +139,11 @@ router.get("/analytics/activity", async (_req, res) => {
       topicId: practiceAttemptsTable.topicId,
     })
     .from(practiceAttemptsTable)
+    .innerJoin(
+      practiceSessionsTable,
+      eq(practiceAttemptsTable.sessionId, practiceSessionsTable.id),
+    )
+    .where(eq(practiceSessionsTable.userId, userId))
     .orderBy(desc(practiceAttemptsTable.id))
     .limit(20);
   const topics = await db.select().from(topicsTable);
@@ -131,7 +157,9 @@ router.get("/analytics/activity", async (_req, res) => {
       assignmentId: attemptsTable.assignmentId,
     })
     .from(attemptsTable)
-    .where(eq(attemptsTable.status, "submitted"))
+    .where(
+      and(eq(attemptsTable.status, "submitted"), eq(attemptsTable.userId, userId)),
+    )
     .orderBy(desc(attemptsTable.id))
     .limit(20);
   const assignments = await db.select().from(assignmentsTable);
@@ -159,12 +187,15 @@ router.get("/analytics/activity", async (_req, res) => {
   res.json(GetRecentActivityResponse.parse(items.slice(0, 30)));
 });
 
-router.post("/analytics/report", async (_req, res) => {
-  const topics = await topicStats();
+router.post("/analytics/report", async (req, res) => {
+  const userId = getUserId(req);
+  const topics = await topicStats(userId);
   const submitted = await db
     .select()
     .from(attemptsTable)
-    .where(eq(attemptsTable.status, "submitted"));
+    .where(
+      and(eq(attemptsTable.status, "submitted"), eq(attemptsTable.userId, userId)),
+    );
   const officialAverage =
     submitted.length === 0
       ? 0

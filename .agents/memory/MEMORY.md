@@ -1,2 +1,3 @@
 - [Course seed needs schema first](qr-course-seed-boot.md) — api-server boot seed fails on empty DB; run `pnpm --filter @workspace/db run push` then restart.
 - [Runtime ops: diagnostics, reseed, demo audio](qr-course-runtime-ops.md) — long OpenAI diagnostics need heartbeats + single blocking curl; bump sentinel to reseed content edits; rebuild demo audio via build-audio.sh.
+- [Practice-run submit exactly-once](qr-course-practice-concurrency.md) — gate profile increments on atomic in_progress→submitted tx; never leak a transient status into Zod-enum responses.

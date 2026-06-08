@@ -6,6 +6,7 @@
  * OpenAPI spec version: 0.1.0
  */
 import type { AssignmentSummaryKind } from './assignmentSummaryKind';
+import type { AssignmentSummaryReadinessLabel } from './assignmentSummaryReadinessLabel';
 import type { AssignmentSummaryStatus } from './assignmentSummaryStatus';
 
 export interface AssignmentSummary {
@@ -22,4 +23,10 @@ export interface AssignmentSummary {
   bestScore?: number | null;
   /** @nullable */
   lastAttemptId?: number | null;
+  /** @nullable */
+  practiceRunCount?: number | null;
+  /** @nullable */
+  bestPracticeScore?: number | null;
+  /** @nullable */
+  readinessLabel?: AssignmentSummaryReadinessLabel;
 }

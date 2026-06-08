@@ -62,6 +62,19 @@ export const AssignmentSummaryStatus = {
   submitted: 'submitted',
 } as const;
 
+/**
+ * @nullable
+ */
+export type AssignmentSummaryReadinessLabel = typeof AssignmentSummaryReadinessLabel[keyof typeof AssignmentSummaryReadinessLabel] | null;
+
+
+export const AssignmentSummaryReadinessLabel = {
+  not_ready: 'not_ready',
+  building: 'building',
+  almost: 'almost',
+  ready: 'ready',
+} as const;
+
 export interface AssignmentSummary {
   id: number;
   kind: AssignmentSummaryKind;
@@ -76,6 +89,12 @@ export interface AssignmentSummary {
   bestScore?: number | null;
   /** @nullable */
   lastAttemptId?: number | null;
+  /** @nullable */
+  practiceRunCount?: number | null;
+  /** @nullable */
+  bestPracticeScore?: number | null;
+  /** @nullable */
+  readinessLabel?: AssignmentSummaryReadinessLabel;
 }
 
 export interface Week {
@@ -349,5 +368,156 @@ export interface CourseOverview {
   title: string;
   weeks: Week[];
   totals: CourseOverviewTotals;
+}
+
+export interface PracticeRunAnswerInput {
+  problemId: number;
+  answer: string;
+}
+
+export interface PracticeRunMessageInput {
+  content: string;
+}
+
+export interface FocusPointer {
+  /** @nullable */
+  topicId?: number | null;
+  topicTitle: string;
+  pointer: string;
+}
+
+export interface PracticeRunProblem {
+  id: number;
+  position: number;
+  prompt: string;
+  topicId: number;
+  /** @nullable */
+  topicTitle?: string | null;
+  /** @nullable */
+  hint?: string | null;
+  difficulty: number;
+}
+
+export interface PracticeRunAnswerView {
+  problemId: number;
+  answer: string;
+  /** @nullable */
+  correct?: boolean | null;
+  /** @nullable */
+  feedback?: string | null;
+  /** @nullable */
+  correctAnswer?: string | null;
+  /** @nullable */
+  explanation?: string | null;
+}
+
+export type PracticeRunMessageRole = typeof PracticeRunMessageRole[keyof typeof PracticeRunMessageRole];
+
+
+export const PracticeRunMessageRole = {
+  user: 'user',
+  assistant: 'assistant',
+} as const;
+
+export interface PracticeRunMessage {
+  id: number;
+  role: PracticeRunMessageRole;
+  content: string;
+  createdAt: string;
+}
+
+export type PracticeRunSummaryStatus = typeof PracticeRunSummaryStatus[keyof typeof PracticeRunSummaryStatus];
+
+
+export const PracticeRunSummaryStatus = {
+  in_progress: 'in_progress',
+  submitted: 'submitted',
+} as const;
+
+export interface PracticeRunSummary {
+  id: number;
+  assignmentId: number;
+  status: PracticeRunSummaryStatus;
+  /** @nullable */
+  scorePercent?: number | null;
+  problemCount: number;
+  createdAt: string;
+  /** @nullable */
+  submittedAt?: string | null;
+}
+
+export type PracticeRunDetailStatus = typeof PracticeRunDetailStatus[keyof typeof PracticeRunDetailStatus];
+
+
+export const PracticeRunDetailStatus = {
+  in_progress: 'in_progress',
+  submitted: 'submitted',
+} as const;
+
+export interface PracticeRunDetail {
+  id: number;
+  assignmentId: number;
+  assignmentTitle: string;
+  assignmentKind: string;
+  /** @nullable */
+  weekNumber?: number | null;
+  status: PracticeRunDetailStatus;
+  /** @nullable */
+  scorePercent?: number | null;
+  /** @nullable */
+  score?: number | null;
+  /** @nullable */
+  total?: number | null;
+  /** @nullable */
+  feedbackNarrative?: string | null;
+  focusPointers?: FocusPointer[];
+  problems: PracticeRunProblem[];
+  answers: PracticeRunAnswerView[];
+  messages: PracticeRunMessage[];
+  createdAt: string;
+  /** @nullable */
+  submittedAt?: string | null;
+}
+
+export type TopicReadinessLabel = typeof TopicReadinessLabel[keyof typeof TopicReadinessLabel];
+
+
+export const TopicReadinessLabel = {
+  strong: 'strong',
+  solid: 'solid',
+  developing: 'developing',
+  weak: 'weak',
+  untested: 'untested',
+} as const;
+
+export interface TopicReadiness {
+  topicId: number;
+  topicTitle: string;
+  practiceAttempts: number;
+  /** @nullable */
+  practiceAccuracy?: number | null;
+  label: TopicReadinessLabel;
+}
+
+export type AssignmentReadinessReadinessLabel = typeof AssignmentReadinessReadinessLabel[keyof typeof AssignmentReadinessReadinessLabel];
+
+
+export const AssignmentReadinessReadinessLabel = {
+  not_ready: 'not_ready',
+  building: 'building',
+  almost: 'almost',
+  ready: 'ready',
+} as const;
+
+export interface AssignmentReadiness {
+  assignmentId: number;
+  practiceRunCount: number;
+  /** @nullable */
+  bestPracticeScore?: number | null;
+  /** @nullable */
+  lastPracticeScore?: number | null;
+  readinessLabel: AssignmentReadinessReadinessLabel;
+  message: string;
+  topics: TopicReadiness[];
 }
 

@@ -40,7 +40,10 @@ export const GetCourseOverviewResponse = zod.object({
   "timeLimitMinutes": zod.number().nullish(),
   "status": zod.enum(['not_started', 'in_progress', 'submitted']),
   "bestScore": zod.number().nullish(),
-  "lastAttemptId": zod.number().nullish()
+  "lastAttemptId": zod.number().nullish(),
+  "practiceRunCount": zod.number().nullish(),
+  "bestPracticeScore": zod.number().nullish(),
+  "readinessLabel": zod.union([zod.literal('not_ready'),zod.literal('building'),zod.literal('almost'),zod.literal('ready'),zod.literal(null)]).nullish()
 }))
 })),
   "totals": zod.object({
@@ -81,7 +84,10 @@ export const GetWeekResponse = zod.object({
   "timeLimitMinutes": zod.number().nullish(),
   "status": zod.enum(['not_started', 'in_progress', 'submitted']),
   "bestScore": zod.number().nullish(),
-  "lastAttemptId": zod.number().nullish()
+  "lastAttemptId": zod.number().nullish(),
+  "practiceRunCount": zod.number().nullish(),
+  "bestPracticeScore": zod.number().nullish(),
+  "readinessLabel": zod.union([zod.literal('not_ready'),zod.literal('building'),zod.literal('almost'),zod.literal('ready'),zod.literal(null)]).nullish()
 }))
 })
 
@@ -130,7 +136,10 @@ export const ListAssignmentsResponseItem = zod.object({
   "timeLimitMinutes": zod.number().nullish(),
   "status": zod.enum(['not_started', 'in_progress', 'submitted']),
   "bestScore": zod.number().nullish(),
-  "lastAttemptId": zod.number().nullish()
+  "lastAttemptId": zod.number().nullish(),
+  "practiceRunCount": zod.number().nullish(),
+  "bestPracticeScore": zod.number().nullish(),
+  "readinessLabel": zod.union([zod.literal('not_ready'),zod.literal('building'),zod.literal('almost'),zod.literal('ready'),zod.literal(null)]).nullish()
 })
 export const ListAssignmentsResponse = zod.array(ListAssignmentsResponseItem)
 
@@ -441,6 +450,238 @@ export const GenerateReportResponse = zod.object({
   "strengths": zod.array(zod.string()),
   "weaknesses": zod.array(zod.string()),
   "recommendations": zod.array(zod.string())
+})
+
+
+/**
+ * @summary Generate a fresh, non-repeating practice mirror of a graded assignment
+ */
+export const CreatePracticeRunParams = zod.object({
+  "assignmentId": zod.coerce.number()
+})
+
+export const CreatePracticeRunResponse = zod.object({
+  "id": zod.number(),
+  "assignmentId": zod.number(),
+  "assignmentTitle": zod.string(),
+  "assignmentKind": zod.string(),
+  "weekNumber": zod.number().nullish(),
+  "status": zod.enum(['in_progress', 'submitted']),
+  "scorePercent": zod.number().nullish(),
+  "score": zod.number().nullish(),
+  "total": zod.number().nullish(),
+  "feedbackNarrative": zod.string().nullish(),
+  "focusPointers": zod.array(zod.object({
+  "topicId": zod.number().nullish(),
+  "topicTitle": zod.string(),
+  "pointer": zod.string()
+})).optional(),
+  "problems": zod.array(zod.object({
+  "id": zod.number(),
+  "position": zod.number(),
+  "prompt": zod.string(),
+  "topicId": zod.number(),
+  "topicTitle": zod.string().nullish(),
+  "hint": zod.string().nullish(),
+  "difficulty": zod.number()
+})),
+  "answers": zod.array(zod.object({
+  "problemId": zod.number(),
+  "answer": zod.string(),
+  "correct": zod.boolean().nullish(),
+  "feedback": zod.string().nullish(),
+  "correctAnswer": zod.string().nullish(),
+  "explanation": zod.string().nullish()
+})),
+  "messages": zod.array(zod.object({
+  "id": zod.number(),
+  "role": zod.enum(['user', 'assistant']),
+  "content": zod.string(),
+  "createdAt": zod.coerce.date()
+})),
+  "createdAt": zod.coerce.date(),
+  "submittedAt": zod.coerce.date().nullish()
+})
+
+
+/**
+ * @summary List this user's practice runs for an assignment
+ */
+export const ListPracticeRunsParams = zod.object({
+  "assignmentId": zod.coerce.number()
+})
+
+export const ListPracticeRunsResponseItem = zod.object({
+  "id": zod.number(),
+  "assignmentId": zod.number(),
+  "status": zod.enum(['in_progress', 'submitted']),
+  "scorePercent": zod.number().nullish(),
+  "problemCount": zod.number(),
+  "createdAt": zod.coerce.date(),
+  "submittedAt": zod.coerce.date().nullish()
+})
+export const ListPracticeRunsResponse = zod.array(ListPracticeRunsResponseItem)
+
+
+/**
+ * @summary Readiness signal for a graded assignment based on practice + profile
+ */
+export const GetAssignmentReadinessParams = zod.object({
+  "assignmentId": zod.coerce.number()
+})
+
+export const GetAssignmentReadinessResponse = zod.object({
+  "assignmentId": zod.number(),
+  "practiceRunCount": zod.number(),
+  "bestPracticeScore": zod.number().nullish(),
+  "lastPracticeScore": zod.number().nullish(),
+  "readinessLabel": zod.enum(['not_ready', 'building', 'almost', 'ready']),
+  "message": zod.string(),
+  "topics": zod.array(zod.object({
+  "topicId": zod.number(),
+  "topicTitle": zod.string(),
+  "practiceAttempts": zod.number(),
+  "practiceAccuracy": zod.number().nullish(),
+  "label": zod.enum(['strong', 'solid', 'developing', 'weak', 'untested'])
+}))
+})
+
+
+/**
+ * @summary Get a practice run's full state (problems, answers, feedback, dialogue)
+ */
+export const GetPracticeRunParams = zod.object({
+  "runId": zod.coerce.number()
+})
+
+export const GetPracticeRunResponse = zod.object({
+  "id": zod.number(),
+  "assignmentId": zod.number(),
+  "assignmentTitle": zod.string(),
+  "assignmentKind": zod.string(),
+  "weekNumber": zod.number().nullish(),
+  "status": zod.enum(['in_progress', 'submitted']),
+  "scorePercent": zod.number().nullish(),
+  "score": zod.number().nullish(),
+  "total": zod.number().nullish(),
+  "feedbackNarrative": zod.string().nullish(),
+  "focusPointers": zod.array(zod.object({
+  "topicId": zod.number().nullish(),
+  "topicTitle": zod.string(),
+  "pointer": zod.string()
+})).optional(),
+  "problems": zod.array(zod.object({
+  "id": zod.number(),
+  "position": zod.number(),
+  "prompt": zod.string(),
+  "topicId": zod.number(),
+  "topicTitle": zod.string().nullish(),
+  "hint": zod.string().nullish(),
+  "difficulty": zod.number()
+})),
+  "answers": zod.array(zod.object({
+  "problemId": zod.number(),
+  "answer": zod.string(),
+  "correct": zod.boolean().nullish(),
+  "feedback": zod.string().nullish(),
+  "correctAnswer": zod.string().nullish(),
+  "explanation": zod.string().nullish()
+})),
+  "messages": zod.array(zod.object({
+  "id": zod.number(),
+  "role": zod.enum(['user', 'assistant']),
+  "content": zod.string(),
+  "createdAt": zod.coerce.date()
+})),
+  "createdAt": zod.coerce.date(),
+  "submittedAt": zod.coerce.date().nullish()
+})
+
+
+/**
+ * @summary Save (or update) a single practice-run answer
+ */
+export const SavePracticeRunAnswerParams = zod.object({
+  "runId": zod.coerce.number()
+})
+
+export const SavePracticeRunAnswerBody = zod.object({
+  "problemId": zod.number(),
+  "answer": zod.string()
+})
+
+export const SavePracticeRunAnswerResponse = zod.object({
+  "ok": zod.boolean()
+})
+
+
+/**
+ * @summary Grade the run and produce rich feedback + surgical focus pointers
+ */
+export const SubmitPracticeRunParams = zod.object({
+  "runId": zod.coerce.number()
+})
+
+export const SubmitPracticeRunResponse = zod.object({
+  "id": zod.number(),
+  "assignmentId": zod.number(),
+  "assignmentTitle": zod.string(),
+  "assignmentKind": zod.string(),
+  "weekNumber": zod.number().nullish(),
+  "status": zod.enum(['in_progress', 'submitted']),
+  "scorePercent": zod.number().nullish(),
+  "score": zod.number().nullish(),
+  "total": zod.number().nullish(),
+  "feedbackNarrative": zod.string().nullish(),
+  "focusPointers": zod.array(zod.object({
+  "topicId": zod.number().nullish(),
+  "topicTitle": zod.string(),
+  "pointer": zod.string()
+})).optional(),
+  "problems": zod.array(zod.object({
+  "id": zod.number(),
+  "position": zod.number(),
+  "prompt": zod.string(),
+  "topicId": zod.number(),
+  "topicTitle": zod.string().nullish(),
+  "hint": zod.string().nullish(),
+  "difficulty": zod.number()
+})),
+  "answers": zod.array(zod.object({
+  "problemId": zod.number(),
+  "answer": zod.string(),
+  "correct": zod.boolean().nullish(),
+  "feedback": zod.string().nullish(),
+  "correctAnswer": zod.string().nullish(),
+  "explanation": zod.string().nullish()
+})),
+  "messages": zod.array(zod.object({
+  "id": zod.number(),
+  "role": zod.enum(['user', 'assistant']),
+  "content": zod.string(),
+  "createdAt": zod.coerce.date()
+})),
+  "createdAt": zod.coerce.date(),
+  "submittedAt": zod.coerce.date().nullish()
+})
+
+
+/**
+ * @summary Dialogue with the AI about this run's feedback
+ */
+export const SendPracticeRunMessageParams = zod.object({
+  "runId": zod.coerce.number()
+})
+
+export const SendPracticeRunMessageBody = zod.object({
+  "content": zod.string()
+})
+
+export const SendPracticeRunMessageResponse = zod.object({
+  "id": zod.number(),
+  "role": zod.enum(['user', 'assistant']),
+  "content": zod.string(),
+  "createdAt": zod.coerce.date()
 })
 
 

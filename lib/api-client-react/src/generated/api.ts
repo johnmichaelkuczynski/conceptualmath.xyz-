@@ -26,6 +26,7 @@ import type {
   AnswerInput,
   AnswerSaved,
   Assignment,
+  AssignmentReadiness,
   AssignmentSummary,
   AttemptResult,
   AttemptState,
@@ -38,6 +39,11 @@ import type {
   PracticeAnswerInput,
   PracticeGrade,
   PracticeProblem,
+  PracticeRunAnswerInput,
+  PracticeRunDetail,
+  PracticeRunMessage,
+  PracticeRunMessageInput,
+  PracticeRunSummary,
   PracticeSession,
   PracticeSessionInput,
   Topic,
@@ -1543,5 +1549,520 @@ export const useGenerateReport = <TError = ErrorType<unknown>,
         TContext
       > => {
       return useMutation(getGenerateReportMutationOptions(options));
+    }
+
+export const getCreatePracticeRunUrl = (assignmentId: number,) => {
+
+
+
+
+  return `/api/assignments/${assignmentId}/practice-runs`
+}
+
+/**
+ * @summary Generate a fresh, non-repeating practice mirror of a graded assignment
+ */
+export const createPracticeRun = async (assignmentId: number, options?: RequestInit): Promise<PracticeRunDetail> => {
+
+  return customFetch<PracticeRunDetail>(getCreatePracticeRunUrl(assignmentId),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+export const getCreatePracticeRunMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createPracticeRun>>, TError,{assignmentId: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createPracticeRun>>, TError,{assignmentId: number}, TContext> => {
+
+const mutationKey = ['createPracticeRun'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createPracticeRun>>, {assignmentId: number}> = (props) => {
+          const {assignmentId} = props ?? {};
+
+          return  createPracticeRun(assignmentId,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreatePracticeRunMutationResult = NonNullable<Awaited<ReturnType<typeof createPracticeRun>>>
+
+    export type CreatePracticeRunMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Generate a fresh, non-repeating practice mirror of a graded assignment
+ */
+export const useCreatePracticeRun = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createPracticeRun>>, TError,{assignmentId: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createPracticeRun>>,
+        TError,
+        {assignmentId: number},
+        TContext
+      > => {
+      return useMutation(getCreatePracticeRunMutationOptions(options));
+    }
+
+export const getListPracticeRunsUrl = (assignmentId: number,) => {
+
+
+
+
+  return `/api/assignments/${assignmentId}/practice-runs`
+}
+
+/**
+ * @summary List this user's practice runs for an assignment
+ */
+export const listPracticeRuns = async (assignmentId: number, options?: RequestInit): Promise<PracticeRunSummary[]> => {
+
+  return customFetch<PracticeRunSummary[]>(getListPracticeRunsUrl(assignmentId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListPracticeRunsQueryKey = (assignmentId: number,) => {
+    return [
+    `/api/assignments/${assignmentId}/practice-runs`
+    ] as const;
+    }
+
+
+export const getListPracticeRunsQueryOptions = <TData = Awaited<ReturnType<typeof listPracticeRuns>>, TError = ErrorType<unknown>>(assignmentId: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listPracticeRuns>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListPracticeRunsQueryKey(assignmentId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listPracticeRuns>>> = ({ signal }) => listPracticeRuns(assignmentId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(assignmentId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listPracticeRuns>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListPracticeRunsQueryResult = NonNullable<Awaited<ReturnType<typeof listPracticeRuns>>>
+export type ListPracticeRunsQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary List this user's practice runs for an assignment
+ */
+
+export function useListPracticeRuns<TData = Awaited<ReturnType<typeof listPracticeRuns>>, TError = ErrorType<unknown>>(
+ assignmentId: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listPracticeRuns>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListPracticeRunsQueryOptions(assignmentId,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetAssignmentReadinessUrl = (assignmentId: number,) => {
+
+
+
+
+  return `/api/assignments/${assignmentId}/readiness`
+}
+
+/**
+ * @summary Readiness signal for a graded assignment based on practice + profile
+ */
+export const getAssignmentReadiness = async (assignmentId: number, options?: RequestInit): Promise<AssignmentReadiness> => {
+
+  return customFetch<AssignmentReadiness>(getGetAssignmentReadinessUrl(assignmentId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetAssignmentReadinessQueryKey = (assignmentId: number,) => {
+    return [
+    `/api/assignments/${assignmentId}/readiness`
+    ] as const;
+    }
+
+
+export const getGetAssignmentReadinessQueryOptions = <TData = Awaited<ReturnType<typeof getAssignmentReadiness>>, TError = ErrorType<unknown>>(assignmentId: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAssignmentReadiness>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAssignmentReadinessQueryKey(assignmentId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAssignmentReadiness>>> = ({ signal }) => getAssignmentReadiness(assignmentId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(assignmentId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAssignmentReadiness>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetAssignmentReadinessQueryResult = NonNullable<Awaited<ReturnType<typeof getAssignmentReadiness>>>
+export type GetAssignmentReadinessQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Readiness signal for a graded assignment based on practice + profile
+ */
+
+export function useGetAssignmentReadiness<TData = Awaited<ReturnType<typeof getAssignmentReadiness>>, TError = ErrorType<unknown>>(
+ assignmentId: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAssignmentReadiness>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetAssignmentReadinessQueryOptions(assignmentId,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetPracticeRunUrl = (runId: number,) => {
+
+
+
+
+  return `/api/practice-runs/${runId}`
+}
+
+/**
+ * @summary Get a practice run's full state (problems, answers, feedback, dialogue)
+ */
+export const getPracticeRun = async (runId: number, options?: RequestInit): Promise<PracticeRunDetail> => {
+
+  return customFetch<PracticeRunDetail>(getGetPracticeRunUrl(runId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetPracticeRunQueryKey = (runId: number,) => {
+    return [
+    `/api/practice-runs/${runId}`
+    ] as const;
+    }
+
+
+export const getGetPracticeRunQueryOptions = <TData = Awaited<ReturnType<typeof getPracticeRun>>, TError = ErrorType<unknown>>(runId: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPracticeRun>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetPracticeRunQueryKey(runId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPracticeRun>>> = ({ signal }) => getPracticeRun(runId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(runId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getPracticeRun>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetPracticeRunQueryResult = NonNullable<Awaited<ReturnType<typeof getPracticeRun>>>
+export type GetPracticeRunQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Get a practice run's full state (problems, answers, feedback, dialogue)
+ */
+
+export function useGetPracticeRun<TData = Awaited<ReturnType<typeof getPracticeRun>>, TError = ErrorType<unknown>>(
+ runId: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPracticeRun>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetPracticeRunQueryOptions(runId,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getSavePracticeRunAnswerUrl = (runId: number,) => {
+
+
+
+
+  return `/api/practice-runs/${runId}/answers`
+}
+
+/**
+ * @summary Save (or update) a single practice-run answer
+ */
+export const savePracticeRunAnswer = async (runId: number,
+    practiceRunAnswerInput: PracticeRunAnswerInput, options?: RequestInit): Promise<AnswerSaved> => {
+
+  return customFetch<AnswerSaved>(getSavePracticeRunAnswerUrl(runId),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      practiceRunAnswerInput,)
+  }
+);}
+
+
+
+
+export const getSavePracticeRunAnswerMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof savePracticeRunAnswer>>, TError,{runId: number;data: BodyType<PracticeRunAnswerInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof savePracticeRunAnswer>>, TError,{runId: number;data: BodyType<PracticeRunAnswerInput>}, TContext> => {
+
+const mutationKey = ['savePracticeRunAnswer'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof savePracticeRunAnswer>>, {runId: number;data: BodyType<PracticeRunAnswerInput>}> = (props) => {
+          const {runId,data} = props ?? {};
+
+          return  savePracticeRunAnswer(runId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type SavePracticeRunAnswerMutationResult = NonNullable<Awaited<ReturnType<typeof savePracticeRunAnswer>>>
+    export type SavePracticeRunAnswerMutationBody = BodyType<PracticeRunAnswerInput>
+    export type SavePracticeRunAnswerMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Save (or update) a single practice-run answer
+ */
+export const useSavePracticeRunAnswer = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof savePracticeRunAnswer>>, TError,{runId: number;data: BodyType<PracticeRunAnswerInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof savePracticeRunAnswer>>,
+        TError,
+        {runId: number;data: BodyType<PracticeRunAnswerInput>},
+        TContext
+      > => {
+      return useMutation(getSavePracticeRunAnswerMutationOptions(options));
+    }
+
+export const getSubmitPracticeRunUrl = (runId: number,) => {
+
+
+
+
+  return `/api/practice-runs/${runId}/submit`
+}
+
+/**
+ * @summary Grade the run and produce rich feedback + surgical focus pointers
+ */
+export const submitPracticeRun = async (runId: number, options?: RequestInit): Promise<PracticeRunDetail> => {
+
+  return customFetch<PracticeRunDetail>(getSubmitPracticeRunUrl(runId),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+export const getSubmitPracticeRunMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof submitPracticeRun>>, TError,{runId: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof submitPracticeRun>>, TError,{runId: number}, TContext> => {
+
+const mutationKey = ['submitPracticeRun'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof submitPracticeRun>>, {runId: number}> = (props) => {
+          const {runId} = props ?? {};
+
+          return  submitPracticeRun(runId,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type SubmitPracticeRunMutationResult = NonNullable<Awaited<ReturnType<typeof submitPracticeRun>>>
+
+    export type SubmitPracticeRunMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Grade the run and produce rich feedback + surgical focus pointers
+ */
+export const useSubmitPracticeRun = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof submitPracticeRun>>, TError,{runId: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof submitPracticeRun>>,
+        TError,
+        {runId: number},
+        TContext
+      > => {
+      return useMutation(getSubmitPracticeRunMutationOptions(options));
+    }
+
+export const getSendPracticeRunMessageUrl = (runId: number,) => {
+
+
+
+
+  return `/api/practice-runs/${runId}/messages`
+}
+
+/**
+ * @summary Dialogue with the AI about this run's feedback
+ */
+export const sendPracticeRunMessage = async (runId: number,
+    practiceRunMessageInput: PracticeRunMessageInput, options?: RequestInit): Promise<PracticeRunMessage> => {
+
+  return customFetch<PracticeRunMessage>(getSendPracticeRunMessageUrl(runId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      practiceRunMessageInput,)
+  }
+);}
+
+
+
+
+export const getSendPracticeRunMessageMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof sendPracticeRunMessage>>, TError,{runId: number;data: BodyType<PracticeRunMessageInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof sendPracticeRunMessage>>, TError,{runId: number;data: BodyType<PracticeRunMessageInput>}, TContext> => {
+
+const mutationKey = ['sendPracticeRunMessage'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof sendPracticeRunMessage>>, {runId: number;data: BodyType<PracticeRunMessageInput>}> = (props) => {
+          const {runId,data} = props ?? {};
+
+          return  sendPracticeRunMessage(runId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type SendPracticeRunMessageMutationResult = NonNullable<Awaited<ReturnType<typeof sendPracticeRunMessage>>>
+    export type SendPracticeRunMessageMutationBody = BodyType<PracticeRunMessageInput>
+    export type SendPracticeRunMessageMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Dialogue with the AI about this run's feedback
+ */
+export const useSendPracticeRunMessage = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof sendPracticeRunMessage>>, TError,{runId: number;data: BodyType<PracticeRunMessageInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof sendPracticeRunMessage>>,
+        TError,
+        {runId: number;data: BodyType<PracticeRunMessageInput>},
+        TContext
+      > => {
+      return useMutation(getSendPracticeRunMessageMutationOptions(options));
     }
 

@@ -7,6 +7,8 @@ import {
   attemptsTable,
   answersTable,
   topicsTable,
+  practiceRunsTable,
+  userTopicProfileTable,
 } from "@workspace/db";
 import {
   GetAssignmentResponse,
@@ -18,19 +20,50 @@ import {
 } from "@workspace/api-zod";
 import { gradeAnswer } from "../lib/grading";
 import { detect } from "../lib/detection";
+import { getUserId } from "../middlewares/requireAuth";
 
 const router: IRouter = Router();
+
+// Lightweight readiness label for assignment lists (full topic-aware
+// readiness lives in the practice-runs route).
+function quickReadiness(
+  practiceRunCount: number,
+  bestPracticeScore: number | null,
+): "not_ready" | "building" | "almost" | "ready" {
+  if (practiceRunCount === 0 || bestPracticeScore == null) return "not_ready";
+  if (bestPracticeScore >= 85) return "ready";
+  if (bestPracticeScore >= 70) return "almost";
+  if (bestPracticeScore >= 50) return "building";
+  return "not_ready";
+}
 
 function parseIdParam(raw: unknown): number {
   const s = Array.isArray(raw) ? raw[0] : (raw as string);
   return parseInt(s ?? "", 10);
 }
 
-router.get("/assignments", async (_req, res) => {
+router.get("/assignments", async (req, res) => {
+  const userId = getUserId(req);
   const rows = await db
     .select()
     .from(assignmentsTable)
     .orderBy(asc(assignmentsTable.weekNumber), asc(assignmentsTable.position));
+  // Pull this user's practice runs once, group by assignment.
+  const runs = await db
+    .select()
+    .from(practiceRunsTable)
+    .where(eq(practiceRunsTable.userId, userId));
+  const runsByAssignment = new Map<
+    number,
+    { count: number; best: number | null }
+  >();
+  for (const r of runs) {
+    if (r.status !== "submitted" || r.scorePercent == null) continue;
+    const cur = runsByAssignment.get(r.assignmentId) ?? { count: 0, best: null };
+    cur.count += 1;
+    cur.best = cur.best == null ? r.scorePercent : Math.max(cur.best, r.scorePercent);
+    runsByAssignment.set(r.assignmentId, cur);
+  }
   const result = await Promise.all(
     rows.map(async (a) => {
       const counts = await db.execute(
@@ -40,7 +73,12 @@ router.get("/assignments", async (_req, res) => {
       const attempts = await db
         .select()
         .from(attemptsTable)
-        .where(eq(attemptsTable.assignmentId, a.id))
+        .where(
+          and(
+            eq(attemptsTable.assignmentId, a.id),
+            eq(attemptsTable.userId, userId),
+          ),
+        )
         .orderBy(asc(attemptsTable.id));
       const submitted = attempts.filter((x) => x.status === "submitted");
       const inProgress = attempts.find((x) => x.status === "in_progress");
@@ -54,6 +92,7 @@ router.get("/assignments", async (_req, res) => {
         ? "submitted"
         : "not_started";
       const last = attempts[attempts.length - 1];
+      const practice = runsByAssignment.get(a.id) ?? { count: 0, best: null };
       return {
         id: a.id,
         kind: a.kind as "homework" | "test" | "midterm" | "final",
@@ -65,6 +104,9 @@ router.get("/assignments", async (_req, res) => {
         status,
         bestScore: best < 0 ? null : best,
         lastAttemptId: last?.id ?? null,
+        practiceRunCount: practice.count,
+        bestPracticeScore: practice.best,
+        readinessLabel: quickReadiness(practice.count, practice.best),
       };
     }),
   );
@@ -136,6 +178,7 @@ async function loadAttempt(attemptId: number) {
 }
 
 router.post("/assignments/:assignmentId/start", async (req, res): Promise<void> => {
+  const userId = getUserId(req);
   const id = parseIdParam(req.params.assignmentId);
   if (!Number.isFinite(id)) {
     res.status(400).json({ error: "invalid id" });
@@ -147,11 +190,17 @@ router.post("/assignments/:assignmentId/start", async (req, res): Promise<void> 
     return;
   }
 
-  // Resume any in-progress attempt
+  // Resume any in-progress attempt for this user
   const [existing] = await db
     .select()
     .from(attemptsTable)
-    .where(and(eq(attemptsTable.assignmentId, id), eq(attemptsTable.status, "in_progress")));
+    .where(
+      and(
+        eq(attemptsTable.assignmentId, id),
+        eq(attemptsTable.status, "in_progress"),
+        eq(attemptsTable.userId, userId),
+      ),
+    );
   if (existing) {
     const state = await loadAttempt(existing.id);
     res.json(StartAssignmentAttemptResponse.parse(state));
@@ -164,7 +213,7 @@ router.post("/assignments/:assignmentId/start", async (req, res): Promise<void> 
       : null;
   const [created] = await db
     .insert(attemptsTable)
-    .values({ assignmentId: id, status: "in_progress", deadlineAt })
+    .values({ assignmentId: id, status: "in_progress", deadlineAt, userId })
     .returning();
   if (!created) {
     res.status(500).json({ error: "failed to create" });
@@ -175,9 +224,18 @@ router.post("/assignments/:assignmentId/start", async (req, res): Promise<void> 
 });
 
 router.get("/assignments/attempts/:attemptId", async (req, res): Promise<void> => {
+  const userId = getUserId(req);
   const id = parseIdParam(req.params.attemptId);
   if (!Number.isFinite(id)) {
     res.status(400).json({ error: "invalid id" });
+    return;
+  }
+  const [owner] = await db
+    .select({ userId: attemptsTable.userId })
+    .from(attemptsTable)
+    .where(eq(attemptsTable.id, id));
+  if (!owner || owner.userId !== userId) {
+    res.status(404).json({ error: "attempt not found" });
     return;
   }
   const state = await loadAttempt(id);
@@ -189,6 +247,7 @@ router.get("/assignments/attempts/:attemptId", async (req, res): Promise<void> =
 });
 
 router.put("/assignments/attempts/:attemptId/answer", async (req, res): Promise<void> => {
+  const userId = getUserId(req);
   const id = parseIdParam(req.params.attemptId);
   if (!Number.isFinite(id)) {
     res.status(400).json({ error: "invalid id" });
@@ -205,7 +264,7 @@ router.put("/assignments/attempts/:attemptId/answer", async (req, res): Promise<
     .select()
     .from(attemptsTable)
     .where(eq(attemptsTable.id, id));
-  if (!attempt) {
+  if (!attempt || attempt.userId !== userId) {
     res.status(404).json({ error: "attempt not found" });
     return;
   }
@@ -244,6 +303,7 @@ router.put("/assignments/attempts/:attemptId/answer", async (req, res): Promise<
 });
 
 router.post("/assignments/attempts/:attemptId/submit", async (req, res): Promise<void> => {
+  const userId = getUserId(req);
   const id = parseIdParam(req.params.attemptId);
   if (!Number.isFinite(id)) {
     res.status(400).json({ error: "invalid id" });
@@ -253,7 +313,7 @@ router.post("/assignments/attempts/:attemptId/submit", async (req, res): Promise
     .select()
     .from(attemptsTable)
     .where(eq(attemptsTable.id, id));
-  if (!attempt) {
+  if (!attempt || attempt.userId !== userId) {
     res.status(404).json({ error: "attempt not found" });
     return;
   }
@@ -271,6 +331,7 @@ router.post("/assignments/attempts/:attemptId/submit", async (req, res): Promise
   const perProblem = [];
   const detection = [];
   let score = 0;
+  const topicAgg = new Map<number, { attempts: number; correct: number }>();
   for (const p of problems) {
     const a = byProblem.get(p.id);
     const userAnswer = a?.answer ?? "";
@@ -280,6 +341,10 @@ router.post("/assignments/attempts/:attemptId/submit", async (req, res): Promise
       userAnswer,
     });
     if (graded.correct) score += 1;
+    const cur = topicAgg.get(p.topicId) ?? { attempts: 0, correct: 0 };
+    cur.attempts += 1;
+    if (graded.correct) cur.correct += 1;
+    topicAgg.set(p.topicId, cur);
     perProblem.push({
       problemId: p.id,
       correct: graded.correct,
@@ -327,6 +392,36 @@ router.post("/assignments/attempts/:attemptId/submit", async (req, res): Promise
       scorePercent: percent,
     })
     .where(eq(attemptsTable.id, id));
+
+  // Fold graded results into the evolving per-user, per-topic profile.
+  for (const [topicId, agg] of topicAgg.entries()) {
+    const [existing] = await db
+      .select()
+      .from(userTopicProfileTable)
+      .where(
+        and(
+          eq(userTopicProfileTable.userId, userId),
+          eq(userTopicProfileTable.topicId, topicId),
+        ),
+      );
+    if (existing) {
+      await db
+        .update(userTopicProfileTable)
+        .set({
+          gradedAttempts: existing.gradedAttempts + agg.attempts,
+          gradedCorrect: existing.gradedCorrect + agg.correct,
+          updatedAt: new Date(),
+        })
+        .where(eq(userTopicProfileTable.id, existing.id));
+    } else {
+      await db.insert(userTopicProfileTable).values({
+        userId,
+        topicId,
+        gradedAttempts: agg.attempts,
+        gradedCorrect: agg.correct,
+      });
+    }
+  }
 
   res.json(
     SubmitAttemptResponse.parse({

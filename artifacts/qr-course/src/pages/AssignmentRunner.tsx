@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AnswerInput } from "@/components/AnswerInput";
 import { MarkdownRenderer } from "@/components/MarkdownRenderer";
+import { PracticeCta } from "@/components/PracticeCta";
 
 export default function AssignmentRunner() {
   const params = useParams();
@@ -102,9 +103,12 @@ export default function AssignmentRunner() {
               <h1 className="text-3xl font-serif font-bold text-primary mb-2">{assignment.title} - Results</h1>
               <p className="text-muted-foreground">Score: {result.percent}% ({result.score}/{result.total})</p>
             </div>
-            <Link href={`/assignments`}>
-              <Button variant="outline">Back to Assignments</Button>
-            </Link>
+            <div className="flex flex-col items-end gap-3">
+              <Link href={`/assignments`}>
+                <Button variant="outline">Back to Assignments</Button>
+              </Link>
+              <PracticeCta assignmentId={assignmentId} compact />
+            </div>
           </div>
           
           <div className="flex flex-col gap-6">

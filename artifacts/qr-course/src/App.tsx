@@ -33,6 +33,7 @@ import LectureView from "@/pages/LectureView";
 import AssignmentRunner from "@/pages/AssignmentRunner";
 import Diagnostics from "@/pages/Diagnostics";
 import TopicPractice from "@/pages/TopicPractice";
+import PracticeRun from "@/pages/PracticeRun";
 
 const queryClient = new QueryClient();
 
@@ -229,6 +230,11 @@ function Router() {
       <Route path="/practice/topic/:topicId">
         <Protected>
           <TopicPractice />
+        </Protected>
+      </Route>
+      <Route path="/practice-runs/:id">
+        <Protected>
+          <PracticeRun />
         </Protected>
       </Route>
       <Route component={NotFound} />
