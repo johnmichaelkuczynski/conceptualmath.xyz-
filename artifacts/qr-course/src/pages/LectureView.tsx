@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   useGetLecture,
+  useGetCourseOverview,
   useAskTutor,
   useStartPracticeSession,
   useNextPracticeProblem,
@@ -17,9 +18,51 @@ import { AnswerInput } from "@/components/AnswerInput";
 import { StarterQuestionCard } from "@/components/StarterQuestionCard";
 import { MathKeyboard } from "@/components/MathKeyboard";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, MessageSquare, Sparkles, Send, X, RefreshCw, CheckCircle2, XCircle, Loader2, Calculator } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight, MessageSquare, Sparkles, Send, X, RefreshCw, CheckCircle2, XCircle, Loader2, Calculator } from "lucide-react";
 
 type ChatMsg = { role: "user" | "tutor"; text: string };
+
+/* ============ Prev / Next lecture navigation ============ */
+function LectureNav({ lectureId }: { lectureId: number }) {
+  const { data: overview } = useGetCourseOverview();
+  const ordered = useMemo(() => {
+    if (!overview) return [] as number[];
+    const ids: number[] = [];
+    for (const w of overview.weeks) for (const l of w.lectures) ids.push(l.id);
+    return ids;
+  }, [overview]);
+
+  const idx = ordered.indexOf(lectureId);
+  const prevId = idx > 0 ? ordered[idx - 1] : null;
+  const nextId = idx >= 0 && idx < ordered.length - 1 ? ordered[idx + 1] : null;
+
+  if (prevId == null && nextId == null) return null;
+
+  return (
+    <div className="flex items-center justify-between gap-3">
+      {prevId != null ? (
+        <Link href={`/lectures/${prevId}`}>
+          <Button variant="outline" className="gap-2" data-testid="button-prev-lecture">
+            <ChevronLeft className="w-4 h-4" />
+            Previous lecture
+          </Button>
+        </Link>
+      ) : (
+        <span aria-hidden />
+      )}
+      {nextId != null ? (
+        <Link href={`/lectures/${nextId}`}>
+          <Button variant="outline" className="gap-2" data-testid="button-next-lecture">
+            Next lecture
+            <ChevronRight className="w-4 h-4" />
+          </Button>
+        </Link>
+      ) : (
+        <span aria-hidden />
+      )}
+    </div>
+  );
+}
 
 export default function LectureView() {
   const params = useParams();
@@ -104,13 +147,14 @@ export default function LectureView() {
 
   return (
     <Layout>
-      <div className="px-6 pt-4 pb-2">
+      <div className="px-6 pt-4 pb-2 flex items-center justify-between gap-3">
         <Link href={lecture ? `/weeks/${lecture.weekNumber}` : "/"}>
           <Button variant="ghost" className="-ml-2 text-muted-foreground hover:text-foreground">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Week {lecture?.weekNumber ?? ""}
           </Button>
         </Link>
+        {lecture && <LectureNav lectureId={lecture.id} />}
       </div>
 
       <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-0 min-h-0">
@@ -189,6 +233,9 @@ export default function LectureView() {
                 <div className="mt-6 pt-4 border-t border-dashed border-border text-xs text-muted-foreground italic">
                   Tip: highlight any passage above to ask the tutor about it, or to generate practice problems specifically on what you selected.
                 </div>
+              </div>
+              <div className="mt-8">
+                <LectureNav lectureId={lecture.id} />
               </div>
             </article>
           ) : (
