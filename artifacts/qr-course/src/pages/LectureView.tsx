@@ -17,7 +17,7 @@ import { MarkdownRenderer } from "@/components/MarkdownRenderer";
 import { AnswerInput } from "@/components/AnswerInput";
 import { StarterQuestionCard } from "@/components/StarterQuestionCard";
 import { MathKeyboard } from "@/components/MathKeyboard";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { ArrowLeft, ChevronLeft, ChevronRight, MessageSquare, Sparkles, Send, X, RefreshCw, CheckCircle2, XCircle, Loader2, Calculator } from "lucide-react";
 
 type ChatMsg = { role: "user" | "tutor"; text: string };
@@ -41,21 +41,25 @@ function LectureNav({ lectureId }: { lectureId: number }) {
   return (
     <div className="flex items-center justify-between gap-3">
       {prevId != null ? (
-        <Link href={`/lectures/${prevId}`}>
-          <Button variant="outline" className="gap-2" data-testid="button-prev-lecture">
-            <ChevronLeft className="w-4 h-4" />
-            Previous lecture
-          </Button>
+        <Link
+          href={`/lectures/${prevId}`}
+          className={`${buttonVariants({ variant: "outline" })} gap-2`}
+          data-testid="button-prev-lecture"
+        >
+          <ChevronLeft className="w-4 h-4" />
+          Previous lecture
         </Link>
       ) : (
         <span aria-hidden />
       )}
       {nextId != null ? (
-        <Link href={`/lectures/${nextId}`}>
-          <Button variant="outline" className="gap-2" data-testid="button-next-lecture">
-            Next lecture
-            <ChevronRight className="w-4 h-4" />
-          </Button>
+        <Link
+          href={`/lectures/${nextId}`}
+          className={`${buttonVariants({ variant: "outline" })} gap-2`}
+          data-testid="button-next-lecture"
+        >
+          Next lecture
+          <ChevronRight className="w-4 h-4" />
         </Link>
       ) : (
         <span aria-hidden />
