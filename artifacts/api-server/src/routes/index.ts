@@ -8,6 +8,7 @@ import tutorRouter from "./tutor";
 import detectionRouter from "./detection";
 import analyticsRouter from "./analytics";
 import diagnosticsRouter from "./diagnostics";
+import assessmentsRouter from "./assessments";
 import { requireAuth } from "../middlewares/requireAuth";
 
 const router: IRouter = Router();
@@ -25,5 +26,6 @@ router.use(assignmentsRouter);
 router.use(practiceRouter);
 router.use(practiceRunsRouter);
 router.use(analyticsRouter);
+router.use(assessmentsRouter);
 
 export default router;

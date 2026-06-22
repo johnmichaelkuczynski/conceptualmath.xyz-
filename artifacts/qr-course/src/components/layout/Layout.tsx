@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { LayoutDashboard, BookOpen, PenTool, BarChart3, Activity, RotateCcw, LogOut } from "lucide-react";
+import { LayoutDashboard, BookOpen, PenTool, BarChart3, Activity, RotateCcw, LogOut, ClipboardCheck, GraduationCap } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useClerk, useUser } from "@clerk/react";
 
@@ -15,6 +15,8 @@ export function Sidebar() {
     { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
     { href: "/curriculum", label: "Lectures", icon: BookOpen },
     { href: "/assignments", label: "Assignments", icon: PenTool },
+    { href: "/assessments", label: "Assessments", icon: ClipboardCheck },
+    { href: "/gradebook", label: "Gradebook", icon: GraduationCap },
     { href: "/analytics", label: "Analytics", icon: BarChart3 },
   ];
 

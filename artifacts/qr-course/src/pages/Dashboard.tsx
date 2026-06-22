@@ -53,7 +53,38 @@ export default function Dashboard() {
               )}
             </CardContent>
           </Card>
+
+          <Link href="/gradebook">
+            <Card className="h-full hover:border-primary/50 transition-colors cursor-pointer">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Your Grade</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-serif font-bold">View Gradebook</div>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Assignments (80%) + diagnostic checkpoints (20%).
+                </p>
+              </CardContent>
+            </Card>
+          </Link>
         </div>
+
+        <Link href="/assessments">
+          <Card className="hover:border-primary/50 transition-colors cursor-pointer border-primary/30 bg-primary/5">
+            <CardContent className="p-5 flex items-center justify-between gap-4">
+              <div>
+                <p className="font-medium">Check where you stand with a diagnostic assessment.</p>
+                <p className="text-sm text-muted-foreground">
+                  Ungraded, re-takeable checkpoints for each week (plus a whole-course
+                  placement and a custom builder). Self-paced — take them whenever you like.
+                </p>
+              </div>
+              <span className="text-sm font-medium text-primary whitespace-nowrap">
+                Browse assessments →
+              </span>
+            </CardContent>
+          </Card>
+        </Link>
 
         <div className="flex flex-col gap-4">
           <div>

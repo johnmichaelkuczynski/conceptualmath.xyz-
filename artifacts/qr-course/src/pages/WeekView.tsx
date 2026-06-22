@@ -4,7 +4,7 @@ import { Layout } from "@/components/layout/Layout";
 import { useParams, Link } from "wouter";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { BookOpen } from "lucide-react";
+import { BookOpen, ClipboardCheck } from "lucide-react";
 
 export default function WeekView() {
   const params = useParams();
@@ -88,6 +88,25 @@ export default function WeekView() {
             </div>
           )}
         </div>
+
+        <Link href="/assessments">
+          <Card className="hover:border-primary/50 transition-colors cursor-pointer border-primary/30 bg-primary/5">
+            <CardContent className="p-5 flex items-center gap-4">
+              <div className="w-10 h-10 rounded-full bg-primary/15 flex items-center justify-center text-primary shrink-0">
+                <ClipboardCheck className="w-5 h-5" />
+              </div>
+              <div className="flex flex-col">
+                <span className="font-medium">
+                  Wrapping up Week {weekNumber}? Take the diagnostic checkpoint.
+                </span>
+                <span className="text-sm text-muted-foreground">
+                  Ungraded and re-takeable — completing the official version earns credit
+                  toward your grade. Optional and self-paced.
+                </span>
+              </div>
+            </CardContent>
+          </Card>
+        </Link>
       </div>
     </Layout>
   );

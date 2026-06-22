@@ -33,6 +33,9 @@ import WeekView from "@/pages/WeekView";
 import LectureView from "@/pages/LectureView";
 import AssignmentRunner from "@/pages/AssignmentRunner";
 import Diagnostics from "@/pages/Diagnostics";
+import Assessments from "@/pages/Assessments";
+import AssessmentRunner from "@/pages/AssessmentRunner";
+import Gradebook from "@/pages/Gradebook";
 import TopicPractice from "@/pages/TopicPractice";
 import PracticeRun from "@/pages/PracticeRun";
 
@@ -216,6 +219,21 @@ function Router() {
       <Route path="/analytics">
         <Protected>
           <Analytics />
+        </Protected>
+      </Route>
+      <Route path="/assessments">
+        <Protected>
+          <Assessments />
+        </Protected>
+      </Route>
+      <Route path="/assessments/run/:id">
+        <Protected>
+          <AssessmentRunner />
+        </Protected>
+      </Route>
+      <Route path="/gradebook">
+        <Protected>
+          <Gradebook />
         </Protected>
       </Route>
       <Route path="/diagnostics">
