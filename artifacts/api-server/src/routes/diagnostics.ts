@@ -15,6 +15,7 @@ import {
 import { chatText, chatJson, FAST_MODEL, TEXT_MODEL } from "../lib/ai";
 import { detect } from "../lib/detection";
 import { gradeAnswer } from "../lib/grading";
+import { isAdmin } from "../auth";
 
 const router: IRouter = Router();
 
@@ -714,7 +715,8 @@ router.post("/diagnostics/content-audit", async (_req, res) => {
 });
 
 // ---------- Reset: wipe all student progress, keep course content ----------
-router.post("/diagnostics/reset", async (_req, res) => {
+// Destructive and global (clears every user's progress), so admin-only.
+router.post("/diagnostics/reset", isAdmin, async (_req, res) => {
   // Delete in dependency order. Course content (topics, lectures, assignments,
   // problems) is preserved; only student progress / generated practice is wiped.
   await db.delete(practiceAttemptsTable);

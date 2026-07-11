@@ -2,14 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { LayoutDashboard, BookOpen, PenTool, BarChart3, Activity, RotateCcw, LogOut, ClipboardCheck, GraduationCap } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
-import { useClerk, useUser } from "@clerk/react";
-
-const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
+import { useAuth, logout } from "@/hooks/useAuth";
 
 export function Sidebar() {
   const [location] = useLocation();
-  const { user } = useUser();
-  const { signOut } = useClerk();
+  const { user } = useAuth();
 
   const navItems = [
     { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -21,10 +18,7 @@ export function Sidebar() {
   ];
 
   const displayName =
-    user?.fullName ||
-    user?.primaryEmailAddress?.emailAddress ||
-    user?.username ||
-    "Signed in";
+    user?.displayName || user?.email || user?.username || "Signed in";
 
   return (
     <div className="w-64 border-r bg-sidebar flex flex-col h-full h-screen sticky top-0">
@@ -61,13 +55,18 @@ export function Sidebar() {
 
       <div className="p-4 border-t border-border flex flex-col gap-3">
         <div className="min-w-0">
-          <p className="text-xs text-muted-foreground">Signed in as</p>
+          <p className="text-xs text-muted-foreground">Signed in with Google as</p>
           <p className="text-sm font-medium truncate" title={displayName}>
             {displayName}
           </p>
+          {user?.email && user.displayName && (
+            <p className="text-xs text-muted-foreground truncate" title={user.email}>
+              {user.email}
+            </p>
+          )}
         </div>
         <button
-          onClick={() => signOut({ redirectUrl: basePath || "/" })}
+          onClick={() => void logout()}
           className="inline-flex items-center justify-center gap-2 px-3 py-2 rounded-md text-sm font-medium border border-border hover:bg-secondary transition-colors"
           data-testid="button-logout"
         >

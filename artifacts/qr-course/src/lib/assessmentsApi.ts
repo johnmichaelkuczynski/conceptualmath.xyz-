@@ -1,6 +1,6 @@
 // Client types + fetch helpers for the diagnostic-assessments + gradebook feature.
-// The API lives at the global /api path (same-origin Clerk cookie auth), so plain
-// fetch authenticates automatically — no Bearer token needed.
+// The API lives at the global /api path (same-origin session-cookie auth via
+// Google login), so plain fetch authenticates automatically — no Bearer token.
 
 export type AssessmentVersion =
   | "multiple_choice"

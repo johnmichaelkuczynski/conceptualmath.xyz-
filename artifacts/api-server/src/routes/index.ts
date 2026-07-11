@@ -13,14 +13,16 @@ import { requireAuth } from "../middlewares/requireAuth";
 
 const router: IRouter = Router();
 
-// Open routers (no per-user scoping required).
+// Open routers (public, no user data or costly AI calls).
 router.use(healthRouter);
+
+// Everything below requires an authenticated user. Tutor, detection, and
+// diagnostics make paid OpenAI calls (and diagnostics can reset data), so
+// they must not be publicly callable.
+router.use(requireAuth);
 router.use(tutorRouter);
 router.use(detectionRouter);
 router.use(diagnosticsRouter);
-
-// Everything below requires an authenticated user.
-router.use(requireAuth);
 router.use(courseRouter);
 router.use(assignmentsRouter);
 router.use(practiceRouter);
