@@ -36,8 +36,23 @@ export function useAuth() {
 
 // Click 1 of Google sign-in: full-page redirect to the server route, which
 // 302s straight to Google's account chooser.
+//
+// Google refuses to render its sign-in page inside an iframe (403). The Replit
+// workspace preview embeds this app in an iframe, so the redirect must happen
+// in the top-level window. Assigning to window.top.location is permitted even
+// cross-origin; if the browser blocks it anyway, fall back to a new tab.
 export function loginWithGoogle() {
-  window.location.href = "/api/auth/google";
+  const url = new URL("/api/auth/google", window.location.origin).href;
+  if (window.top && window.top !== window.self) {
+    try {
+      window.top.location.href = url;
+      return;
+    } catch {
+      window.open(url, "_blank", "noopener");
+      return;
+    }
+  }
+  window.location.href = url;
 }
 
 // Destroys the server session, then reloads at the landing page.
