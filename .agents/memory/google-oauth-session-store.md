@@ -17,6 +17,12 @@ description: connect-pg-simple createTableIfMissing breaks under esbuild bundlin
 
 **Why:** Code review caught that mounting these before the auth gate left a public unauthenticated data-wipe endpoint once the app went multi-user.
 
+# Iframe break-out (user-confirmed fix)
+
+**Rule:** Google returns 403 ("you do not have access") when its sign-in page loads inside an iframe, and the Replit preview pane embeds the app in one. The login button must navigate `window.top.location` (new-tab fallback) instead of the iframe's own location.
+
+**Why:** User hit the 403 in the preview; after the top-window redirect fix they confirmed "GOOGLE LOGIN WORKS!".
+
 # Google OAuth operational notes
 
 - Credentials come from secrets `GOOGLE_CLIENT_ID`/`GOOGLE_CLIENT_SECRET` (canonical file checks `GOOGLE_LOGIN_*` first, then `GOOGLE_OAUTH_*`, then `GOOGLE_*`).
