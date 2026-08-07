@@ -98,6 +98,50 @@ export function setupAuth(app: Express) {
   app.use(passport.initialize());
   app.use(passport.session());
 
+  // --- Dev-only auto-login: in the development workspace the owner must
+  // never find themselves logged out (it would block working on the app).
+  // Never runs in production.
+  if (process.env.NODE_ENV !== "production") {
+    let devUserPromise: Promise<Express.User | null> | null = null;
+    const getDevUser = () => {
+      if (!devUserPromise) {
+        devUserPromise = (async () => {
+          try {
+            let user = await storage.getUserByEmail(DEV_OWNER_EMAIL);
+            if (!user) {
+              user = await storage.createUserWithGoogle({
+                username: DEV_OWNER_EMAIL.split("@")[0],
+                googleId: "dev-owner-auto-login",
+                email: DEV_OWNER_EMAIL,
+                displayName: "Dev Owner",
+              });
+            }
+            return user;
+          } catch (e) {
+            console.error("Dev auto-login: failed to load owner user:", e);
+            devUserPromise = null;
+            return null;
+          }
+        })();
+      }
+      return devUserPromise;
+    };
+
+    app.use((req, _res, next) => {
+      if (req.isAuthenticated()) return next();
+      // Respect an explicit logout for the rest of the session so guest
+      // mode remains testable in development.
+      if (req.session && (req.session as any).devLoggedOut) return next();
+      getDevUser().then((user) => {
+        if (!user) return next();
+        req.login(user, (err) => {
+          if (err) console.error("Dev auto-login failed:", err);
+          next();
+        });
+      });
+    });
+  }
+
   passport.serializeUser((user, done) => {
     done(null, user.id);
   });
@@ -288,6 +332,17 @@ export function setupAuth(app: Express) {
       if (err) {
         return res.status(500).json({ error: "Logout failed" });
       }
+      if (process.env.NODE_ENV !== "production") {
+        // In development, keep the session alive and flag the explicit
+        // logout so dev auto-login doesn't immediately sign the owner back
+        // in (keeps guest mode testable). Destroying the session would wipe
+        // the flag and the next request would auto-login again.
+        (req.session as any).devLoggedOut = true;
+        req.session.save(() => {
+          res.json({ success: true });
+        });
+        return undefined;
+      }
       req.session.destroy(() => {
         res.clearCookie("connect.sid");
         res.json({ success: true });
@@ -367,6 +422,8 @@ export function setupAuth(app: Express) {
 }
 
 const ADMIN_EMAIL = "johnmichaelkuczynski@gmail.com";
+// In development the owner is auto-signed-in as this account.
+const DEV_OWNER_EMAIL = ADMIN_EMAIL;
 
 export const isAdmin: RequestHandler = (req, res, next) => {
   if (req.isAuthenticated() && req.user?.email?.toLowerCase() === ADMIN_EMAIL) {

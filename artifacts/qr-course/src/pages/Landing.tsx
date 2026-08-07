@@ -1,4 +1,5 @@
-import { BookOpen, Sparkles, PenTool } from "lucide-react";
+import { BookOpen, Sparkles, PenTool, ArrowRight } from "lucide-react";
+import { Link } from "wouter";
 import { loginWithGoogle } from "@/hooks/useAuth";
 
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
@@ -91,9 +92,18 @@ export default function Landing() {
           </div>
         )}
         <div className="flex flex-col sm:flex-row items-center gap-3">
+          <Link href="/dashboard">
+            <button
+              className="inline-flex items-center gap-3 px-6 py-3 rounded-md text-base font-medium bg-primary text-primary-foreground hover:opacity-90 transition-opacity"
+              data-testid="button-explore"
+            >
+              Start exploring — no sign-in needed
+              <ArrowRight className="w-5 h-5" />
+            </button>
+          </Link>
           <button
             onClick={loginWithGoogle}
-            className="inline-flex items-center gap-3 px-6 py-3 rounded-md text-base font-medium bg-primary text-primary-foreground hover:opacity-90 transition-opacity"
+            className="inline-flex items-center gap-3 px-6 py-3 rounded-md text-base font-medium border border-border hover:bg-secondary transition-colors"
             data-testid="button-login-hero"
           >
             <GoogleIcon className="w-5 h-5" />
@@ -101,7 +111,8 @@ export default function Landing() {
           </button>
         </div>
         <p className="text-xs text-muted-foreground mt-3">
-          Sign in with any Google account — no separate registration needed.
+          Browse the lectures and try problems free. Sign in with Google when
+          you want your progress saved and charted.
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-16 w-full text-left">

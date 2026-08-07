@@ -1,14 +1,24 @@
-import { type ReactNode } from "react";
 import {
   Switch,
   Route,
   Redirect,
   Router as WouterRouter,
 } from "wouter";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  QueryClient,
+  QueryClientProvider,
+  QueryCache,
+  MutationCache,
+} from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useAuth } from "@/hooks/useAuth";
+import {
+  LoginReminderDialog,
+  RequireLogin,
+  notifyLoginRequired,
+  isLoginRequiredError,
+} from "@/components/LoginGate";
 import NotFound from "@/pages/not-found";
 import Landing from "@/pages/Landing";
 
@@ -26,7 +36,18 @@ import Gradebook from "@/pages/Gradebook";
 import TopicPractice from "@/pages/TopicPractice";
 import PracticeRun from "@/pages/PracticeRun";
 
-const queryClient = new QueryClient();
+// Whenever any API call comes back with the friendly LOGIN_REQUIRED signal
+// (guest hit the free-use limit, or opened a login-only feature), pop the
+// sign-in reminder instead of surfacing a raw error.
+function handleApiError(error: unknown) {
+  const message = isLoginRequiredError(error);
+  if (message !== null) notifyLoginRequired(message);
+}
+
+const queryClient = new QueryClient({
+  queryCache: new QueryCache({ onError: handleApiError }),
+  mutationCache: new MutationCache({ onError: handleApiError }),
+});
 
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
 
@@ -45,82 +66,46 @@ function HomeRedirect() {
   return <Landing />;
 }
 
-function Protected({ children }: { children: ReactNode }) {
-  const { isLoading, isAuthenticated } = useAuth();
-  if (isLoading) return <AuthLoading />;
-  if (!isAuthenticated) return <Redirect to="/" />;
-  return <>{children}</>;
-}
-
+// The course is open to guests: browsing, lectures, and (metered) practice
+// all work without an account. Only progress-charting pages are wrapped in
+// RequireLogin below.
 function Router() {
   return (
     <Switch>
       <Route path="/" component={HomeRedirect} />
-      <Route path="/dashboard">
-        <Protected>
-          <Dashboard />
-        </Protected>
-      </Route>
-      <Route path="/curriculum">
-        <Protected>
-          <Curriculum />
-        </Protected>
-      </Route>
-      <Route path="/assignments">
-        <Protected>
-          <Assignments />
-        </Protected>
-      </Route>
-      <Route path="/assignments/:id">
-        <Protected>
-          <AssignmentRunner />
-        </Protected>
-      </Route>
+      <Route path="/dashboard" component={Dashboard} />
+      <Route path="/curriculum" component={Curriculum} />
+      <Route path="/assignments" component={Assignments} />
+      <Route path="/assignments/:id" component={AssignmentRunner} />
       <Route path="/analytics">
-        <Protected>
+        <RequireLogin feature="chart your progress">
           <Analytics />
-        </Protected>
+        </RequireLogin>
       </Route>
       <Route path="/assessments">
-        <Protected>
+        <RequireLogin feature="take assessments and track your scores">
           <Assessments />
-        </Protected>
+        </RequireLogin>
       </Route>
       <Route path="/assessments/run/:id">
-        <Protected>
+        <RequireLogin feature="take assessments and track your scores">
           <AssessmentRunner />
-        </Protected>
+        </RequireLogin>
       </Route>
       <Route path="/gradebook">
-        <Protected>
+        <RequireLogin feature="see your gradebook">
           <Gradebook />
-        </Protected>
+        </RequireLogin>
       </Route>
       <Route path="/diagnostics">
-        <Protected>
+        <RequireLogin feature="run diagnostics">
           <Diagnostics />
-        </Protected>
+        </RequireLogin>
       </Route>
-      <Route path="/weeks/:weekNumber">
-        <Protected>
-          <WeekView />
-        </Protected>
-      </Route>
-      <Route path="/lectures/:lectureId">
-        <Protected>
-          <LectureView />
-        </Protected>
-      </Route>
-      <Route path="/practice/topic/:topicId">
-        <Protected>
-          <TopicPractice />
-        </Protected>
-      </Route>
-      <Route path="/practice-runs/:id">
-        <Protected>
-          <PracticeRun />
-        </Protected>
-      </Route>
+      <Route path="/weeks/:weekNumber" component={WeekView} />
+      <Route path="/lectures/:lectureId" component={LectureView} />
+      <Route path="/practice/topic/:topicId" component={TopicPractice} />
+      <Route path="/practice-runs/:id" component={PracticeRun} />
       <Route component={NotFound} />
     </Switch>
   );
@@ -132,6 +117,7 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
           <Router />
+          <LoginReminderDialog />
           <Toaster />
         </TooltipProvider>
       </QueryClientProvider>

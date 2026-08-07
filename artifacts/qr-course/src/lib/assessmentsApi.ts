@@ -129,13 +129,21 @@ async function jsonFetch<T>(url: string, init?: RequestInit): Promise<T> {
     headers: { "Content-Type": "application/json", ...(init?.headers ?? {}) },
   });
   if (!res.ok) {
-    let detail = "";
+    let data: { error?: string; code?: string; message?: string } | null =
+      null;
     try {
-      detail = (await res.json())?.error ?? "";
+      data = await res.json();
     } catch {
       // ignore
     }
-    throw new Error(detail || `HTTP ${res.status}`);
+    // Match the ApiError shape ({status, data}) so the global
+    // LOGIN_REQUIRED handler in App.tsx recognizes these errors too.
+    const err = new Error(
+      data?.message || data?.error || `HTTP ${res.status}`,
+    ) as Error & { status: number; data: unknown };
+    err.status = res.status;
+    err.data = data;
+    throw err;
   }
   return res.json() as Promise<T>;
 }

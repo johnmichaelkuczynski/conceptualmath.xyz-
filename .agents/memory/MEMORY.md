@@ -1,4 +1,5 @@
 - [Course seed needs schema first](qr-course-seed-boot.md) — api-server boot seed fails on empty DB; run `pnpm --filter @workspace/db run push` then restart.
 - [Runtime ops: diagnostics, reseed, demo audio](qr-course-runtime-ops.md) — long OpenAI diagnostics need heartbeats + single blocking curl; bump sentinel to reseed content edits; rebuild demo audio via build-audio.sh.
-- [Google OAuth session store](google-oauth-session-store.md) — user_sessions table must come from drizzle push (bundled server can't read connect-pg-simple table.sql); all routes but health sit behind requireAuth; register callback URI per domain.
+- [Google OAuth session store](google-oauth-session-store.md) — user_sessions table must come from drizzle push (bundled server can't read connect-pg-simple table.sql); register callback URI per domain.
+- [Guest mode & dev auto-login](qr-course-guest-mode.md) — guests get session-keyed ids with a metered AI allowance; progress pages need real login; dev preview auto-signs-in the owner (secure cookies mean curl tests must use the https dev domain).
 - [Practice-run submit exactly-once](qr-course-practice-concurrency.md) — gate profile increments on atomic in_progress→submitted tx; never leak a transient status into Zod-enum responses.

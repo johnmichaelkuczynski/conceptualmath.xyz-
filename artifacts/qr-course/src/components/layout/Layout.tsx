@@ -3,6 +3,7 @@ import { Link, useLocation } from "wouter";
 import { LayoutDashboard, BookOpen, PenTool, BarChart3, Activity, RotateCcw, LogOut, ClipboardCheck, GraduationCap } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAuth, logout } from "@/hooks/useAuth";
+import { GoogleSignInButton } from "@/components/LoginGate";
 
 export function Sidebar() {
   const [location] = useLocation();
@@ -54,25 +55,37 @@ export function Sidebar() {
       </div>
 
       <div className="p-4 border-t border-border flex flex-col gap-3">
-        <div className="min-w-0">
-          <p className="text-xs text-muted-foreground">Signed in with Google as</p>
-          <p className="text-sm font-medium truncate" title={displayName}>
-            {displayName}
-          </p>
-          {user?.email && user.displayName && (
-            <p className="text-xs text-muted-foreground truncate" title={user.email}>
-              {user.email}
+        {user ? (
+          <>
+            <div className="min-w-0">
+              <p className="text-xs text-muted-foreground">Signed in with Google as</p>
+              <p className="text-sm font-medium truncate" title={displayName}>
+                {displayName}
+              </p>
+              {user?.email && user.displayName && (
+                <p className="text-xs text-muted-foreground truncate" title={user.email}>
+                  {user.email}
+                </p>
+              )}
+            </div>
+            <button
+              onClick={() => void logout()}
+              className="inline-flex items-center justify-center gap-2 px-3 py-2 rounded-md text-sm font-medium border border-border hover:bg-secondary transition-colors"
+              data-testid="button-logout"
+            >
+              <LogOut className="w-4 h-4" />
+              Log out
+            </button>
+          </>
+        ) : (
+          <>
+            <p className="text-xs text-muted-foreground">
+              You're browsing as a guest. Sign in to save and chart your
+              progress.
             </p>
-          )}
-        </div>
-        <button
-          onClick={() => void logout()}
-          className="inline-flex items-center justify-center gap-2 px-3 py-2 rounded-md text-sm font-medium border border-border hover:bg-secondary transition-colors"
-          data-testid="button-logout"
-        >
-          <LogOut className="w-4 h-4" />
-          Log out
-        </button>
+            <GoogleSignInButton label="Sign in with Google" />
+          </>
+        )}
       </div>
     </div>
   );
