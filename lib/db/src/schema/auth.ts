@@ -34,6 +34,16 @@ export const usersTable = pgTable("users", {
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
+// One row per distinct visitor (guest session or signed-in user) — powers the
+// owner-only unique-visitor counter. visitorId is the guest session id or
+// `user_<id>` for signed-in accounts.
+export const uniqueVisitorsTable = pgTable("unique_visitors", {
+  id: serial("id").primaryKey(),
+  visitorId: text("visitor_id").notNull().unique(),
+  firstSeenAt: timestamp("first_seen_at", { withTimezone: true }).notNull().defaultNow(),
+  lastSeenAt: timestamp("last_seen_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
 // One row per successful Google sign-in (admin visitor analytics).
 export const loginVisitsTable = pgTable("login_visits", {
   id: serial("id").primaryKey(),

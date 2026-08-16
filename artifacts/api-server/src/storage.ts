@@ -1,5 +1,5 @@
-import { db, usersTable, loginVisitsTable } from "@workspace/db";
-import { desc, eq, gte } from "drizzle-orm";
+import { db, usersTable, loginVisitsTable, uniqueVisitorsTable } from "@workspace/db";
+import { desc, eq, gte, sql } from "drizzle-orm";
 
 // Storage adapter backing the canonical Google OAuth implementation in
 // ./auth.ts. Provides user lookup/creation plus login-visit analytics.
@@ -82,6 +82,35 @@ export const storage = {
       .from(loginVisitsTable)
       .orderBy(desc(loginVisitsTable.visitedAt))
       .limit(limit);
+  },
+
+  // One row per distinct visitor (guest session or signed-in user).
+  async recordUniqueVisitor(visitorId: string): Promise<void> {
+    await db
+      .insert(uniqueVisitorsTable)
+      .values({ visitorId })
+      .onConflictDoUpdate({
+        target: uniqueVisitorsTable.visitorId,
+        set: { lastSeenAt: sql`now()` },
+      });
+  },
+
+  async getUniqueVisitorStats() {
+    const rows = await db
+      .select({ lastSeenAt: uniqueVisitorsTable.lastSeenAt })
+      .from(uniqueVisitorsTable);
+    const now = Date.now();
+    // Windows count visitors ACTIVE in the period (by last visit), while
+    // total is all distinct visitors ever seen.
+    const since = (ms: number) =>
+      rows.filter((r) => r.lastSeenAt.getTime() >= now - ms).length;
+    const DAY = 24 * 60 * 60 * 1000;
+    return {
+      total: rows.length,
+      last24Hours: since(DAY),
+      last7Days: since(7 * DAY),
+      last30Days: since(30 * DAY),
+    };
   },
 
   async getVisitTimestampsSince(since: Date | null): Promise<Date[]> {

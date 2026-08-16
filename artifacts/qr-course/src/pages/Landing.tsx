@@ -1,6 +1,7 @@
 import { BookOpen, Sparkles, PenTool, ArrowRight } from "lucide-react";
 import { Link } from "wouter";
 import { loginWithGoogle } from "@/hooks/useAuth";
+import { CourseTopicsList } from "@/components/CourseTopicsList";
 
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
 
@@ -69,7 +70,11 @@ export default function Landing() {
         </div>
       </header>
 
-      <main className="flex-1 flex flex-col items-center justify-center px-6 py-16 max-w-3xl mx-auto w-full text-center">
+      <div className="flex-1 flex flex-col lg:flex-row max-w-6xl mx-auto w-full">
+        <aside className="px-6 pt-8 lg:w-64 shrink-0">
+          <CourseTopicsList />
+        </aside>
+        <main className="flex-1 flex flex-col items-center justify-center px-6 py-16 max-w-3xl mx-auto w-full text-center">
         <p className="text-sm font-medium uppercase tracking-[0.18em] text-muted-foreground mb-5">
           A four-week foundations course
         </p>
@@ -131,7 +136,8 @@ export default function Landing() {
             </div>
           ))}
         </div>
-      </main>
+        </main>
+      </div>
 
       <footer className="px-6 py-6 text-center text-xs text-muted-foreground border-t border-border">
         Developmental Mathematics — read the idea, ground the idea,

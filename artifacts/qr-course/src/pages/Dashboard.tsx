@@ -10,6 +10,8 @@ import { Link } from "wouter";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Progress } from "@/components/ui/progress";
 import { PracticeCta } from "@/components/PracticeCta";
+import { CourseTopicsList } from "@/components/CourseTopicsList";
+import { AdminVisitorsCard } from "@/components/AdminVisitorsCard";
 
 export default function Dashboard() {
   const { data: overview, isLoading: isLoadingOverview } = useGetCourseOverview();
@@ -18,13 +20,19 @@ export default function Dashboard() {
 
   return (
     <Layout>
-      <div className="p-8 max-w-6xl mx-auto w-full flex flex-col gap-8">
+      <div className="p-8 max-w-7xl mx-auto w-full flex flex-col lg:flex-row gap-8 items-start">
+        <aside className="lg:w-60 shrink-0 lg:sticky lg:top-8">
+          <CourseTopicsList />
+        </aside>
+        <div className="flex-1 min-w-0 flex flex-col gap-8">
         <div>
           <h1 className="text-3xl font-serif font-bold text-primary mb-2">
             {overview ? overview.title : <Skeleton className="h-9 w-64" />}
           </h1>
           <p className="text-muted-foreground">Welcome to Developmental Mathematics.</p>
         </div>
+
+        <AdminVisitorsCard />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card>
@@ -174,6 +182,7 @@ export default function Dashboard() {
               </CardContent>
             </Card>
           </div>
+        </div>
         </div>
       </div>
     </Layout>

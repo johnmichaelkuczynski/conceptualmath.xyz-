@@ -1,10 +1,12 @@
 import { Router, type IRouter } from "express";
-import { and, eq, asc, sql } from "drizzle-orm";
+import { and, eq, asc, inArray, sql } from "drizzle-orm";
+import PDFDocument from "pdfkit";
 import {
   db,
   topicsTable,
   lecturesTable,
   assignmentsTable,
+  problemsTable,
   attemptsTable,
   practiceRunsTable,
 } from "@workspace/db";
@@ -210,6 +212,171 @@ router.get("/course/topics", async (_req, res) => {
     .from(topicsTable)
     .orderBy(asc(topicsTable.position));
   res.json(ListTopicsResponse.parse(rows));
+});
+
+// ---------------------------------------------------------------------------
+// Course download: all 28 lectures (short version) plus a sample of practice
+// homeworks and exams, as plain text or PDF.
+// ---------------------------------------------------------------------------
+
+interface CourseDownloadData {
+  lectures: { title: string; body: string }[];
+  samples: {
+    title: string;
+    instructions: string | null;
+    // Prompts only — answer keys and explanations are deliberately excluded
+    // so the download can't be used to look up graded-assignment answers.
+    problems: { prompt: string }[];
+  }[];
+}
+
+async function buildCourseDownload(): Promise<CourseDownloadData> {
+  const lectures = await db
+    .select({ title: lecturesTable.title, body: lecturesTable.body })
+    .from(lecturesTable)
+    .orderBy(asc(lecturesTable.id));
+
+  // A few practice assignments: the first homework of each week, plus the
+  // midterm and final.
+  const assignments = await db
+    .select()
+    .from(assignmentsTable)
+    .orderBy(asc(assignmentsTable.weekNumber), asc(assignmentsTable.position));
+  const picked: typeof assignments = [];
+  const homeworkWeeks = new Set<number>();
+  for (const a of assignments) {
+    if (a.kind === "homework" && !homeworkWeeks.has(a.weekNumber)) {
+      homeworkWeeks.add(a.weekNumber);
+      picked.push(a);
+    } else if (a.kind === "midterm" || a.kind === "final") {
+      picked.push(a);
+    }
+  }
+
+  const problems = picked.length
+    ? await db
+        .select()
+        .from(problemsTable)
+        .where(inArray(problemsTable.assignmentId, picked.map((a) => a.id)))
+        .orderBy(asc(problemsTable.position))
+    : [];
+  const byAssignment = new Map<number, typeof problems>();
+  for (const p of problems) {
+    const list = byAssignment.get(p.assignmentId) ?? [];
+    list.push(p);
+    byAssignment.set(p.assignmentId, list);
+  }
+
+  return {
+    lectures,
+    samples: picked.map((a) => ({
+      title: a.title,
+      instructions: a.instructions,
+      problems: (byAssignment.get(a.id) ?? []).map((p) => ({
+        prompt: p.prompt,
+      })),
+    })),
+  };
+}
+
+router.get("/course/download.txt", async (_req, res) => {
+  const data = await buildCourseDownload();
+  const lines: string[] = [];
+  lines.push("DEVELOPMENTAL MATHEMATICS");
+  lines.push("A four-week foundations course");
+  lines.push("");
+  lines.push("=".repeat(72));
+  lines.push("LECTURES");
+  lines.push("=".repeat(72));
+  for (const lec of data.lectures) {
+    lines.push("");
+    lines.push(lec.title);
+    lines.push("-".repeat(Math.min(lec.title.length, 72)));
+    lines.push(lec.body.trim());
+  }
+  lines.push("");
+  lines.push("=".repeat(72));
+  lines.push("PRACTICE ASSIGNMENTS (SAMPLES)");
+  lines.push("=".repeat(72));
+  for (const s of data.samples) {
+    lines.push("");
+    lines.push(s.title);
+    lines.push("-".repeat(Math.min(s.title.length, 72)));
+    if (s.instructions) lines.push(s.instructions.trim());
+    s.problems.forEach((p, i) => {
+      lines.push("");
+      lines.push(`${i + 1}. ${p.prompt}`);
+    });
+    lines.push("");
+    lines.push(
+      "(Work these in the app to get instant grading, explanations, and a live tutor.)",
+    );
+  }
+  lines.push("");
+  res.setHeader("Content-Type", "text/plain; charset=utf-8");
+  res.setHeader(
+    "Content-Disposition",
+    'attachment; filename="developmental-mathematics.txt"',
+  );
+  res.send(lines.join("\n"));
+});
+
+router.get("/course/download.pdf", async (_req, res) => {
+  const data = await buildCourseDownload();
+  res.setHeader("Content-Type", "application/pdf");
+  res.setHeader(
+    "Content-Disposition",
+    'attachment; filename="developmental-mathematics.pdf"',
+  );
+  const doc = new PDFDocument({ margin: 54, bufferPages: true });
+  doc.pipe(res);
+
+  doc.font("Helvetica-Bold").fontSize(24).text("Developmental Mathematics");
+  doc.moveDown(0.3);
+  doc
+    .font("Helvetica")
+    .fontSize(12)
+    .fillColor("#555555")
+    .text("A four-week foundations course — lectures and sample practice work.");
+  doc.fillColor("black");
+
+  doc.moveDown(1.2);
+  doc.font("Helvetica-Bold").fontSize(16).text("Lectures");
+  for (const lec of data.lectures) {
+    doc.moveDown(0.8);
+    doc.font("Helvetica-Bold").fontSize(13).text(lec.title);
+    doc.moveDown(0.25);
+    doc.font("Helvetica").fontSize(10).text(lec.body.trim(), { lineGap: 2 });
+  }
+
+  doc.addPage();
+  doc.font("Helvetica-Bold").fontSize(16).text("Practice Assignments (Samples)");
+  for (const s of data.samples) {
+    doc.moveDown(0.8);
+    doc.font("Helvetica-Bold").fontSize(13).text(s.title);
+    if (s.instructions) {
+      doc.moveDown(0.2);
+      doc.font("Helvetica-Oblique").fontSize(10).text(s.instructions.trim());
+    }
+    s.problems.forEach((p, i) => {
+      doc.moveDown(0.4);
+      doc
+        .font("Helvetica")
+        .fontSize(10)
+        .text(`${i + 1}. ${p.prompt}`, { lineGap: 1 });
+    });
+    doc.moveDown(0.4);
+    doc
+      .font("Helvetica-Oblique")
+      .fontSize(9)
+      .fillColor("#555555")
+      .text(
+        "Work these in the app to get instant grading, explanations, and a live tutor.",
+      );
+    doc.fillColor("black");
+  }
+
+  doc.end();
 });
 
 export default router;

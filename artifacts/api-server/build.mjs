@@ -47,6 +47,8 @@ async function buildAll() {
       "isolated-vm",
       "lightningcss",
       "pg-native",
+      // pdfkit reads its bundled .afm font metrics off disk at runtime
+      "pdfkit",
       "oracledb",
       "mongodb-client-encryption",
       "nodemailer",

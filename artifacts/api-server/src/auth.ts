@@ -351,6 +351,18 @@ export function setupAuth(app: Express) {
     });
   });
 
+  // --- Admin: unique visitors — every distinct visitor, guests included
+  // (restricted to the site owner) ---
+  app.get("/api/admin/unique-visitors", isAdmin, async (_req, res) => {
+    try {
+      const stats = await storage.getUniqueVisitorStats();
+      res.json(stats);
+    } catch (error) {
+      console.error("Admin unique-visitors error:", error);
+      res.status(500).json({ error: "Failed to load unique visitor data" });
+    }
+  });
+
   // --- Admin: visitor analytics (restricted to the site owner) ---
   app.get("/api/admin/visits", isAdmin, async (_req, res) => {
     try {

@@ -2,4 +2,5 @@
 - [Runtime ops: diagnostics, reseed, demo audio](qr-course-runtime-ops.md) — long OpenAI diagnostics need heartbeats + single blocking curl; bump sentinel to reseed content edits; rebuild demo audio via build-audio.sh.
 - [Google OAuth session store](google-oauth-session-store.md) — user_sessions table must come from drizzle push (bundled server can't read connect-pg-simple table.sql); register callback URI per domain.
 - [Guest mode & dev auto-login](qr-course-guest-mode.md) — guests get session-keyed ids with a metered AI allowance; progress pages need real login; dev preview auto-signs-in the owner (secure cookies mean curl tests must use the https dev domain).
+- [Visitors & guest text budget](qr-course-visitors-metering.md) — unique-visitor upsert per session; guest AI-text budget reserves quota before handlers; downloads must omit answer keys; pdfkit stays external in the bundle.
 - [Practice-run submit exactly-once](qr-course-practice-concurrency.md) — gate profile increments on atomic in_progress→submitted tx; never leak a transient status into Zod-enum responses.
