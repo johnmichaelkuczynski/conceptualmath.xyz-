@@ -9,15 +9,11 @@ interface UniqueVisitorStats {
   last30Days: number;
 }
 
-// Owner-only unique-visitor counter. The API restricts the endpoint to the
-// admin account; everyone else gets a 403 and this card simply doesn't render.
-export function AdminVisitorsCard() {
+export function VisitorsCard() {
   const { data } = useQuery<UniqueVisitorStats>({
-    queryKey: ["admin", "unique-visitors"],
+    queryKey: ["unique-visitors"],
     queryFn: async () => {
-      const res = await fetch("/api/admin/unique-visitors", {
-        credentials: "include",
-      });
+      const res = await fetch("/api/unique-visitors");
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       return (await res.json()) as UniqueVisitorStats;
     },
@@ -28,11 +24,11 @@ export function AdminVisitorsCard() {
   if (!data) return null;
 
   return (
-    <Card data-testid="card-admin-visitors" className="border-primary/30">
+    <Card data-testid="card-visitors" className="border-primary/30">
       <CardHeader className="pb-2">
         <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wider flex items-center gap-2">
           <Users className="w-4 h-4" />
-          Unique Visitors (admin only)
+          Unique Visitors
         </CardTitle>
       </CardHeader>
       <CardContent>

@@ -26,7 +26,7 @@ import {
 } from "@workspace/api-zod";
 import { chatJson, chatText } from "../lib/ai";
 import { gradeAnswer } from "../lib/grading";
-import { getUserId } from "../middlewares/requireAuth";
+import { getUserId } from "../middlewares/identifyUser";
 import { bumpUserTopicProfile } from "../lib/profile";
 
 const router: IRouter = Router();

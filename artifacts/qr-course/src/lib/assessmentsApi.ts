@@ -1,6 +1,6 @@
 // Client types + fetch helpers for the diagnostic-assessments + gradebook feature.
-// The API lives at the global /api path (same-origin session-cookie auth via
-// Google login), so plain fetch authenticates automatically — no Bearer token.
+// The API lives at the global /api path. The same-origin session cookie keeps
+// each anonymous visitor's assessment progress separate.
 
 export type AssessmentVersion =
   | "multiple_choice"
@@ -136,8 +136,7 @@ async function jsonFetch<T>(url: string, init?: RequestInit): Promise<T> {
     } catch {
       // ignore
     }
-    // Match the ApiError shape ({status, data}) so the global
-    // LOGIN_REQUIRED handler in App.tsx recognizes these errors too.
+    // Preserve the response details for page-level error handling.
     const err = new Error(
       data?.message || data?.error || `HTTP ${res.status}`,
     ) as Error & { status: number; data: unknown };

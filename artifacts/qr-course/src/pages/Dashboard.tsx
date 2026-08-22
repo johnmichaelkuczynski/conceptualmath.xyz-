@@ -11,7 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Progress } from "@/components/ui/progress";
 import { PracticeCta } from "@/components/PracticeCta";
 import { CourseTopicsList } from "@/components/CourseTopicsList";
-import { AdminVisitorsCard } from "@/components/AdminVisitorsCard";
+import { VisitorsCard } from "@/components/VisitorsCard";
 
 export default function Dashboard() {
   const { data: overview, isLoading: isLoadingOverview } = useGetCourseOverview();
@@ -32,7 +32,7 @@ export default function Dashboard() {
           <p className="text-muted-foreground">Welcome to Developmental Mathematics.</p>
         </div>
 
-        <AdminVisitorsCard />
+        <VisitorsCard />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card>

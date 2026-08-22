@@ -9,33 +9,31 @@ import detectionRouter from "./detection";
 import analyticsRouter from "./analytics";
 import diagnosticsRouter from "./diagnostics";
 import assessmentsRouter from "./assessments";
-import {
-  identifyUser,
-  requireAuth,
-  guestUsageGate,
-} from "../middlewares/requireAuth";
+import { identifyUser } from "../middlewares/identifyUser";
+import { storage } from "../storage";
 
 const router: IRouter = Router();
 
-// Open routers (public, no user data or costly AI calls).
+// Health checks do not need a visitor session.
 router.use(healthRouter);
 
-// Browse-and-try tier: guests get a per-session identity and may read
-// everything; their expensive interactions (tutor asks, graded answers,
-// submissions) are metered by guestUsageGate. Past the allowance the API
-// answers 401 LOGIN_REQUIRED and the client shows the sign-in reminder.
+// Every course feature is open. A stable anonymous identity keeps each
+// visitor's progress, practice, assessments, and analytics separate.
 router.use(identifyUser);
-router.use(guestUsageGate);
+router.get("/unique-visitors", async (req, res) => {
+  try {
+    res.json(await storage.getUniqueVisitorStats());
+  } catch (err) {
+    req.log.error({ err }, "Failed to load unique visitor data");
+    res.status(500).json({ error: "Failed to load unique visitor data" });
+  }
+});
 router.use(courseRouter);
 router.use(tutorRouter);
 router.use(detectionRouter);
 router.use(assignmentsRouter);
 router.use(practiceRouter);
 router.use(practiceRunsRouter);
-
-// Signed-in tier: progress charting and operator diagnostics require a real
-// Google-authenticated user.
-router.use(requireAuth);
 router.use(analyticsRouter);
 router.use(assessmentsRouter);
 router.use(diagnosticsRouter);

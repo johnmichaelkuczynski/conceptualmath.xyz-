@@ -11,11 +11,16 @@ import {
   practiceSessionsTable,
   practiceProblemsTable,
   practiceAttemptsTable,
+  diagnosticAttemptsTable,
+  practiceRunsTable,
+  userTopicProfileTable,
+  servedPromptsTable,
 } from "@workspace/db";
 import { chatText, chatJson, FAST_MODEL, TEXT_MODEL } from "../lib/ai";
 import { detect } from "../lib/detection";
 import { gradeAnswer } from "../lib/grading";
-import { isAdmin } from "../auth";
+import { getUserId } from "../middlewares/identifyUser";
+import { requireOperator } from "../middlewares/requireOperator";
 
 const router: IRouter = Router();
 
@@ -74,7 +79,7 @@ async function run(name: string, fn: () => Promise<string | void>): Promise<Step
 }
 
 // ---------- Diagnostic 1: system checks ----------
-router.get("/diagnostics/system", async (_req, res) => {
+router.get("/diagnostics/system", requireOperator, async (_req, res) => {
   const steps: Step[] = [];
 
   steps.push(
@@ -174,7 +179,7 @@ function syntheticTrace(text: string, durationMs = 12_000) {
   };
 }
 
-router.post("/diagnostics/synthetic-run", async (_req, res) => {
+router.post("/diagnostics/synthetic-run", requireOperator, async (_req, res) => {
   const steps: Step[] = [];
   res.setTimeout(10 * 60 * 1000);
 
@@ -446,7 +451,7 @@ router.post("/diagnostics/synthetic-run", async (_req, res) => {
 });
 
 // ---------- Expand lectures: generate medium / long versions with more examples ----------
-router.post("/diagnostics/expand-lectures", async (req, res) => {
+router.post("/diagnostics/expand-lectures", requireOperator, async (req, res) => {
   const rawLevel = String(req.query.level ?? "");
   if (rawLevel !== "medium" && rawLevel !== "long") {
     res.status(400).json({ error: "level must be 'medium' or 'long'" });
@@ -648,7 +653,7 @@ async function runWithConcurrency<T, R>(
   return results;
 }
 
-router.post("/diagnostics/content-audit", async (_req, res) => {
+router.post("/diagnostics/content-audit", requireOperator, async (_req, res) => {
   res.setTimeout(15 * 60 * 1000);
   try {
     const lectures = await db
@@ -714,16 +719,28 @@ router.post("/diagnostics/content-audit", async (_req, res) => {
   }
 });
 
-// ---------- Reset: wipe all student progress, keep course content ----------
-// Destructive and global (clears every user's progress), so admin-only.
-router.post("/diagnostics/reset", isAdmin, async (_req, res) => {
-  // Delete in dependency order. Course content (topics, lectures, assignments,
-  // problems) is preserved; only student progress / generated practice is wiped.
-  await db.delete(practiceAttemptsTable);
-  await db.delete(practiceProblemsTable);
-  await db.delete(practiceSessionsTable);
-  await db.delete(answersTable);
-  await db.delete(attemptsTable);
+// ---------- Reset: wipe this visitor's progress, keep course content ----------
+router.post("/diagnostics/reset", async (req, res) => {
+  const userId = getUserId(req);
+  await db.transaction(async (tx) => {
+    // Child practice rows and assignment answers cascade from these sessions.
+    await tx
+      .delete(practiceSessionsTable)
+      .where(eq(practiceSessionsTable.userId, userId));
+    await tx.delete(attemptsTable).where(eq(attemptsTable.userId, userId));
+    await tx
+      .delete(diagnosticAttemptsTable)
+      .where(eq(diagnosticAttemptsTable.userId, userId));
+    await tx
+      .delete(practiceRunsTable)
+      .where(eq(practiceRunsTable.userId, userId));
+    await tx
+      .delete(userTopicProfileTable)
+      .where(eq(userTopicProfileTable.userId, userId));
+    await tx
+      .delete(servedPromptsTable)
+      .where(eq(servedPromptsTable.userId, userId));
+  });
   res.json({ ok: true, resetAt: new Date().toISOString() });
 });
 

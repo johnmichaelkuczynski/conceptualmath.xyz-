@@ -15,7 +15,7 @@ import {
   GenerateReportResponse,
 } from "@workspace/api-zod";
 import { chatJson } from "../lib/ai";
-import { getUserId } from "../middlewares/requireAuth";
+import { getUserId } from "../middlewares/identifyUser";
 
 const router: IRouter = Router();
 

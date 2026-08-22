@@ -16,7 +16,7 @@ import {
   GetLectureResponse,
   ListTopicsResponse,
 } from "@workspace/api-zod";
-import { getUserId } from "../middlewares/requireAuth";
+import { getUserId } from "../middlewares/identifyUser";
 
 const router: IRouter = Router();
 

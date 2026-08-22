@@ -10,7 +10,7 @@ import {
   diagnosticQuestionsTable,
   diagnosticAnswersTable,
 } from "@workspace/db";
-import { getUserId } from "../middlewares/requireAuth";
+import { getUserId } from "../middlewares/identifyUser";
 import { gradeAnswer } from "../lib/grading";
 import { detect } from "../lib/detection";
 import { bumpUserTopicProfile } from "../lib/profile";

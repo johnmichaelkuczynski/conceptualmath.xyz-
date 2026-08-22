@@ -19,7 +19,7 @@ import {
 } from "@workspace/api-zod";
 import { gradeAnswer } from "../lib/grading";
 import { detect } from "../lib/detection";
-import { getUserId } from "../middlewares/requireAuth";
+import { getUserId } from "../middlewares/identifyUser";
 import { bumpUserTopicProfile } from "../lib/profile";
 
 const router: IRouter = Router();

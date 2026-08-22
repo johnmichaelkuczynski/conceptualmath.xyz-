@@ -71,7 +71,7 @@ function LectureNav({ lectureId }: { lectureId: number }) {
 export default function LectureView() {
   const params = useParams();
   const lectureId = Number(params.lectureId);
-  const { data: lecture, isLoading, refetch } = useGetLecture(lectureId);
+  const { data: lecture, isLoading } = useGetLecture(lectureId);
 
   // shared selected-text state (used by both Tutor and Practice)
   const [selectedText, setSelectedText] = useState("");
@@ -115,40 +115,6 @@ export default function LectureView() {
         ? lecture.bodyMedium
         : (lecture?.body ?? "");
 
-  const [generatingLevel, setGeneratingLevel] = useState<"medium" | "long" | null>(null);
-  const [genError, setGenError] = useState<string | null>(null);
-
-  async function generateLevel(lvl: "medium" | "long") {
-    if (!lecture || generatingLevel) return;
-    setGeneratingLevel(lvl);
-    setGenError(null);
-    try {
-      const res = await fetch(
-        `/api/diagnostics/expand-lectures?level=${lvl}&id=${lecture.id}`,
-        { method: "POST" },
-      );
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = (await res.json()) as { updated?: number; failed?: number };
-      if (!data.updated) {
-        throw new Error("the generator returned nothing usable — please try again");
-      }
-      await refetch();
-      setLevel(lvl);
-    } catch (e) {
-      setGenError(`Couldn't generate the ${lvl} version: ${(e as Error).message}`);
-    } finally {
-      setGeneratingLevel(null);
-    }
-  }
-
-  function onLevelClick(lvl: "short" | "medium" | "long") {
-    if (lvl === "short" || availableLevels.includes(lvl)) {
-      setLevel(lvl);
-      return;
-    }
-    void generateLevel(lvl);
-  }
-
   return (
     <Layout>
       <div className="px-6 pt-4 pb-2 flex items-center justify-between gap-3">
@@ -182,54 +148,28 @@ export default function LectureView() {
                   <div className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     Week {lecture.weekNumber}
                   </div>
-                  <div className="inline-flex rounded-md border border-border overflow-hidden text-xs">
-                    {(["short", "medium", "long"] as const).map((lvl) => {
-                      const enabled = availableLevels.includes(lvl);
-                      const active = level === lvl;
-                      const busy = generatingLevel === lvl;
-                      const needsGen = !enabled && lvl !== "short";
+                  {availableLevels.length > 1 && (
+                    <div className="inline-flex rounded-md border border-border overflow-hidden text-xs">
+                      {availableLevels.map((lvl) => {
+                        const active = level === lvl;
                       return (
                         <button
                           key={lvl}
-                          onClick={() => onLevelClick(lvl)}
-                          disabled={generatingLevel !== null}
-                          title={
-                            enabled
-                              ? `Show the ${lvl} version`
-                              : `Generate the ${lvl} version of this lecture only (~20s)`
-                          }
-                          className={`px-3 py-1.5 font-medium uppercase tracking-wider transition-colors inline-flex items-center gap-1 disabled:cursor-wait ${
+                          onClick={() => setLevel(lvl)}
+                          title={`Show the ${lvl} version`}
+                          className={`px-3 py-1.5 font-medium uppercase tracking-wider transition-colors ${
                             active
                               ? "bg-primary text-primary-foreground"
                               : "bg-background hover:bg-secondary text-foreground"
-                          } ${needsGen && !active ? "text-primary" : ""}`}
+                          }`}
                           data-testid={`button-level-${lvl}`}
                         >
-                          {busy ? (
-                            <Loader2 className="w-3 h-3 animate-spin" />
-                          ) : needsGen ? (
-                            <Sparkles className="w-3 h-3" />
-                          ) : null}
                           {lvl}
                         </button>
                       );
-                    })}
-                  </div>
-                </div>
-                <div className="mt-2 flex items-center gap-2 text-xs">
-                  {generatingLevel ? (
-                    <span className="text-muted-foreground inline-flex items-center gap-1.5">
-                      <Loader2 className="w-3 h-3 animate-spin" />
-                      Writing the {generatingLevel} version of this lecture…
-                    </span>
-                  ) : genError ? (
-                    <span className="text-red-600">{genError}</span>
-                  ) : availableLevels.length < 3 ? (
-                    <span className="text-muted-foreground">
-                      Medium and Long are written on demand for{" "}
-                      <strong>this lecture only</strong> — tap one to generate it.
-                    </span>
-                  ) : null}
+                      })}
+                    </div>
+                  )}
                 </div>
               </header>
               <div className="bg-card border shadow-sm rounded-lg p-6 md:p-8" ref={articleRef}>

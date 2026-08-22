@@ -3,7 +3,7 @@ import cors from "cors";
 import pinoHttp from "pino-http";
 import path from "node:path";
 import fs from "node:fs";
-import { setupAuth } from "./auth";
+import { setupSession } from "./session";
 import router from "./routes";
 import { logger } from "./lib/logger";
 
@@ -33,9 +33,8 @@ app.use(cors({ credentials: true, origin: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Google OAuth login (passport + pg-backed sessions). Registers the
-// /api/auth/* and /api/admin/visits routes directly on the app.
-setupAuth(app);
+// Database-backed anonymous sessions keep each visitor's saved work separate.
+setupSession(app);
 
 app.use("/api", router);
 
