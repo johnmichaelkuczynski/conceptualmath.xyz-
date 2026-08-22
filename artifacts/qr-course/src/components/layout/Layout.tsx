@@ -54,7 +54,7 @@ export function Sidebar() {
 
 function TopBar() {
   const [location, setLocation] = useLocation();
-  const diagnosticActive = location.startsWith("/assessments");
+  const diagnosticActive = location.startsWith("/diagnostics");
   const qc = useQueryClient();
   const [resetting, setResetting] = useState(false);
 
@@ -90,19 +90,18 @@ function TopBar() {
         <RotateCcw className={`w-4 h-4 ${resetting ? "animate-spin" : ""}`} />
         {resetting ? "Resetting…" : "Reset course"}
       </button>
-      <Link href="/assessments">
-        <button
-          className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
-            diagnosticActive
-              ? "bg-primary text-primary-foreground"
-              : "border border-border hover:bg-secondary"
-          }`}
-          data-testid="button-diagnostic"
-        >
-          <Activity className="w-4 h-4" />
-          Diagnostic
-        </button>
-      </Link>
+      <button
+        onClick={() => window.location.assign("/diagnostics")}
+        className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
+          diagnosticActive
+            ? "bg-primary text-primary-foreground"
+            : "border border-border hover:bg-secondary"
+        }`}
+        data-testid="button-diagnostic"
+      >
+        <Activity className="w-4 h-4" />
+        Diagnostic
+      </button>
     </div>
   );
 }

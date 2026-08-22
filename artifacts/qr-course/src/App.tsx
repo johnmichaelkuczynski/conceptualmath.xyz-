@@ -19,6 +19,7 @@ import Analytics from "@/pages/Analytics";
 import WeekView from "@/pages/WeekView";
 import LectureView from "@/pages/LectureView";
 import AssignmentRunner from "@/pages/AssignmentRunner";
+import Diagnostics from "@/pages/Diagnostics";
 import Assessments from "@/pages/Assessments";
 import AssessmentRunner from "@/pages/AssessmentRunner";
 import Gradebook from "@/pages/Gradebook";
@@ -41,6 +42,7 @@ function Router() {
       <Route path="/assessments" component={Assessments} />
       <Route path="/assessments/run/:id" component={AssessmentRunner} />
       <Route path="/gradebook" component={Gradebook} />
+      <Route path="/diagnostics" component={Diagnostics} />
       <Route path="/weeks/:weekNumber" component={WeekView} />
       <Route path="/lectures/:lectureId" component={LectureView} />
       <Route path="/practice/topic/:topicId" component={TopicPractice} />

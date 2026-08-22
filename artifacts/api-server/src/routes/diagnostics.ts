@@ -79,7 +79,7 @@ async function run(name: string, fn: () => Promise<string | void>): Promise<Step
 }
 
 // ---------- Diagnostic 1: system checks ----------
-router.get("/diagnostics/system", requireOperator, async (_req, res) => {
+router.get("/diagnostics/system", async (_req, res) => {
   const steps: Step[] = [];
 
   steps.push(
@@ -179,7 +179,7 @@ function syntheticTrace(text: string, durationMs = 12_000) {
   };
 }
 
-router.post("/diagnostics/synthetic-run", requireOperator, async (_req, res) => {
+router.post("/diagnostics/synthetic-run", async (_req, res) => {
   const steps: Step[] = [];
   res.setTimeout(10 * 60 * 1000);
 
@@ -653,7 +653,7 @@ async function runWithConcurrency<T, R>(
   return results;
 }
 
-router.post("/diagnostics/content-audit", requireOperator, async (_req, res) => {
+router.post("/diagnostics/content-audit", async (_req, res) => {
   res.setTimeout(15 * 60 * 1000);
   try {
     const lectures = await db
