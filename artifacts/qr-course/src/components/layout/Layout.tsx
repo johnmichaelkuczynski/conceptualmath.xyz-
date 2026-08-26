@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { LayoutDashboard, BookOpen, PenTool, BarChart3, Activity, RotateCcw, ClipboardCheck, GraduationCap } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
+import zhiLogo from "@assets/zhi_logoc_1787767668028.png";
 
 export function Sidebar() {
   const [location] = useLocation();
@@ -79,7 +80,24 @@ function TopBar() {
   }
 
   return (
-    <div className="sticky top-0 z-10 flex items-center justify-end gap-2 px-6 py-3 border-b border-border bg-background/80 backdrop-blur">
+    <div className="sticky top-0 z-10 flex flex-wrap items-center justify-end gap-2 border-b border-border bg-background/80 px-6 py-3 backdrop-blur">
+      <a
+        href="mailto:johnmichaelkuczynski@gmail.com"
+        className="inline-flex items-center rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+        aria-label="Contact Us by email"
+      >
+        Contact Us
+      </a>
+      <a
+        href="https://zhisystems.ai/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-white p-1 shadow-sm transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        aria-label="Visit ZHI Systems"
+        title="Visit ZHI Systems"
+      >
+        <img src={zhiLogo} alt="ZHI Systems" className="h-7 w-7 rounded object-contain" />
+      </a>
       <button
         onClick={handleReset}
         disabled={resetting}
