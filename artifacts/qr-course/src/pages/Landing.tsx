@@ -1,6 +1,7 @@
 import { BookOpen, Sparkles, PenTool, ArrowRight } from "lucide-react";
 import { Link } from "wouter";
 import { CourseTopicsList } from "@/components/CourseTopicsList";
+import zhiLogo from "@assets/zhi_logoc_1787784216411.png";
 
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
 
@@ -33,6 +34,24 @@ export default function Landing() {
           <span className="font-serif font-semibold text-lg tracking-tight">
             DevMath
           </span>
+        </div>
+        <div className="flex items-center gap-3">
+          <a
+            href="mailto:johnmichaelkuczynski@gmail.com"
+            className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+          >
+            Contact Us
+          </a>
+          <a
+            href="https://zhisystems.ai/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-border bg-white p-1 shadow-sm transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            aria-label="Visit ZHI Systems"
+            title="Visit ZHI Systems"
+          >
+            <img src={zhiLogo} alt="ZHI Systems" className="h-8 w-8 rounded object-contain" />
+          </a>
         </div>
       </header>
 
