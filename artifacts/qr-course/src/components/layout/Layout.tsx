@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { LayoutDashboard, BookOpen, PenTool, BarChart3, Activity, RotateCcw, ClipboardCheck, GraduationCap } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
-import zhiLogo from "@assets/zhi_logoc_1787767668028.png";
+import zhiLogo from "@assets/zhi_logoc_1787784216411.png";
 
 export function Sidebar() {
   const [location] = useLocation();
