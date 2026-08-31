@@ -1,22 +1,25 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
 @import "tailwindcss";
 
 @theme inline {
-  --color-background: #FAF7F2;
-  --color-foreground: #0F172A;
-  
-  --color-primary: #0F172A;
-  --color-primary-foreground: #FFFFFF;
-  
-  --color-secondary: #FFFFFF;
-  --color-secondary-foreground: #0F172A;
-  
-  --color-muted: #F1EFE9;
-  --color-muted-foreground: #64748B;
-  
-  --color-border: #E2E8F0;
-  
-  --font-sans: 'Inter', sans-serif;
+  --color-background: #0B1120;
+  --color-foreground: #F8FAFC;
+
+  --color-primary: #38BDF8;
+  --color-primary-foreground: #0B1120;
+
+  --color-secondary: #1E293B;
+  --color-secondary-foreground: #F8FAFC;
+
+  --color-muted: #1E293B;
+  --color-muted-foreground: #94A3B8;
+
+  --color-accent: #38BDF8;
+  --color-accent-foreground: #0B1120;
+
+  --color-border: #334155;
+
+  --font-sans: 'Plus Jakarta Sans', sans-serif;
   --font-serif: 'Playfair Display', serif;
 }
 
@@ -28,4 +31,15 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-serif);
+}
+
+.clip-reveal {
+  clip-path: circle(0% at center);
+  animation: clipReveal 1.2s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+}
+
+@keyframes clipReveal {
+  to {
+    clip-path: circle(150% at center);
+  }
 }

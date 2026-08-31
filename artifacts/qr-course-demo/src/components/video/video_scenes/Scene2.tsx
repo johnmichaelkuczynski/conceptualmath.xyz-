@@ -1,172 +1,82 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export function Scene2({ setCursorPos, setIsClicking }: { setCursorPos: (pos: {x: string, y: string}) => void, setIsClicking: (val: boolean) => void }) {
+export function Scene2({ setCursorPos }: { setCursorPos: (pos: {x: string, y: string}) => void }) {
   const [phase, setPhase] = useState(0);
 
   useEffect(() => {
-    // 0.0-1.5s: Page settles, cursor visible on left pane.
-    // 1.5-3.0s: Cursor moves to LONG button, clicks.
-    // 3.0-4.5s: Cursor moves to "Practice on this" tab, clicks.
-    // 4.5-8.0s: Cursor to "Ask the tutor", clicks.
-
-    setCursorPos({ x: '35vw', y: '45vh' }); // Start where Scene 1 left off
-    
-    const t1 = setTimeout(() => {
-      setCursorPos({ x: '25vw', y: '23vh' }); // Move to LONG toggle
-    }, 1500);
-
-    const t2 = setTimeout(() => {
-      setIsClicking(true);
-      setPhase(1); // LONG clicked
-    }, 2800);
-
-    const t3 = setTimeout(() => {
-      setIsClicking(false);
-    }, 3000);
-
-    const t4 = setTimeout(() => {
-      setCursorPos({ x: '75vw', y: '16vh' }); // Move to Practice tab
-    }, 3300);
-
-    const t5 = setTimeout(() => {
-      setIsClicking(true);
-      setPhase(2); // Practice clicked
-    }, 4500);
-
-    const t6 = setTimeout(() => {
-      setIsClicking(false);
-      setPhase(3); // Show practice problem after shimmer
-    }, 5100);
-
-    const t7 = setTimeout(() => {
-      setCursorPos({ x: '60vw', y: '16vh' }); // Move back to Tutor tab
-    }, 6500);
-
-    const t8 = setTimeout(() => {
-      setIsClicking(true);
-      setPhase(4); // Tutor clicked
-    }, 7800);
-
-    return () => {
-      clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearTimeout(t4);
-      clearTimeout(t5); clearTimeout(t6); clearTimeout(t7); clearTimeout(t8);
-    };
-  }, [setCursorPos, setIsClicking]);
+    setCursorPos({ x: '110vw', y: '50vh' });
+    const t1 = setTimeout(() => setPhase(1), 500);
+    const t2 = setTimeout(() => setPhase(2), 1500);
+    const t3 = setTimeout(() => setPhase(3), 3000);
+    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
+  }, [setCursorPos]);
 
   return (
-    <motion.div 
-      className="absolute inset-0 w-full h-full bg-background flex"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+    <motion.div
+      className="absolute inset-0 w-full h-full bg-slate-50 flex items-center justify-center overflow-hidden"
+      initial={{ clipPath: 'circle(0% at center)' }}
+      animate={{ clipPath: 'circle(150% at center)' }}
+      exit={{ opacity: 0, filter: 'blur(10px)' }}
+      transition={{ duration: 1.2, ease: [0.7, 0, 0.3, 1] }}
     >
-      {/* Left Pane: Lecture Content */}
-      <div className="w-1/2 h-full border-r border-border p-12 overflow-hidden flex flex-col relative">
-        <div className="text-xs font-bold tracking-widest text-muted-foreground mb-4">WEEK 1 — WHOLE NUMBERS AND OPERATIONS</div>
-        <h1 className="text-3xl font-serif text-primary mb-8">1.1 Whole numbers and place value</h1>
-        
-        <div className="flex bg-muted/50 rounded-lg p-1 w-fit mb-10 border border-border">
-          <div className={`px-4 py-1.5 rounded-md text-sm font-medium transition-colors ${phase < 1 ? 'bg-white shadow-sm text-primary' : 'text-muted-foreground'}`}>Short</div>
-          <div className="px-4 py-1.5 rounded-md text-sm font-medium text-muted-foreground">Medium</div>
-          <div className={`px-4 py-1.5 rounded-md text-sm font-medium transition-colors ${phase >= 1 ? 'bg-white shadow-sm text-primary' : 'text-muted-foreground'}`}>Long</div>
-        </div>
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-100 to-slate-200 pointer-events-none" />
 
-        <div className="prose prose-sm max-w-none text-foreground/80 space-y-6">
-          <h2 className="font-serif text-2xl text-primary">What is place value?</h2>
-          <p>
-            We start with the most familiar objects in mathematics and the quiet idea that makes them work: what gives a digit its value? Before any fraction, equation, or proof, there is just counting — and the clever way we write what we count.
-          </p>
-          <p>
-            We write every whole number with just ten digits, 0 through 9. The reason ten symbols are enough is <em>place value</em>: a digit's value depends on where it sits. In 4072, the 4 means 4 × 1000.
-          </p>
-          
-          <AnimatePresence>
-            {phase >= 1 && (
-              <motion.div
-                initial={{ opacity: 0, height: 0, y: 10 }}
-                animate={{ opacity: 1, height: 'auto', y: 0 }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
-                className="space-y-6"
-              >
-                <p>
-                  For most of history people wrote numbers <em>without</em> place value. Roman numerals spell out MMXXIV for 2024 — there is no column to carry in, so multiplication was a job for specialists with an abacus.
-                </p>
-                <p>
-                  In expanded form, 4072 = 4 × 1000 + 0 × 100 + 7 × 10 + 2 × 1. Each place is worth ten times the place to its right — that single rule is the engine behind every calculation you will ever do.
-                </p>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      </div>
+      <div className="relative z-10 w-full h-full px-8 py-20 flex flex-col items-center justify-center">
 
-      {/* Right Pane: Tutor / Practice */}
-      <div className="w-1/2 h-full bg-white flex flex-col relative">
-        <div className="flex border-b border-border px-4 pt-4 bg-background">
-          <div className={`px-6 py-3 font-medium text-sm border-b-2 transition-colors ${phase < 2 || phase >= 4 ? 'border-primary text-primary' : 'border-transparent text-muted-foreground'}`}>Ask the tutor</div>
-          <div className={`px-6 py-3 font-medium text-sm border-b-2 transition-colors ${phase >= 2 && phase < 4 ? 'border-primary text-primary' : 'border-transparent text-muted-foreground'}`}>Practice on this</div>
-        </div>
+        <AnimatePresence>
+          {phase >= 1 && (
+            <motion.div
+              className="text-center w-full"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <div className="text-[25cqw] font-serif font-bold text-slate-900 leading-none tracking-tighter">
+                80<span className="text-sky-600">%</span>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-        <div className="flex-1 p-8 relative overflow-hidden">
-          <AnimatePresence mode="popLayout">
-            {phase < 2 || phase >= 4 ? (
-              <motion.div 
-                key="tutor"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                className="h-full flex flex-col justify-end"
-              >
-                <div className="mb-4 text-xs font-semibold text-muted-foreground uppercase tracking-widest">Starter questions for this section</div>
-                <div className="flex flex-wrap gap-2 mb-6">
-                  <div className="px-3 py-1.5 rounded-full border border-border text-sm text-primary bg-muted/30">Why does each place mean ten times the one to its right?</div>
-                  <div className="px-3 py-1.5 rounded-full border border-border text-sm text-primary bg-muted/30">What does the 0 in 4072 actually do?</div>
-                  <div className="px-3 py-1.5 rounded-full border border-border text-sm text-primary bg-muted/30">Why was place value such a big deal historically?</div>
-                </div>
-                <div className="w-full h-24 border border-border rounded-lg bg-muted/20 p-3 text-muted-foreground text-sm flex items-end shadow-inner">
-                  <div className="w-full flex justify-between">
-                    <span>Ask a question about place value...</span>
-                    <div className="w-8 h-8 rounded bg-primary text-white flex items-center justify-center cursor-pointer opacity-50">↑</div>
-                  </div>
-                </div>
-              </motion.div>
-            ) : (
-              <motion.div 
-                key="practice"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 20 }}
-                className="h-full flex flex-col"
-              >
-                <h3 className="font-serif text-xl text-primary mb-6">Generated Practice Problem</h3>
-                
-                {phase === 2 ? (
-                  <div className="space-y-3">
-                    <motion.div className="h-4 bg-muted rounded w-full overflow-hidden relative">
-                      <motion.div className="absolute inset-0 bg-white/50 w-1/2" animate={{ x: ['-100%', '200%'] }} transition={{ repeat: Infinity, duration: 1 }} />
-                    </motion.div>
-                    <motion.div className="h-4 bg-muted rounded w-5/6 overflow-hidden relative">
-                      <motion.div className="absolute inset-0 bg-white/50 w-1/2" animate={{ x: ['-100%', '200%'] }} transition={{ repeat: Infinity, duration: 1, delay: 0.1 }} />
-                    </motion.div>
-                  </div>
-                ) : (
-                  <motion.div 
-                    initial={{ opacity: 0 }} 
-                    animate={{ opacity: 1 }}
-                    className="p-6 border border-border rounded-xl shadow-sm bg-white"
-                  >
-                    <p className="text-foreground font-medium mb-6">
-                      Write the prime factorization of 12 using exponents.
-                    </p>
-                    <div className="w-full h-12 border border-border rounded-md bg-muted/10 mb-4 px-3 flex items-center text-muted-foreground">Type your answer...</div>
-                    <div className="px-4 py-2 bg-primary text-white rounded-md text-sm font-medium w-fit ml-auto">Submit</div>
-                  </motion.div>
-                )}
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
+        <AnimatePresence>
+          {phase >= 2 && (
+            <motion.div
+              className="text-center mt-6 w-full"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <h2 className="text-[9cqw] leading-tight font-sans font-bold text-slate-800 uppercase tracking-wide">
+                Drop or Fail
+              </h2>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <AnimatePresence>
+          {phase >= 3 && (
+            <motion.div
+              className="mt-12 w-full max-w-[80cqw]"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <div className="h-4 w-full bg-slate-200 rounded-full overflow-hidden flex">
+                <motion.div
+                  className="h-full bg-slate-800"
+                  initial={{ width: "0%" }}
+                  animate={{ width: "80%" }}
+                  transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+                />
+              </div>
+              <p className="text-[5cqw] text-slate-500 font-sans mt-6 text-center">
+                The current institutional model is structurally broken.
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
       </div>
     </motion.div>
   );

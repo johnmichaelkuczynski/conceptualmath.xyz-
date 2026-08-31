@@ -1,163 +1,96 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export function Scene4({ setCursorPos, setIsClicking }: { setCursorPos: (pos: {x: string, y: string}) => void, setIsClicking: (val: boolean) => void }) {
+export function Scene4({ setCursorPos }: { setCursorPos: (pos: {x: string, y: string}) => void }) {
   const [phase, setPhase] = useState(0);
-  const [kpi1, setKpi1] = useState(0);
-  const [kpi2, setKpi2] = useState(0);
-  const [kpi3, setKpi3] = useState(0);
-  const [kpi4, setKpi4] = useState(0);
-  const [kpi5, setKpi5] = useState(0);
 
   useEffect(() => {
-    // 0-1.5s: Cursor to sidebar "Analytics", clicks. Crossfade.
-    // 1.5-4.0s: KPI tiles count up.
-    // 4.0-6.0s: Topic Mastery rows stagger in.
-    // 6.0-8.5s: Cursor to "Ratios and proportions", click.
-    // 8.5-10s: Crossfade begins.
+    setCursorPos({ x: '110vw', y: '50vh' });
+    const t1 = setTimeout(() => setPhase(1), 500);
+    const t2 = setTimeout(() => setPhase(2), 2000);
+    const t3 = setTimeout(() => setPhase(3), 3500);
+    const t4 = setTimeout(() => setPhase(4), 5000);
 
-    setCursorPos({ x: '65vw', y: '90vh' }); // Start where Scene 3 left off
-    
-    const t1 = setTimeout(() => {
-      setCursorPos({ x: '10vw', y: '30vh' }); // Move to Analytics nav
-    }, 500);
-
-    const t2 = setTimeout(() => {
-      setIsClicking(true);
-      setPhase(1); // Nav clicked
-    }, 1300);
-
-    const t3 = setTimeout(() => {
-      setIsClicking(false);
-      setPhase(2); // Crossfade to Analytics content
-    }, 1500);
-
-    // Number ticker logic
-    const t4 = setTimeout(() => {
-      let step = 0;
-      const interval = setInterval(() => {
-        step += 1;
-        setKpi1(Math.min(100, Math.floor(step * 4)));
-        setKpi2(Math.min(100, Math.floor(step * 3.8)));
-        setKpi3(Math.min(24, Math.floor(step * 0.9)));
-        setKpi4(Math.min(4, Math.floor(step * 0.2)));
-        setKpi5(Math.min(1, Math.floor(step * 0.05)));
-        if (step > 30) clearInterval(interval);
-      }, 50);
-    }, 1500);
-
-    const t5 = setTimeout(() => {
-      setPhase(3); // Rows stagger in
-    }, 4000);
-
-    const t6 = setTimeout(() => {
-      setCursorPos({ x: '40vw', y: '65vh' }); // Move to Ratios row
-    }, 6000);
-
-    const t7 = setTimeout(() => {
-      setPhase(4); // Hover effect
-      setIsClicking(true);
-    }, 8300);
-
-    const t8 = setTimeout(() => {
-      setIsClicking(false);
-      setPhase(5); // Click flash & end
-    }, 8500);
-
-    return () => {
-      clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearTimeout(t4);
-      clearTimeout(t5); clearTimeout(t6); clearTimeout(t7); clearTimeout(t8);
-    };
-  }, [setCursorPos, setIsClicking]);
-
-  const rows = [
-    { topic: 'Whole numbers and place value', week: 'Week 1', att: 0, acc: 0, stat: 'UNTESTED', statColor: 'text-muted-foreground bg-muted' },
-    { topic: 'Addition and subtraction', week: 'Week 1', att: 1, acc: 1, stat: 'STRONG', statColor: 'text-emerald-700 bg-emerald-50' },
-    { topic: 'Factors, multiples, and primes', week: 'Week 1', att: 1, acc: 1, stat: 'STRONG', statColor: 'text-emerald-700 bg-emerald-50' },
-    { topic: 'Multiplication and division', week: 'Week 1', att: 0, acc: 0, stat: 'UNTESTED', statColor: 'text-muted-foreground bg-muted' },
-    { topic: 'Negative numbers and the number line', week: 'Week 1', att: 0, acc: 0, stat: 'UNTESTED', statColor: 'text-muted-foreground bg-muted' },
-  ];
+    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearTimeout(t4); };
+  }, [setCursorPos]);
 
   return (
-    <motion.div 
-      className="absolute inset-0 w-full h-full bg-background"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+    <motion.div
+      className="absolute inset-0 w-full h-full bg-slate-50 flex items-center justify-center overflow-hidden"
+      initial={{ opacity: 0, scale: 1.1 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ y: '-100%' }}
+      transition={{ duration: 1, ease: [0.7, 0, 0.3, 1] }}
     >
-      <AnimatePresence>
-        {phase >= 2 && (
-          <motion.div 
-            className="w-full h-full p-12 overflow-y-auto"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-          >
-            <h1 className="text-4xl font-serif text-primary mb-8 tracking-tight">Analytics</h1>
-            
-            <div className="grid grid-cols-5 gap-4 mb-10">
-              <div className="bg-white border border-border p-5 rounded-xl shadow-sm">
-                <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2">Course Average</div>
-                <div className="text-3xl font-light">{kpi1}%</div>
-              </div>
-              <div className="bg-white border border-border p-5 rounded-xl shadow-sm">
-                <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2">Practice Accuracy</div>
-                <div className="text-3xl font-light">{kpi2}%</div>
-              </div>
-              <div className="bg-white border border-border p-5 rounded-xl shadow-sm">
-                <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2">Assignments</div>
-                <div className="text-3xl font-light">{kpi3}</div>
-              </div>
-              <div className="bg-white border border-border p-5 rounded-xl shadow-sm">
-                <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2">Practice Count</div>
-                <div className="text-3xl font-light">{kpi4}</div>
-              </div>
-              <div className="bg-white border border-border p-5 rounded-xl shadow-sm">
-                <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2">Streak (Days)</div>
-                <div className="text-3xl font-light">{kpi5}</div>
-              </div>
-            </div>
+      <div className="absolute inset-0 bg-gradient-to-t from-sky-50 to-transparent pointer-events-none" />
 
-            <div className="bg-white border border-border rounded-xl shadow-sm overflow-hidden">
-              <div className="px-6 py-5 border-b border-border bg-background/50">
-                <h3 className="font-serif text-xl">Topic Mastery</h3>
-              </div>
-              
-              <div className="w-full">
-                <div className="grid grid-cols-12 gap-4 px-6 py-3 border-b border-border text-xs font-semibold text-muted-foreground uppercase tracking-wider bg-muted/20">
-                  <div className="col-span-5">Topic</div>
-                  <div className="col-span-2">Week</div>
-                  <div className="col-span-2">Attempts</div>
-                  <div className="col-span-1">Accuracy</div>
-                  <div className="col-span-2 text-right">Status</div>
-                </div>
-                
-                <div className="divide-y divide-border">
-                  {rows.map((row, i) => (
-                    <motion.div 
-                      key={i}
-                      className={`grid grid-cols-12 gap-4 px-6 py-4 items-center transition-colors ${i === 2 && phase >= 4 ? 'bg-primary/5 cursor-pointer' : ''}`}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={phase >= 3 ? { opacity: 1, y: 0 } : {}}
-                      transition={{ delay: phase >= 3 ? i * 0.06 : 0, duration: 0.4 }}
-                    >
-                      <div className="col-span-5 font-medium text-sm text-primary">{row.topic}</div>
-                      <div className="col-span-2 text-sm text-muted-foreground">{row.week}</div>
-                      <div className="col-span-2 text-sm">{row.att}</div>
-                      <div className="col-span-1 text-sm">{row.acc}%</div>
-                      <div className="col-span-2 text-right">
-                        <span className={`inline-flex px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wider ${row.statColor}`}>
-                          {row.stat}
-                        </span>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-            </div>
+      <div className="relative z-10 w-full h-full px-8 py-16 flex flex-col items-center justify-between">
+
+        <div className="w-full flex flex-col items-center mt-8">
+          <motion.div
+            className="text-center"
+            initial={{ opacity: 0, y: -30 }}
+            animate={phase >= 1 ? { opacity: 1, y: 0 } : { opacity: 0, y: -30 }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <h2 className="text-[12cqw] leading-[1.1] font-serif text-slate-900 mb-4">
+              Improve<br/>Outcomes
+            </h2>
           </motion.div>
-        )}
-      </AnimatePresence>
+        </div>
+
+        <div className="relative w-full flex-1 flex flex-col justify-center gap-6 mt-4">
+
+          <AnimatePresence>
+            {phase >= 2 && (
+              <motion.div
+                className="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm w-full"
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ type: "spring", stiffness: 100, damping: 20 }}
+              >
+                <div className="text-[4cqw] font-bold text-sky-600 uppercase tracking-wider mb-2">01. Practice</div>
+                <div className="text-[6cqw] font-sans font-medium text-slate-800 leading-tight">
+                  Unlimited algorithmic generation
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          <AnimatePresence>
+            {phase >= 3 && (
+              <motion.div
+                className="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm w-full ml-4"
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ type: "spring", stiffness: 100, damping: 20 }}
+              >
+                <div className="text-[4cqw] font-bold text-sky-600 uppercase tracking-wider mb-2">02. Guidance</div>
+                <div className="text-[6cqw] font-sans font-medium text-slate-800 leading-tight">
+                  Continuous step-by-step direction
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          <AnimatePresence>
+            {phase >= 4 && (
+              <motion.div
+                className="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-lg w-full mt-4"
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ type: "spring", stiffness: 100, damping: 20 }}
+              >
+                <div className="text-[4cqw] font-bold text-teal-400 uppercase tracking-wider mb-2">03. Analytics</div>
+                <div className="text-[6cqw] font-sans font-medium text-white leading-tight">
+                  Prescribe specialized training at point of weakness
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+        </div>
+      </div>
     </motion.div>
   );
 }

@@ -1,4 +1,5 @@
 kind = "video"
+videoAspectRatio = "9:16"
 previewPath = "/qr-course-demo/"
 title = "Developmental Mathematics Demo Video"
 version = "1.0.0"

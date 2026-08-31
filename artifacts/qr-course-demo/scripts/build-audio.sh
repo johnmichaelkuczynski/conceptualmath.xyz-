@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
-# Deterministically rebuild public/audio/composite_audio.mp3 from the six
-# per-scene narration clips (vo_s1..vo_s6.mp3) and the background bed
-# (bg_music.mp3).
+# Deterministically rebuild public/audio/composite_audio.mp3 from five
+# per-scene narration clips (vo_s1..vo_s5.mp3) over a silent timeline bed.
 #
 # Contract: the composite timeline must match SCENE_DURATIONS in
 # src/components/video/VideoTemplate.tsx. Each scene's narration is time-
 # stretched (atempo, speed-up only) so it fits inside its scene slot with a
 # fixed head/tail pad, then delayed to the scene's start offset and mixed over
-# the background bed at low volume. The script asserts every VO fits its slot
+# silence. The script asserts every VO fits its slot
 # before writing the output.
 set -euo pipefail
 
@@ -16,10 +15,9 @@ AUDIO_DIR="public/audio"
 
 # Scene slot durations in seconds — MUST match SCENE_DURATIONS (ms) in
 # src/components/video/VideoTemplate.tsx.
-SLOTS=(8 8 12 10 14 10)
+SLOTS=(6 6 8 8 7)
 HEAD_PAD=0.25   # silence before narration starts within a scene
 TAIL_PAD=0.25   # silence reserved at the end of a scene
-BG_VOLUME=0.15
 
 # Compute scene start offsets (cumulative slot sums).
 STARTS=()
@@ -30,14 +28,14 @@ for s in "${SLOTS[@]}"; do
 done
 TOTAL="$acc"
 
-inputs=(-i "$AUDIO_DIR/bg_music.mp3")
-for i in 1 2 3 4 5 6; do
+inputs=(-f lavfi -i "anullsrc=r=44100:cl=stereo")
+for i in 1 2 3 4 5; do
   inputs+=(-i "$AUDIO_DIR/vo_s${i}.mp3")
 done
 
-filter="[0:a]volume=${BG_VOLUME}[bg];"
-mix="[bg]"
-for idx in 0 1 2 3 4 5; do
+filter="[0:a]volume=1.0[silence];"
+mix="[silence]"
+for idx in 0 1 2 3 4; do
   n=$((idx + 1))
   vo="$AUDIO_DIR/vo_s${n}.mp3"
   dur=$(ffprobe -v error -show_entries format=duration -of default=nw=1:nk=1 "$vo")
@@ -60,7 +58,7 @@ for idx in 0 1 2 3 4 5; do
     "$n" "$dur" "$tempo" "$fitted" "$start" "$slot"
 done
 
-filter+="${mix}amix=inputs=7:normalize=0:duration=first[mix]"
+filter+="${mix}amix=inputs=6:normalize=0:duration=first[mix]"
 
 ffmpeg -y -loglevel error "${inputs[@]}" \
   -filter_complex "$filter" -map "[mix]" \
