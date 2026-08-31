@@ -8,6 +8,76 @@ deploymentTarget = "autoscale"
 args = ["pnpm", "store", "prune"]
 env = { "CI" = "true" }
 
+[[deployment.responseHeaders]]
+path = "/dashboard"
+name = "X-Robots-Tag"
+value = "noindex, follow"
+
+[[deployment.responseHeaders]]
+path = "/dashboard/*"
+name = "X-Robots-Tag"
+value = "noindex, follow"
+
+[[deployment.responseHeaders]]
+path = "/curriculum"
+name = "X-Robots-Tag"
+value = "noindex, follow"
+
+[[deployment.responseHeaders]]
+path = "/weeks/*"
+name = "X-Robots-Tag"
+value = "noindex, follow"
+
+[[deployment.responseHeaders]]
+path = "/assignments"
+name = "X-Robots-Tag"
+value = "noindex, follow"
+
+[[deployment.responseHeaders]]
+path = "/assignments/*"
+name = "X-Robots-Tag"
+value = "noindex, follow"
+
+[[deployment.responseHeaders]]
+path = "/analytics"
+name = "X-Robots-Tag"
+value = "noindex, follow"
+
+[[deployment.responseHeaders]]
+path = "/assessments"
+name = "X-Robots-Tag"
+value = "noindex, follow"
+
+[[deployment.responseHeaders]]
+path = "/assessments/*"
+name = "X-Robots-Tag"
+value = "noindex, follow"
+
+[[deployment.responseHeaders]]
+path = "/gradebook"
+name = "X-Robots-Tag"
+value = "noindex, follow"
+
+[[deployment.responseHeaders]]
+path = "/diagnostics"
+name = "X-Robots-Tag"
+value = "noindex, follow"
+
+[[deployment.responseHeaders]]
+path = "/lectures/*"
+name = "X-Robots-Tag"
+value = "noindex, follow"
+
+[[deployment.responseHeaders]]
+path = "/practice/*"
+name = "X-Robots-Tag"
+value = "noindex, follow"
+
+[[deployment.responseHeaders]]
+path = "/practice-runs/*"
+name = "X-Robots-Tag"
+value = "noindex, follow"
+
 [workflows]
 runButton = "Project"
 

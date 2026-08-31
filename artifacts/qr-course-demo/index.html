@@ -4,9 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
     <title>Developmental Mathematics Course Demo Video</title>
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
 
     <meta name="description" content="See Developmental Mathematics in action: a narrated walkthrough of the free four-week course that rebuilds arithmetic, fractions, decimals, ratios, and pre-algebra foundations." />
+    <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://developmentalmath.ink/qr-course-demo/" />
     <meta property="og:title" content="Developmental Mathematics Course Demo Video" />
     <meta property="og:description" content="See Developmental Mathematics in action: a narrated walkthrough of the free four-week course that rebuilds arithmetic, fractions, decimals, ratios, and pre-algebra foundations." />
@@ -20,13 +21,74 @@
     <meta name="twitter:title" content="Developmental Mathematics Course Demo Video" />
     <meta name="twitter:description" content="See Developmental Mathematics in action: a narrated walkthrough of the free four-week course that rebuilds arithmetic, fractions, decimals, ratios, and pre-algebra foundations." />
     <meta name="twitter:image" content="https://developmentalmath.ink/qr-course-demo/opengraph.jpg" />
+    <style>
+      .seo-demo {
+        min-height: 100vh;
+        padding: 2rem 1.5rem 4rem;
+        background: #faf7f2;
+        color: #0f172a;
+        font-family: "Plus Jakarta Sans", Arial, sans-serif;
+      }
+      .seo-demo-inner { max-width: 64rem; margin: 0 auto; }
+      .seo-demo a { color: #0f172a; }
+      .seo-demo-header { display: flex; justify-content: space-between; gap: 1rem; align-items: center; margin-bottom: 4rem; }
+      .seo-demo-brand { font-family: "Playfair Display", Georgia, serif; font-size: 1.125rem; font-weight: 700; text-decoration: none; }
+      .seo-demo-nav { display: flex; flex-wrap: wrap; gap: 1rem; font-size: .875rem; }
+      .seo-demo-nav a { color: #64748b; text-decoration: none; }
+      .seo-demo-kicker { margin: 0 0 1rem; color: #64748b; font-size: .75rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+      .seo-demo h1 { max-width: 48rem; margin: 0 0 1.25rem; font-family: "Playfair Display", Georgia, serif; font-size: clamp(2.5rem, 6vw, 5rem); line-height: 1.05; }
+      .seo-demo-lede { max-width: 42rem; margin: 0 0 3rem; color: #64748b; font-size: 1.125rem; line-height: 1.65; }
+      .seo-demo-summary { max-width: 48rem; padding: 1.5rem; border: 1px solid #e2e8f0; border-radius: .75rem; background: #fff; }
+      .seo-demo-summary h2 { margin: 0 0 1rem; font-family: "Playfair Display", Georgia, serif; font-size: 1.5rem; }
+      .seo-demo-summary ol { margin: 0; padding-left: 1.25rem; }
+      .seo-demo-summary li { margin: .8rem 0; color: #475569; line-height: 1.55; }
+      .seo-demo-summary strong { color: #0f172a; }
+      .seo-demo-note { margin-top: 2rem; color: #64748b; font-size: .875rem; }
+      @media (max-width: 640px) { .seo-demo-header { align-items: flex-start; flex-direction: column; margin-bottom: 3rem; } }
+    </style>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=JetBrains+Mono:wght@100..800&display=swap" rel="stylesheet">
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <main class="seo-demo" data-seo-fallback>
+        <div class="seo-demo-inner">
+          <header class="seo-demo-header">
+            <a class="seo-demo-brand" href="https://developmentalmath.ink/">Developmental Mathematics</a>
+            <nav class="seo-demo-nav" aria-label="Course links">
+              <a href="https://developmentalmath.ink/">Course overview</a>
+              <a href="https://developmentalmath.ink/dashboard">Start the course</a>
+            </nav>
+          </header>
+          <p class="seo-demo-kicker">Interactive course walkthrough</p>
+          <h1>Developmental Mathematics Demo Video</h1>
+          <p class="seo-demo-lede">
+            See how Developmental Mathematics rebuilds arithmetic from place value
+            through fractions, percents, ratios, and the start of algebra. This
+            animated demo follows a learner through lectures, an AI tutor,
+            adaptive practice, analytics, and assignment feedback.
+          </p>
+          <section class="seo-demo-summary" aria-labelledby="video-summary-heading">
+            <h2 id="video-summary-heading">What the video shows</h2>
+            <ol>
+              <li><strong>Course dashboard:</strong> a four-week learning plan begins with whole numbers and operations.</li>
+              <li><strong>Place value lecture:</strong> a learner reads about why each digit is worth ten times the place to its right, then switches to a longer explanation.</li>
+              <li><strong>AI tutor:</strong> the learner asks why division by zero is undefined and receives a grounded explanation.</li>
+              <li><strong>Analytics:</strong> course progress and topic mastery make practice needs visible, including ratios and proportions.</li>
+              <li><strong>Adaptive practice:</strong> a prime-factorization problem responds to the learner's attempt and adjusts difficulty.</li>
+              <li><strong>Assignment feedback:</strong> a graded homework review combines the learner's answer with explanatory AI feedback.</li>
+            </ol>
+          </section>
+          <p class="seo-demo-note">
+            The animated player loads automatically when JavaScript is available.
+            The summary above describes the complete video for accessible reading
+            and non-visual browsing.
+          </p>
+        </div>
+      </main>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

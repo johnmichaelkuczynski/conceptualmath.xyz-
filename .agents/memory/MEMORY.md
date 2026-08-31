@@ -3,3 +3,4 @@
 - [Open anonymous access](qr-course-anonymous-access.md) — owner explicitly requires no login or usage gates; keep stable browser-session progress and preserve old identity keys.
 - [Course download safety](course-download-safety.md) — downloadable course materials must never expose graded answer keys.
 - [Practice-run submit exactly-once](qr-course-practice-concurrency.md) — gate profile increments on atomic in_progress→submitted tx; never leak a transient status into Zod-enum responses.
+- [SPA indexation policy](qr-course-indexation.md) — index only public shells; exclude student routes with response headers, not client-only metadata or robots blocking.

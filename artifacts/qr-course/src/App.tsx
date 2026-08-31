@@ -2,7 +2,9 @@ import {
   Switch,
   Route,
   Router as WouterRouter,
+  useLocation,
 } from "wouter";
+import { useEffect } from "react";
 import {
   QueryClient,
   QueryClientProvider,
@@ -29,6 +31,25 @@ import PracticeRun from "@/pages/PracticeRun";
 const queryClient = new QueryClient();
 
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
+
+function RouteIndexation() {
+  const [location] = useLocation();
+
+  useEffect(() => {
+    const robotsMeta = document.querySelector<HTMLMetaElement>(
+      'meta[name="robots"]',
+    );
+
+    if (!robotsMeta) {
+      throw new Error('The required <meta name="robots"> element is missing.');
+    }
+
+    robotsMeta.content =
+      location === "/" ? "index, follow" : "noindex, follow";
+  }, [location]);
+
+  return null;
+}
 
 function Router() {
   return (
@@ -57,6 +78,7 @@ function App() {
     <WouterRouter base={basePath}>
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
+          <RouteIndexation />
           <Router />
           <Toaster />
         </TooltipProvider>

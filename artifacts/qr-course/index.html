@@ -50,9 +50,175 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+      .seo-shell {
+        min-height: 100vh;
+        box-sizing: border-box;
+        background: #faf7f2;
+        color: #0f172a;
+        font-family: Inter, Arial, sans-serif;
+      }
+      .seo-shell * { box-sizing: border-box; }
+      .seo-shell a { color: inherit; }
+      .seo-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        max-width: 72rem;
+        margin: 0 auto;
+        padding: 1.25rem 1.5rem;
+      }
+      .seo-brand {
+        display: inline-flex;
+        align-items: center;
+        gap: .75rem;
+        font-family: Georgia, serif;
+        font-size: 1.125rem;
+        font-weight: 600;
+        text-decoration: none;
+      }
+      .seo-mark {
+        display: grid;
+        width: 2.25rem;
+        height: 2.25rem;
+        place-items: center;
+        border-radius: .375rem;
+        background: #0f172a;
+        color: #fff;
+        font-size: 1.25rem;
+        font-weight: 700;
+      }
+      .seo-header-links { display: flex; align-items: center; gap: 1rem; font-size: .875rem; }
+      .seo-header-links a { color: #64748b; text-decoration: none; }
+      .seo-header-links a:hover { color: #0f172a; }
+      .seo-layout {
+        display: grid;
+        grid-template-columns: minmax(12rem, 16rem) minmax(0, 1fr);
+        gap: 2rem;
+        max-width: 72rem;
+        margin: 0 auto;
+        padding: 2rem 1.5rem 4rem;
+      }
+      .seo-topics h2 {
+        margin: 0 0 .75rem;
+        font-size: .75rem;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+      }
+      .seo-topics ul { margin: 0; padding: 0; list-style: none; }
+      .seo-topics li { margin: .2rem 0; color: #64748b; font-size: .75rem; line-height: 1.35; }
+      .seo-downloads { display: grid; gap: .5rem; margin-top: 1rem; }
+      .seo-downloads a {
+        display: inline-block;
+        width: fit-content;
+        padding: .45rem .65rem;
+        border: 1px solid #e2e8f0;
+        border-radius: .375rem;
+        font-size: .75rem;
+        text-decoration: none;
+      }
+      .seo-downloads a:first-child { border-color: #0f172a; background: #0f172a; color: #fff; }
+      .seo-content { max-width: 48rem; padding: 3rem 0; }
+      .seo-eyebrow { margin: 0 0 1.25rem; color: #64748b; font-size: .875rem; font-weight: 600; letter-spacing: .15em; text-transform: uppercase; }
+      .seo-content h1 { max-width: 42rem; margin: 0 0 1.25rem; color: #0f172a; font-family: Georgia, serif; font-size: clamp(2.5rem, 6vw, 4rem); line-height: 1.08; }
+      .seo-intro { max-width: 40rem; margin: 0 0 2rem; color: #64748b; font-size: 1.125rem; line-height: 1.65; }
+      .seo-cta { display: inline-block; padding: .75rem 1.5rem; border-radius: .375rem; background: #0f172a; color: #fff !important; font-weight: 600; text-decoration: none; }
+      .seo-note { margin: .75rem 0 0; color: #64748b; font-size: .75rem; }
+      .seo-highlights { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin-top: 4rem; }
+      .seo-card { padding: 1.25rem; border: 1px solid #e2e8f0; border-radius: .75rem; background: #fff; }
+      .seo-card h2 { margin: 0 0 .4rem; font-family: Georgia, serif; font-size: 1rem; }
+      .seo-card p { margin: 0; color: #64748b; font-size: .875rem; line-height: 1.55; }
+      .seo-footer { padding: 1.5rem; border-top: 1px solid #e2e8f0; color: #64748b; font-size: .75rem; text-align: center; }
+      @media (max-width: 720px) {
+        .seo-layout { display: block; }
+        .seo-topics { display: none; }
+        .seo-content { padding-top: 1rem; }
+        .seo-highlights { grid-template-columns: 1fr; margin-top: 2.5rem; }
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div class="seo-shell" data-seo-fallback>
+        <header class="seo-header">
+          <a class="seo-brand" href="/" aria-label="Developmental Mathematics home">
+            <span class="seo-mark" aria-hidden="true">+</span>
+            <span>DevMath</span>
+          </a>
+          <nav class="seo-header-links" aria-label="Public links">
+            <a href="mailto:johnmichaelkuczynski@gmail.com">Contact Us</a>
+            <a href="https://zhisystems.ai/" rel="noopener noreferrer">ZHI Systems</a>
+          </nav>
+        </header>
+        <div class="seo-layout">
+          <aside class="seo-topics" aria-labelledby="seo-topics-heading">
+            <h2 id="seo-topics-heading">Topics covered in this course</h2>
+            <ul>
+              <li>Whole numbers and place value</li>
+              <li>Addition and subtraction</li>
+              <li>Multiplication and division</li>
+              <li>Factors, multiples, and primes</li>
+              <li>Negative numbers and the number line</li>
+              <li>Order of operations</li>
+              <li>Word problems and problem-solving strategies</li>
+              <li>Understanding fractions</li>
+              <li>Adding and subtracting fractions</li>
+              <li>Multiplying and dividing fractions</li>
+              <li>Decimals and place value</li>
+              <li>Converting fractions, decimals, and percents</li>
+              <li>Ratios, rates, and proportions</li>
+              <li>Percent problems and applications</li>
+              <li>Units, measurement, and conversion</li>
+              <li>Introduction to variables and expressions</li>
+              <li>Simplifying and evaluating expressions</li>
+              <li>Solving one-step equations</li>
+              <li>Solving multi-step equations</li>
+              <li>Translating words into equations</li>
+              <li>The coordinate plane</li>
+              <li>Graphing linear equations</li>
+              <li>Slope and intercepts</li>
+              <li>Exponents and powers</li>
+              <li>Introduction to polynomials</li>
+              <li>Basic geometry: perimeter, area, volume</li>
+              <li>Reading tables, charts, and graphs</li>
+              <li>Capstone synthesis</li>
+            </ul>
+            <div class="seo-downloads">
+              <a href="/api/course/download.pdf">Download course PDF</a>
+              <a href="/api/course/download.txt">Download course text</a>
+            </div>
+          </aside>
+          <main class="seo-content">
+            <p class="seo-eyebrow">A four-week foundations course</p>
+            <h1>Developmental Mathematics</h1>
+            <p class="seo-intro">
+              Rebuild your arithmetic from the ground up: what numbers really are,
+              how the four operations work, and why the rules you half-remember
+              are actually true. Read the idea, ground it in an everyday example,
+              then write the answer yourself.
+            </p>
+            <a class="seo-cta" href="/dashboard">Start the course</a>
+            <p class="seo-note">Your progress is saved automatically in this browser.</p>
+            <div class="seo-highlights">
+              <article class="seo-card">
+                <h2>28 micro-lectures</h2>
+                <p>Four weeks rebuilding arithmetic from place value to the start of algebra.</p>
+              </article>
+              <article class="seo-card">
+                <h2>Section-scoped AI tutor</h2>
+                <p>Ask questions grounded in the exact lecture you are reading.</p>
+              </article>
+              <article class="seo-card">
+                <h2>Write the answer</h2>
+                <p>Compose fractions, exponents, and equations in proper math notation.</p>
+              </article>
+            </div>
+          </main>
+        </div>
+        <footer class="seo-footer">Developmental Mathematics — read the idea, ground the idea, write the idea.</footer>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
