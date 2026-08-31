@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { usePlaybackTimers } from '../PlaybackContext';
 
 export function Scene1({ setCursorPos }: { setCursorPos: (pos: {x: string, y: string}) => void }) {
   const [phase, setPhase] = useState(0);
+  const { setTimeout, clearTimeout } = usePlaybackTimers();
 
   useEffect(() => {
     setCursorPos({ x: '110vw', y: '50vh' });

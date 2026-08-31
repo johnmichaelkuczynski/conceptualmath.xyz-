@@ -1,12 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useAnimationControls } from 'framer-motion';
+import { usePlaybackPlaying } from './PlaybackContext';
 
 export function CursorPointer({ x, y, isClicking }: { x: string | number; y: string | number; isClicking: boolean }) {
+  const playing = usePlaybackPlaying();
+  const cursorControls = useAnimationControls();
+
+  useEffect(() => {
+    if (!playing) {
+      cursorControls.stop();
+      return;
+    }
+    cursorControls.start({
+      x,
+      y,
+      transition: { type: 'spring', stiffness: 120, damping: 20 },
+    });
+  }, [cursorControls, playing, x, y]);
+
   return (
     <motion.div
       className="absolute top-0 left-0 z-50 pointer-events-none"
-      animate={{ x, y }}
-      transition={{ type: 'spring', stiffness: 120, damping: 20 }}
+      animate={cursorControls}
     >
       <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g filter="url(#filter0_d)">
@@ -24,14 +39,32 @@ export function CursorPointer({ x, y, isClicking }: { x: string | number; y: str
           </filter>
         </defs>
       </svg>
-      {isClicking && (
-        <motion.div
-          className="absolute top-0 left-0 w-8 h-8 border-2 border-black rounded-full"
-          initial={{ scale: 0.5, opacity: 1 }}
-          animate={{ scale: 1.5, opacity: 0 }}
-          transition={{ duration: 0.3 }}
-        />
-      )}
+      {isClicking && <ClickPulse />}
     </motion.div>
+  );
+}
+
+function ClickPulse() {
+  const playing = usePlaybackPlaying();
+  const pulseControls = useAnimationControls();
+
+  useEffect(() => {
+    if (!playing) {
+      pulseControls.stop();
+      return;
+    }
+    pulseControls.start({
+      scale: 1.5,
+      opacity: 0,
+      transition: { duration: 0.3 },
+    });
+  }, [playing, pulseControls]);
+
+  return (
+    <motion.div
+      className="absolute top-0 left-0 w-8 h-8 border-2 border-black rounded-full"
+      initial={{ scale: 0.5, opacity: 1 }}
+      animate={pulseControls}
+    />
   );
 }

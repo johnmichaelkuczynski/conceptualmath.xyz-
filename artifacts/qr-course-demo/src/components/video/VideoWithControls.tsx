@@ -1,5 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ChevronDown, ChevronUp, Repeat, Volume2, VolumeX } from 'lucide-react';
+import {
+  Captions,
+  ChevronDown,
+  ChevronUp,
+  Play,
+  Repeat,
+  Square,
+  Volume2,
+  VolumeX,
+} from 'lucide-react';
 import VideoTemplate, { SCENE_DURATIONS } from './VideoTemplate';
 import { useSceneControls } from './useSceneControls';
 
@@ -8,14 +17,19 @@ const PROGRESS_TICK_MS = 60;
 interface ControlBarProps {
   visible: boolean;
   collapsed: boolean;
+  collapsible: boolean;
   locked: boolean;
   muted: boolean;
+  playing: boolean;
+  captionsEnabled: boolean;
   sceneKeys: string[];
   activeIndex: number;
   activeDuration: number;
   tick: number;
   onToggleLock: () => void;
   onToggleMute: () => void;
+  onTogglePlay: () => void;
+  onToggleCaptions: () => void;
   onJumpTo: (index: number) => void;
   onToggleCollapsed: () => void;
 }
@@ -25,24 +39,37 @@ function ProgressSegments({
   activeIndex,
   activeDuration,
   tick,
+  playing,
   onJumpTo,
 }: {
   sceneKeys: string[];
   activeIndex: number;
   activeDuration: number;
   tick: number;
+  playing: boolean;
   onJumpTo: (index: number) => void;
 }) {
   const [elapsed, setElapsed] = useState(0);
+  const elapsedRef = useRef(0);
 
   useEffect(() => {
+    elapsedRef.current = 0;
     setElapsed(0);
-    const start = performance.now();
-    const id = window.setInterval(() => {
-      setElapsed(performance.now() - start);
-    }, PROGRESS_TICK_MS);
-    return () => window.clearInterval(id);
   }, [tick]);
+
+  useEffect(() => {
+    if (!playing) return;
+    const start = performance.now() - elapsedRef.current;
+    const id = window.setInterval(() => {
+      const nextElapsed = performance.now() - start;
+      elapsedRef.current = nextElapsed;
+      setElapsed(nextElapsed);
+    }, PROGRESS_TICK_MS);
+    return () => {
+      elapsedRef.current = performance.now() - start;
+      window.clearInterval(id);
+    };
+  }, [playing, tick]);
 
   const progress = activeDuration > 0 ? Math.min(1, elapsed / activeDuration) : 0;
 
@@ -73,26 +100,52 @@ function ProgressSegments({
 function ControlBar({
   visible,
   collapsed,
+  collapsible,
   locked,
   muted,
+  playing,
+  captionsEnabled,
   sceneKeys,
   activeIndex,
   activeDuration,
   tick,
   onToggleLock,
   onToggleMute,
+  onTogglePlay,
+  onToggleCaptions,
   onJumpTo,
   onToggleCollapsed,
 }: ControlBarProps) {
+  if (!visible) {
+    return (
+      <div className="flex justify-end bg-black/50 px-5 py-3 backdrop-blur-sm">
+        <button
+          onClick={onToggleCollapsed}
+          className="w-14 h-14 flex items-center justify-center text-white hover:bg-white/10 transition-colors rounded-lg"
+          title="Show controls"
+          aria-label="Show controls"
+          aria-expanded={false}
+        >
+          <ChevronUp className="w-10 h-10" />
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div
-      className={`flex items-center gap-3 bg-black/50 backdrop-blur-sm px-5 py-4 transition-all duration-200 ease-out ${
-        visible
-          ? 'translate-y-0 opacity-100 pointer-events-auto'
-          : 'translate-y-full opacity-0 pointer-events-none'
-      }`}
-      aria-hidden={!visible}
+      className="flex items-center gap-3 bg-black/50 backdrop-blur-sm px-5 py-4 transition-all duration-200 ease-out"
     >
+      <button
+        onClick={onTogglePlay}
+        className="w-14 h-14 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 transition-colors rounded-lg shrink-0"
+        title={playing ? 'Stop demo' : 'Play current scene from start'}
+        aria-label={playing ? 'Stop demo' : 'Play current scene from start'}
+        aria-pressed={playing}
+      >
+        {playing ? <Square className="w-8 h-8" /> : <Play className="w-8 h-8" />}
+      </button>
+
       <button
         onClick={onToggleLock}
         className={`w-14 h-14 flex items-center justify-center transition-colors rounded-lg shrink-0 ${
@@ -117,6 +170,20 @@ function ControlBar({
         {muted ? <VolumeX className="w-8 h-8" /> : <Volume2 className="w-8 h-8" />}
       </button>
 
+      <button
+        onClick={onToggleCaptions}
+        className={`w-14 h-14 flex items-center justify-center transition-colors rounded-lg shrink-0 ${
+          captionsEnabled
+            ? 'text-white bg-white/15 hover:bg-white/25'
+            : 'text-white/60 hover:text-white hover:bg-white/10'
+        }`}
+        title={captionsEnabled ? 'Turn captions off' : 'Turn captions on'}
+        aria-label={captionsEnabled ? 'Turn captions off' : 'Turn captions on'}
+        aria-pressed={captionsEnabled}
+      >
+        <Captions className="w-8 h-8" />
+      </button>
+
       <div className="w-px self-stretch bg-white/15" aria-hidden="true" />
 
       <ProgressSegments
@@ -124,6 +191,7 @@ function ControlBar({
         activeIndex={activeIndex}
         activeDuration={activeDuration}
         tick={tick}
+        playing={playing}
         onJumpTo={onJumpTo}
       />
 
@@ -131,15 +199,17 @@ function ControlBar({
         {activeIndex + 1}/{sceneKeys.length}
       </div>
 
-      <button
-        onClick={onToggleCollapsed}
-        className="w-14 h-14 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 transition-colors rounded-lg shrink-0"
-        title={collapsed ? 'Show controls' : 'Hide controls'}
-        aria-label={collapsed ? 'Show controls' : 'Hide controls'}
-        aria-expanded={!collapsed}
-      >
-        {collapsed ? <ChevronUp className="w-10 h-10" /> : <ChevronDown className="w-10 h-10" />}
-      </button>
+      {collapsible && (
+        <button
+          onClick={onToggleCollapsed}
+          className="w-14 h-14 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 transition-colors rounded-lg shrink-0"
+          title={collapsed ? 'Show controls' : 'Hide controls'}
+          aria-label={collapsed ? 'Show controls' : 'Hide controls'}
+          aria-expanded={!collapsed}
+        >
+          {collapsed ? <ChevronUp className="w-10 h-10" /> : <ChevronDown className="w-10 h-10" />}
+        </button>
+      )}
     </div>
   );
 }
@@ -161,6 +231,10 @@ export default function VideoWithControls() {
   } = useSceneControls(SCENE_DURATIONS);
 
   const [muted, setMuted] = useState(true);
+  const [playing, setPlaying] = useState(true);
+  const [captionsEnabled, setCaptionsEnabled] = useState(true);
+  const [stoppedSnapshot, setStoppedSnapshot] = useState<string | null>(null);
+  const visualRef = useRef<HTMLDivElement | null>(null);
   const sensorRef = useRef<HTMLDivElement | null>(null);
   const [collapsed, setCollapsed] = useState(false);
   const [hovering, setHovering] = useState(false);
@@ -188,6 +262,18 @@ export default function VideoWithControls() {
       return !c;
     });
   }, []);
+  const handleTogglePlay = useCallback(() => {
+    if (playing) {
+      const frozenVisual = visualRef.current?.cloneNode(true) as HTMLDivElement | undefined;
+      frozenVisual?.querySelectorAll('audio').forEach((audio) => audio.remove());
+      setStoppedSnapshot(frozenVisual?.innerHTML ?? null);
+      setPlaying(false);
+      return;
+    }
+    jumpTo(activeIndex);
+    setStoppedSnapshot(null);
+    setPlaying(true);
+  }, [activeIndex, jumpTo, playing]);
 
   useEffect(() => {
     if (!(collapsed && tapPinned)) return;
@@ -200,19 +286,28 @@ export default function VideoWithControls() {
     return () => document.removeEventListener('pointerdown', onDocPointerDown);
   }, [collapsed, tapPinned]);
 
-  if (!isIframed) return <VideoTemplate />;
-
-  const barVisible = !collapsed || hovering || tapPinned;
+  const barVisible = !isIframed || !collapsed || hovering || tapPinned;
 
   return (
     <div className="relative w-full h-screen">
-      <VideoTemplate
-        key={mountKey}
-        durations={durations}
-        loop
-        muted={muted}
-        onSceneChange={onSceneChange}
-      />
+      <div ref={visualRef} className="absolute inset-0">
+        <VideoTemplate
+          key={mountKey}
+          durations={durations}
+          loop
+          playing={playing}
+          muted={muted}
+          captionsEnabled={captionsEnabled}
+          onSceneChange={onSceneChange}
+        />
+      </div>
+      {stoppedSnapshot && (
+        <div
+          className="absolute inset-0 z-40 overflow-hidden pointer-events-none"
+          aria-hidden="true"
+          dangerouslySetInnerHTML={{ __html: stoppedSnapshot }}
+        />
+      )}
       <div
         ref={sensorRef}
         className="absolute bottom-0 left-0 right-0 z-50 flex flex-col justify-end"
@@ -225,14 +320,19 @@ export default function VideoWithControls() {
         <ControlBar
           visible={barVisible}
           collapsed={collapsed}
+          collapsible={isIframed}
           locked={locked}
           muted={muted}
+          playing={playing}
+          captionsEnabled={captionsEnabled}
           sceneKeys={sceneKeys}
           activeIndex={activeIndex}
           activeDuration={activeDuration}
           tick={tick}
           onToggleLock={toggleLock}
           onToggleMute={() => setMuted((m) => !m)}
+          onTogglePlay={handleTogglePlay}
+          onToggleCaptions={() => setCaptionsEnabled((enabled) => !enabled)}
           onJumpTo={jumpTo}
           onToggleCollapsed={handleToggleCollapsed}
         />
