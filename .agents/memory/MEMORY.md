@@ -5,3 +5,4 @@
 - [Practice-run submit exactly-once](qr-course-practice-concurrency.md) — gate profile increments on atomic in_progress→submitted tx; never leak a transient status into Zod-enum responses.
 - [SPA indexation policy](qr-course-indexation.md) — index only public shells; exclude student routes with response headers, not client-only metadata or robots blocking.
 - [Demo stop semantics](qr-course-demo-pause.md) — stop holds the current frame and all clocks; play restarts the current scene and narration together.
+- [Demo caption clock](qr-course-demo-caption-clock.md) — captions must follow the visual scene timeline, not audio playback, because audible autoplay may be blocked.
