@@ -1,207 +1,94 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { usePlaybackPlaying, usePlaybackTimers } from '../PlaybackContext';
-import { StreamingText } from '../StreamingText';
 
-export function Scene5({ setCursorPos, setIsClicking }: { setCursorPos: (pos: {x: string, y: string}) => void, setIsClicking: (val: boolean) => void }) {
+export function Scene5({ setCursorPos }: { setCursorPos: (pos: {x: string, y: string}) => void }) {
   const [phase, setPhase] = useState(0);
-  const playing = usePlaybackPlaying();
-  const { setTimeout, clearTimeout } = usePlaybackTimers();
-  const [typedAnswer, setTypedAnswer] = useState("");
-  const [activeTab, setActiveTab] = useState("Exponents");
 
   useEffect(() => {
-    setCursorPos({ x: '40vw', y: '65vh' }); 
-    
+    setCursorPos({ x: '110cqw', y: '50cqh' });
     const t1 = setTimeout(() => setPhase(1), 500);
+    const t2 = setTimeout(() => setPhase(2), 2000);
+    const t3 = setTimeout(() => setPhase(3), 3500);
 
-    const t2 = setTimeout(() => {
-      setCursorPos({ x: '50vw', y: '60vh' }); 
-    }, 2000);
-
-    const t3 = setTimeout(() => {
-      setTypedAnswer("2 × 6");
-    }, 3000);
-
-    const t4 = setTimeout(() => {
-      setCursorPos({ x: '70vw', y: '60vh' }); 
-    }, 3500);
-
-    const t5 = setTimeout(() => {
-      setIsClicking(true);
-    }, 4200);
-
-    const t6 = setTimeout(() => {
-      setIsClicking(false);
-      setPhase(2); 
-    }, 4500);
-
-    const t7 = setTimeout(() => setPhase(3), 6000); 
-    const t8 = setTimeout(() => {
-      setPhase(4); 
-      setTypedAnswer("");
-    }, 7000);
-
-    const t9 = setTimeout(() => {
-      setCursorPos({ x: '35vw', y: '82vh' }); // move to keyboard
-    }, 8000);
-    const t10 = setTimeout(() => {
-      setIsClicking(true);
-    }, 8500);
-    const t11 = setTimeout(() => {
-      setIsClicking(false);
-      setTypedAnswer("2²");
-    }, 8600);
-    const t12 = setTimeout(() => setTypedAnswer("2² "), 9000);
-    const t12a = setTimeout(() => setTypedAnswer("2² "), 9300);
-
-    const t13 = setTimeout(() => {
-      setCursorPos({ x: '45vw', y: '82vh' }); // move to ×
-    }, 9500);
-    const t14 = setTimeout(() => {
-      setIsClicking(true);
-    }, 9800);
-    const t15 = setTimeout(() => {
-      setIsClicking(false);
-      setTypedAnswer("2² ×");
-    }, 9900);
-    const t16 = setTimeout(() => setTypedAnswer("2² × 3"), 10200);
-
-    const t17 = setTimeout(() => {
-      setCursorPos({ x: '70vw', y: '60vh' }); // Move to Submit
-    }, 10500);
-
-    const t18 = setTimeout(() => setIsClicking(true), 11200);
-    const t19 = setTimeout(() => {
-      setIsClicking(false);
-      setPhase(5); 
-    }, 11500);
-
-    return () => {
-      clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearTimeout(t4);
-      clearTimeout(t5); clearTimeout(t6); clearTimeout(t7); clearTimeout(t8);
-      clearTimeout(t9); clearTimeout(t10); clearTimeout(t11); clearTimeout(t12);
-      clearTimeout(t12a); clearTimeout(t13); clearTimeout(t14); clearTimeout(t15);
-      clearTimeout(t16); clearTimeout(t17); clearTimeout(t18); clearTimeout(t19);
-    };
-  }, [setCursorPos, setIsClicking]);
+    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
+  }, [setCursorPos]);
 
   return (
-    <motion.div 
-      className="absolute inset-0 w-full h-full bg-background p-12 overflow-hidden flex flex-col"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+    <motion.div
+      className="absolute inset-0 w-full h-full bg-slate-900 flex flex-col items-center justify-center overflow-hidden"
+      initial={{ y: '100%' }}
+      animate={{ y: 0 }}
+      exit={{ y: '-100%', opacity: 0 }}
+      transition={{ duration: 1, ease: [0.7, 0, 0.3, 1] }}
     >
-      <AnimatePresence>
-        {phase === 3 && (
-          <motion.div 
-            initial={{ opacity: 0, y: 50, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            className="absolute bottom-8 right-12 z-50 bg-slate-800 text-white px-4 py-3 rounded-lg shadow-xl text-sm flex items-center space-x-2"
-          >
-            <span>↓</span>
-            <span>Difficulty adjusted to <span className="font-semibold">Very easy</span></span>
-          </motion.div>
-        )}
-        {phase === 5 && (
-          <motion.div 
-            initial={{ opacity: 0, y: 50, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            className="absolute bottom-8 right-12 z-50 bg-slate-800 text-white px-4 py-3 rounded-lg shadow-xl text-sm flex items-center space-x-2"
-          >
-            <span>↑</span>
-            <span>Difficulty adjusted to <span className="font-semibold">Easy</span></span>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(56,189,248,0.15),transparent_70%)] pointer-events-none" />
 
-      <div className="max-w-4xl mx-auto w-full">
-        <div className="text-xs font-bold text-muted-foreground tracking-widest uppercase mb-4">Topic Practice</div>
-        <div className="flex justify-between items-end mb-8">
-          <div>
-            <h1 className="text-4xl font-serif text-primary mb-2">Factors, multiples, and primes</h1>
-            <div className="text-sm text-muted-foreground">Week 1 · 1 prior attempt · 100% accuracy · <span className="text-emerald-600 font-semibold">STRONG</span></div>
-          </div>
-          <div className="text-sm font-medium border border-border px-3 py-1 rounded-md bg-white">
-            Session score: {phase < 2 ? '0/0' : phase < 5 ? '0/1' : '1/2'}
-          </div>
-        </div>
+      <div className="relative z-10 flex flex-col items-center w-full px-8">
 
-        <div className="bg-white border border-border rounded-xl shadow-sm overflow-hidden flex flex-col min-h-[400px]">
-          <div className="p-8 flex-1 border-b border-border text-lg text-primary font-medium leading-relaxed">
-            {phase >= 1 && phase < 4 && (
-              <StreamingText text="Write the prime factorization of 12 using exponents." delay={0} />
-            )}
-            {phase >= 4 && (
-              <StreamingText text="Almost there. We found 12 = 2 × 2 × 3. Now rewrite it using an exponent for the repeated factor of 2." delay={0} />
-            )}
-          </div>
-          
-          <div className="p-6 bg-muted/20">
-            <div className="flex space-x-4 mb-4">
-              <div className="flex-1 relative">
-                <div className="w-full h-14 bg-white border border-border rounded-lg px-4 flex items-center shadow-inner text-lg font-mono">
-                  {typedAnswer || <span className="text-muted-foreground text-sm font-sans">Type your answer here...</span>}
-                  {((phase >= 1 && phase < 2) || (phase >= 4 && phase < 5)) && <motion.div className="w-0.5 h-6 bg-primary ml-1" animate={playing ? { opacity: [1, 0] } : false} transition={{ repeat: Infinity, duration: 0.8 }} />}
-                </div>
-              </div>
-              <div className={`px-8 h-14 rounded-lg flex items-center justify-center font-medium text-white transition-all ${phase === 2 || phase === 5 ? 'bg-primary/50' : 'bg-primary cursor-pointer'}`}>
-                Submit
-              </div>
-            </div>
+        <AnimatePresence mode="popLayout">
+          {phase >= 1 && (
+            <motion.div
+              className="flex flex-col space-y-4 mb-12 text-center w-full"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <motion.div
+                className="text-[12cqw] leading-tight font-sans font-bold text-slate-50 uppercase tracking-tighter"
+              >
+                Colleges have
+              </motion.div>
+              <motion.div
+                className="text-[12cqw] leading-tight font-sans font-bold text-slate-50 uppercase tracking-tighter"
+              >
+                a choice.
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-            <AnimatePresence mode="popLayout">
-              {phase >= 2 && phase < 4 && (
-                <motion.div 
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                  className="mb-4 bg-red-50 border border-red-100 rounded-lg p-4"
-                >
-                  <div className="flex items-center space-x-2 text-red-600 font-bold text-sm mb-2 uppercase tracking-wide">
-                    <div className="w-5 h-5 rounded-full bg-red-100 flex items-center justify-center text-xs">✕</div>
-                    <span>Not quite</span>
-                  </div>
-                  <div className="text-sm text-red-900 leading-relaxed">
-                    <StreamingText text="Not quite — 6 is not prime, so 2 × 6 isn't a prime factorization. Since 6 = 2 × 3, the full factorization is 12 = 2 × 2 × 3. Keep breaking factors down until every one is prime." delay={0} />
-                  </div>
-                </motion.div>
-              )}
-              {phase >= 5 && (
-                <motion.div 
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  className="mb-4 bg-emerald-50 border border-emerald-100 rounded-lg p-4"
-                >
-                  <div className="flex items-center space-x-2 text-emerald-600 font-bold text-sm mb-2 uppercase tracking-wide">
-                    <div className="w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center text-xs">✓</div>
-                    <span>Correct!</span>
-                  </div>
-                  <div className="text-sm text-emerald-900 leading-relaxed">
-                    <StreamingText text="2² × 3 captures it exactly: the exponent 2 records that the prime 2 appears twice. Every whole number bigger than 1 has exactly one such prime fingerprint — that's the Fundamental Theorem of Arithmetic." delay={0} />
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
+        <AnimatePresence mode="popLayout">
+          {phase >= 2 && (
+            <motion.div
+              className="flex flex-col space-y-4 mb-16 text-center w-full"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, type: 'spring' }}
+            >
+              <motion.div
+                className="text-[14cqw] leading-none font-serif font-black text-sky-400"
+              >
+                USE THIS APP
+              </motion.div>
+              <motion.div
+                className="text-[7cqw] leading-none font-sans font-bold text-rose-500 uppercase tracking-widest mt-4"
+              >
+                OR GO BANKRUPT
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-            <div className="mt-4 border rounded-md p-3 bg-secondary/50">
-              <div className="flex space-x-2 pb-2 mb-3 overflow-x-auto text-xs font-medium">
-                {['Basic', 'Fractions', 'Exponents', 'Geometry'].map(t => (
-                  <div key={t} className={`px-3 py-1 rounded-full whitespace-nowrap ${t === activeTab ? 'bg-primary text-primary-foreground' : 'bg-background text-muted-foreground border border-border'}`}>{t}</div>
-                ))}
+        <AnimatePresence mode="popLayout">
+          {phase >= 3 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1 }}
+              className="flex flex-col items-center mt-4"
+            >
+              <img
+                src={`${import.meta.env.BASE_URL}images/zhi_logo.png`}
+                alt="ZHI"
+                className="h-16 mb-4 object-contain brightness-0 invert"
+              />
+              <div className="text-[5cqw] font-sans font-bold tracking-wider text-slate-300">
+                zhisystems.ai
               </div>
-              <div className="flex flex-wrap gap-1.5">
-                {['+', '−', '×', '÷', '=', '/', '%', '²', '³', '√', '<', '>', '(', ')', 'π', '°'].map(sym => (
-                  <div key={sym} className="min-w-9 h-10 px-2 bg-white border border-border rounded flex items-center justify-center font-mono text-sm shadow-sm text-foreground/80 hover:bg-muted/50 cursor-pointer">
-                    {sym}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
       </div>
     </motion.div>
   );

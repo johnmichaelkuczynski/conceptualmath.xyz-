@@ -48,3 +48,38 @@ id = "FPwCf0RU5uuZToRqaPVxj"
 uri = "file://artifacts/qr-course-demo/public/audio/vo_s6.mp3"
 type = "audio"
 title = "vo_s6"
+
+[[outputs]]
+id = "xJW1KPlM6ThqqLPqJ0U-t"
+uri = "file://attached_assets/generated_audio/remedial_admin_v3_s1.mp3"
+type = "audio"
+title = "natural remedial math administrator scene 1"
+description = "Text-to-speech audio: Colleges are spending millions on remedial math, and watching most students drop or fail."
+
+[[outputs]]
+id = "ou1Ph6_0R_8OemdnqAmCO"
+uri = "file://attached_assets/generated_audio/remedial_admin_v3_s3.mp3"
+type = "audio"
+title = "natural remedial math administrator scene 3"
+description = "Text-to-speech audio: Students get clear lectures, unlimited practice, and step-by-step guidance that keeps them moving in the right direction."
+
+[[outputs]]
+id = "8m0YOrjSnSyPcWf-lg1EB"
+uri = "file://attached_assets/generated_audio/remedial_admin_v3_s2.mp3"
+type = "audio"
+title = "natural remedial math administrator scene 2"
+description = "Text-to-speech audio: This course covers whole numbers, fractions, decimals, percents, ratios, equations, graphing, and beginning algebra."
+
+[[outputs]]
+id = "a7wLPEPjd3umrPqXT-C0d"
+uri = "file://attached_assets/generated_audio/remedial_admin_v3_s5.mp3"
+type = "audio"
+title = "natural remedial math administrator scene 5"
+description = "Text-to-speech audio: Colleges have a choice: adopt this system, or keep paying for failure until they go bankrupt."
+
+[[outputs]]
+id = "Et1XzJwpe0-tRLvOlTfo1"
+uri = "file://attached_assets/generated_audio/remedial_admin_v3_s4.mp3"
+type = "audio"
+title = "natural remedial math administrator scene 4"
+description = "Text-to-speech audio: Precise analytics identify each weakness and prescribe the training each student actually needs."

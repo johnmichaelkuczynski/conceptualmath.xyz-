@@ -7,26 +7,23 @@ import { Scene2 } from './video_scenes/Scene2';
 import { Scene3 } from './video_scenes/Scene3';
 import { Scene4 } from './video_scenes/Scene4';
 import { Scene5 } from './video_scenes/Scene5';
-import { Scene6 } from './video_scenes/Scene6';
 import { CursorPointer } from './CursorPointer';
 import { PlaybackProvider } from './PlaybackContext';
 
 export const SCENE_DURATIONS = {
-  s1: 8000,
+  s1: 6000,
   s2: 8000,
-  s3: 12000,
-  s4: 10000,
-  s5: 14000,
-  s6: 10000,
+  s3: 8000,
+  s4: 7000,
+  s5: 6000,
 };
 
 export const SCENE_CAPTIONS: Record<string, string> = {
-  s1: 'Welcome to Developmental Mathematics, a four-week course that rebuilds arithmetic from the ground up, starting with whole numbers and place value.',
-  s2: 'Every lecture explains one idea at three depths, short, medium, and long, with an AI tutor and adaptive practice right beside it.',
-  s3: "Stuck on a concept? The tutor is scoped to the exact lecture you're reading. Ask why a rule actually works, and it answers in plain language, step-by-step.",
-  s4: "Your analytics dashboard tracks mastery across every topic, so you can see what you've learned and where you still need a little more practice.",
-  s5: 'Practice adapts to you. Answer in proper notation with the on-screen math keyboard, fractions, exponents, and signs. Miss one and it eases off, nail it and the difficulty climbs.',
-  s6: 'Homework and tests are graded by AI with two-layer authorship detection on every answer. Teach yourself developmental mathematics: read it, ground it, write it.',
+  s1: 'Colleges are spending millions on remedial math, and watching most students drop or fail.',
+  s2: 'This course covers whole numbers, fractions, decimals, percents, ratios, equations, graphing, and beginning algebra.',
+  s3: 'Students get clear lectures, unlimited practice, and step-by-step guidance that keeps them moving in the right direction.',
+  s4: 'Precise analytics identify each weakness and prescribe the training each student actually needs.',
+  s5: 'Colleges have a choice: adopt this system, or keep paying for failure until they go bankrupt.',
 };
 
 const SCENE_START_SEC: Record<string, number> = (() => {
@@ -52,13 +49,12 @@ const SCENE_COMPONENTS: Record<string, React.ComponentType<SceneProps>> = {
   s3: Scene3,
   s4: Scene4,
   s5: Scene5,
-  s6: Scene6,
 };
 
 export default function VideoTemplate({
   durations = SCENE_DURATIONS,
   loop = true,
-  muted = true,
+  muted = false,
   playing = true,
   captionsEnabled = true,
   onSceneChange,
@@ -71,7 +67,7 @@ export default function VideoTemplate({
   onSceneChange?: (sceneKey: string) => void;
 } = {}) {
   const { currentSceneKey } = useVideoPlayer({ durations, loop, paused: !playing });
-  const [cursorPos, setCursorPos] = useState({ x: '50vw', y: '50vh' });
+  const [cursorPos, setCursorPos] = useState({ x: '50cqw', y: '50cqh' });
   const [isClicking, setIsClicking] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -80,7 +76,6 @@ export default function VideoTemplate({
   }, [currentSceneKey, onSceneChange]);
 
   const baseSceneKey = currentSceneKey.replace(/_r[12]$/, '') as keyof typeof SCENE_DURATIONS;
-  const sceneIndex = Object.keys(SCENE_DURATIONS).indexOf(baseSceneKey);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -102,81 +97,46 @@ export default function VideoTemplate({
     }
   }, [playing]);
 
-  let activeNav = 'Dashboard';
-  if (sceneIndex === 3 || sceneIndex === 4) activeNav = 'Analytics';
-  if (sceneIndex === 5) activeNav = 'Assignments';
-
   const SceneComponent = SCENE_COMPONENTS[baseSceneKey];
 
   return (
     <PlaybackProvider playing={playing}>
-    <div className="w-full h-screen flex overflow-hidden bg-background">
-      {/* Sidebar - persists across all scenes */}
-      <div className="w-64 h-full border-r border-border bg-white flex flex-col pt-8 pb-4 shrink-0 z-20 shadow-sm relative">
-        <div className="px-6 mb-8 flex items-center space-x-2">
-          <div className="w-8 h-8 bg-primary text-white flex items-center justify-center font-serif text-xl rounded">Σ</div>
+      <div className="w-full h-screen overflow-hidden bg-slate-900 relative flex items-center justify-center">
+        {/* Main Content Area - Enforced 9:16 Frame */}
+        <div className="w-full aspect-[9/16] max-h-screen max-w-[calc(100vh*9/16)] relative bg-slate-50 overflow-hidden" style={{ containerType: 'size' }}>
+          <AnimatePresence mode="popLayout">
+            {SceneComponent && (
+              <SceneComponent
+                key={currentSceneKey}
+                setCursorPos={setCursorPos}
+                setIsClicking={setIsClicking}
+              />
+            )}
+          </AnimatePresence>
         </div>
 
-        <nav className="flex-1 px-4 space-y-1">
-          {['Dashboard', 'Assignments', 'Analytics'].map((nav) => (
-            <div
-              key={nav}
-              className={`px-4 py-2 rounded-md font-medium text-sm transition-colors ${
-                activeNav === nav ? 'bg-primary text-white' : 'text-muted-foreground'
-              }`}
-            >
-              {nav}
-            </div>
-          ))}
-        </nav>
+        {/* Global Cursor */}
+        <CursorPointer x={cursorPos.x} y={cursorPos.y} isClicking={isClicking} />
 
-        <div className="px-6 mt-auto">
-          <div className="text-xs text-muted-foreground uppercase font-semibold">Developmental Mathematics</div>
-        </div>
-      </div>
+        {captionsEnabled && (
+          <div
+            className="absolute bottom-24 left-1/2 z-30 max-w-3xl w-[90cqw] -translate-x-1/2 rounded-md bg-black/75 px-5 py-2 text-center text-[3.5cqw] md:text-[4cqw] leading-relaxed text-white shadow-lg"
+            role="status"
+            aria-live="polite"
+            aria-label="Demo captions"
+          >
+            {SCENE_CAPTIONS[baseSceneKey]}
+          </div>
+        )}
 
-      {/* Main Content Area */}
-      <div className="flex-1 h-full relative">
-        <AnimatePresence mode="popLayout">
-          {SceneComponent && (
-            <SceneComponent
-              key={currentSceneKey}
-              setCursorPos={setCursorPos}
-              setIsClicking={setIsClicking}
-            />
-          )}
-        </AnimatePresence>
-      </div>
-
-      {/* Global Cursor */}
-      <CursorPointer x={cursorPos.x} y={cursorPos.y} isClicking={isClicking} />
-
-      {captionsEnabled && (
-        <div
-          className="absolute bottom-24 left-1/2 z-30 max-w-3xl -translate-x-1/2 rounded-md bg-black/75 px-5 py-2 text-center text-base leading-relaxed text-white shadow-lg"
-          role="status"
-          aria-live="polite"
-          aria-label="Demo captions"
-        >
-          {SCENE_CAPTIONS[baseSceneKey]}
-        </div>
-      )}
-
-      <audio
-        ref={audioRef}
-        src={`${import.meta.env.BASE_URL}audio/composite_audio.mp3`}
-        preload="auto"
-        autoPlay={playing}
-        muted={muted}
-      >
-        <track
-          kind="captions"
-          src={`${import.meta.env.BASE_URL}captions/demo.en.vtt`}
-          srcLang="en"
-          label="English captions"
+        <audio
+          ref={audioRef}
+          src={`${import.meta.env.BASE_URL}audio/remedial_admin_narration_v3.mp3`}
+          preload="auto"
+          autoPlay={playing}
+          muted={muted}
         />
-      </audio>
-    </div>
+      </div>
     </PlaybackProvider>
   );
 }

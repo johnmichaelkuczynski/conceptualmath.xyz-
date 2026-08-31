@@ -230,7 +230,7 @@ export default function VideoWithControls() {
     toggleLock,
   } = useSceneControls(SCENE_DURATIONS);
 
-  const [muted, setMuted] = useState(true);
+  const [muted, setMuted] = useState(false);
   const [playing, setPlaying] = useState(true);
   const [captionsEnabled, setCaptionsEnabled] = useState(true);
   const [stoppedSnapshot, setStoppedSnapshot] = useState<string | null>(null);
