@@ -3,6 +3,7 @@ modules = ["nodejs-24", "python-3.11", "postgresql-16"]
 [deployment]
 router = "application"
 deploymentTarget = "autoscale"
+build = ["sh", "-c", "CI=true pnpm install --frozen-lockfile"]
 
 [deployment.postBuild]
 args = ["pnpm", "store", "prune"]
@@ -111,3 +112,11 @@ externalPort = 3002
 
 [nix]
 channel = "stable-25_05"
+
+[userenv]
+
+[userenv.production]
+CI = "true"
+
+[userenv.shared]
+SKIP_COURSE_SEED = "true"

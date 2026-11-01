@@ -7,3 +7,4 @@
 - [Demo stop semantics](qr-course-demo-pause.md) — stop holds the current frame and all clocks; play restarts the current scene and narration together.
 - [Demo caption clock](qr-course-demo-caption-clock.md) — captions must follow the visual scene timeline, not audio playback, because audible autoplay may be blocked.
 - [Approved college promo style](qr-course-promo-video.md) — use real course screens, direct remedial-math economics, natural narration, and no music.
+- [Deployment recovery safety](deployment-recovery-safety.md) — preserve seed opt-out; hosting recovery must not reset course content or student work.

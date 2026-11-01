@@ -16,9 +16,12 @@ if (Number.isNaN(port) || port <= 0) {
   throw new Error(`Invalid PORT value: "${rawPort}"`);
 }
 
-seedIfEmpty().catch((err) => {
-  logger.error({ err }, "Seed failed");
-});
+// Deployment recovery must never run the destructive content-reseed path.
+if (process.env.SKIP_COURSE_SEED !== "true") {
+  seedIfEmpty().catch((err) => {
+    logger.error({ err }, "Seed failed");
+  });
+}
 
 app.listen(port, (err) => {
   if (err) {

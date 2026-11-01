@@ -9,6 +9,21 @@ import { logger } from "./lib/logger";
 
 const app: Express = express();
 
+// Hosting probes must not depend on cookies, authentication, or PostgreSQL.
+app.get(["/healthz", "/api/healthz"], (_req, res) => {
+  res.status(200).json({ status: "ok" });
+});
+app.get("/", (_req, res) => {
+  const candidates = [
+    path.resolve(process.cwd(), "artifacts/qr-course/dist/public/index.html"),
+    path.resolve(process.cwd(), "../qr-course/dist/public/index.html"),
+    path.resolve(process.cwd(), "../../artifacts/qr-course/dist/public/index.html"),
+  ];
+  const indexHtml = candidates.find((file) => fs.existsSync(file));
+  if (indexHtml) return res.status(200).sendFile(indexHtml);
+  res.status(200).json({ status: "ok" });
+});
+
 app.use(
   pinoHttp({
     logger,
